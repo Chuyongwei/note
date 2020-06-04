@@ -70,8 +70,7 @@ git cat-file -t #类型
 
 ```
  git remote add origin https://github.com/Chuyongwei/test.git
- git push -u origin tage2
-
+ git push -u origin tage2 
 ```
 
 拉取
@@ -80,7 +79,7 @@ git cat-file -t #类型
  $ git pull --rebase origin master
 ```
 
-
+合并代码时 使用`[--allow-unrelated-histories]`
 
 # 获取所有分支
 
