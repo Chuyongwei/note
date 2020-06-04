@@ -71,8 +71,13 @@ git cat-file -t #类型
 ```
  git remote add origin https://github.com/Chuyongwei/test.git
  git push -u origin tage2
- $ git pull --rebase origin master
 
+```
+
+拉取
+
+```powershell
+ $ git pull --rebase origin master
 ```
 
 
