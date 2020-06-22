@@ -1311,3 +1311,72 @@ show keys from student;
  show index from student;
 ```
 
+## 视图
+
+1. 创建视图
+
+   ```sql
+    create view VIEW_EMP
+     as
+     select empno,ename,job,deptno
+     from emp
+     where deptno = 20
+   ```
+
+2. 使用视图
+
+   ```sql
+   select * from VIEW_EMP
+   ```
+
+3. 添加视图信息
+
+   ```sql
+   insert into VIEW_EMP values(...)
+   ```
+
+4. 更新视图
+
+   ```sql
+   update VIEW_EMP set ename = '西方' where
+   ```
+
+5. 删除视图内容
+
+   ```sql
+   delete from emp where ...
+   ```
+
+6. 删除视图
+
+   ```sql
+   drop view VIEW_EMP;
+   ```
+
+7. 查看所有视图
+
+   ```sql
+   show table status where comment='view';
+   ```
+
+   
+
+- 只读视图
+
+  1. 创建
+
+     ```sql
+     create or replace view VIEW_EMP
+       as
+       select empno,ename,job,deptno
+       from emp
+       where deptno = 20 read only;
+     ```
+
+## 备份与恢复
+
+```sql
+mysqldump [options] --database DB1 [DB2,DB3...]  
+mysqldump --user [username] --password=[password] [database name] [table name] >table_name.sql
+```
+

@@ -697,6 +697,14 @@ select * from emp e where sal > (select avg(sal) from emp where job = e.job);
    ```sql
    drop view VIEW_EMP;
    ```
+   
+8. 查看所有视图
+
+   ```sql
+   show table status where comment='view';
+   ```
+
+   
 
 - 只读视图
 
