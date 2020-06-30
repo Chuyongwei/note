@@ -33,3 +33,204 @@ pom.xml
 
 ```
 
+<!-- 2020.06.27 -->
+
+## 学习
+
+### 第一个微服务程序
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web</artifactId>
+</dependency>
+<dependency>
+```
+
+### 配置
+
+#### yaml
+
+```yaml
+#对象
+student:
+  name:qinjiang
+  age: 3
+  
+student:{name:qinjiang,age:3}
+
+#数组
+pets:
+  - cat
+  - dag
+  - pig
+    
+pets: [cat,dog,pig]
+```
+
+
+
+yaml文件：
+
+```yaml
+person:
+  name: qingjiang
+  age: 3
+  happy: false
+  birth: 2019/11/02
+  maps: {k1: v1,k2: v2}
+  lists:
+    - code
+    - music
+    - girl
+  dog:
+    name: 旺财
+    age: 3
+
+```
+
+实体类：
+
+```java
+@Component
+@ConfigurationProperties(prefix = "person")
+
+public class Person {
+    //SPEL表达式
+    @Value("${name}")
+    private String name;
+    private Integer age;
+    private Boolean happy;
+    private Date birth;
+    private Map<String,Object> maps;
+    private List<Object> lists;a
+    private Dog dog;
+}
+```
+
+测试：
+
+```java
+@SpringBootTest
+class Springboot02ConfigApplicationTests {
+
+    @Autowired
+    private Person person;
+
+    @Autowired
+    @Test
+    void contextLoads() {
+        System.out.println(person);
+    }
+
+}
+```
+
+
+
+peroperties:
+
+```properties
+name=狂神
+```
+
+```java
+@Component
+@PropertySource(value = "classpath:application.properties")
+public class Person {
+    //SPEL表达式
+    @Value("${name}")
+    private String name;
+    private Integer age;
+    private Boolean happy;
+    private Date birth;
+    private Map<String,Object> maps;
+    private List<Object> lists;
+    private Dog dog;
+}
+```
+
+
+
+配置级别
+
+1. ./config/
+2. ./
+3. /config/
+4. /
+
+### 多环境配置
+
+propesties方法
+
+application-dev.properties
+
+application-test.properties
+
+```properties
+#多环境配置
+spring.profiles.active=dev
+```
+
+yaml方法
+
+```yaml
+server:
+  port: 8081
+spring:
+  profiles:
+    active: dev
+---
+server:
+  port: 8082
+spring:
+  profiles: dev
+  
+---
+server:
+  port: 8083
+spring:
+  profiles: test
+```
+
+
+
+## springboot web开发
+
+[webjars](https://www.webjars.org/)
+
+1. 存放静态资源的地方
+   - [webjars](https://www.webjars.org/)
+   - public,static,/**,resource
+   - 优先级 resource>static>public
+
+模板引擎
+
+[thymeleaf](https://github.com/thymeleaf/thymeleaf)
+
+```xml
+ <dependency>
+     <groupId>org.thymeleaf</groupId>
+     <artifactId>thymeleaf-spring5</artifactId>
+ </dependency>
+ <dependency>
+     <groupId>org.thymeleaf.extras</groupId>
+     <artifactId>thymeleaf-extras-java8time</artifactId>
+ </dependency>
+```
+
+只需要使用
+
+```java
+//在templates目录下的所有页面，只能通过controller来跳转
+//需要模板引擎的支持
+@Controller
+public class IndexController {
+
+    @RequestMapping("/test")
+    public String index(){
+        return "text";
+    }
+}
+```
+

@@ -1,0 +1,73 @@
+## 1.创建
+
+通过调用HTTP请求对象的 `open()` 和 `send()` 方法，像下面这样:
+
+```js
+httpRequest.open('GET', 'http://www.example.org/some.file', true);
+httpRequest.send();
+```
+
+- `open()` 的第一个参数是HTTP请求方法 - 有GET，POST，HEAD以及服务器支持的其他方法。 保证这些方法一定要是大写字母，否则其他一些浏览器（比如FireFox）可能无法处理这个请求。更多关于HTTP的请求方法，可以查看 [W3C specs](http://www.w3.org/Protocols/rfc2616/rfc2616-sec9.html)。
+- 第二个参数是你要发送的URL。由于安全原因，默认不能调用第三方URL域名。 确保你在页面中使用的是正确的域名，否则在调用 `open()` 方法是会有 "permission denied" 错误提示。一个容易犯的错误是你企图通过 `domain.tld` 访问网站， 而不是使用 `www.domain.tld`。如果你真的需要向另一个域名发送请求, 可以查看 [HTTP access control](https://developer.mozilla.org/En/HTTP_access_control)。
+- 第三个参数是可选的，用于设置请求是否是异步的。如果设为 `true` (默认值)，即开启异步，JavaScript就不会在此语句阻塞，使得用户能在服务器还没有响应的情况下与页面进行交互。
+
+`send()` 方法的参数可以是任何你想发送给服务器的内容，如果是 `POST` 请求的话。发送表单数据时应该用服务器可以解析的格式，像查询语句：
+
+```
+"name=value&anothername="+encodeURIComponent(myVar)+"&so=on"
+```
+
+或者其他格式, 类似 `multipart/form-data`，JSON，XML等。
+
+如果你使用 POST 数据，那就需要设置请求的MIME类型。比如，在调用 `send()` 方法获取表单数据前要有下面这个：
+
+```js
+httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+```
+
+## 2.处理响应
+
+在发送请求时，你提供的JavaScript函数名负责处理响应：
+
+```js
+httpRequest.onreadystatechange = nameOfTheFunction;
+```
+
+这个函数应该做什么？首先，函数要检查请求的状态。如果状态的值是 `XMLHttpRequest.DONE` （对应的值是4），意味着服务器响应收到了并且是没问题的，然后就可以继续执行。
+
+```js
+if (httpRequest.readyState === XMLHttpRequest.DONE) {
+    // Everything is good, the response was received.
+} else {
+    // Not ready yet.
+}
+```
+
+全部readyState状态值都在 [XMLHTTPRequest.readyState](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest#Properties)，如下也是：
+
+- 0 (未初始化) or (**请求还未初始化**)
+- 1 (正在加载) or (**已建立****服务器链接**)
+- 2 (加载成功) or (**请求已接受**)
+- 3 (交互) or (**正在处理请求**)
+- 4 (完成) or (**请求已完成并且响应已准备好**)
+
+([Source](http://msdn.microsoft.com/en-us//library/ms534361(en-us,VS.85).aspx))
+
+接下来，点击HTTP响应的 [response code](https://developer.mozilla.org/en/HTTP#HTTP_Response_Codes)。 可能的响应码都已经列在 [W3C](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)这个列表里。在下面的例子中，我们通过检查响应码 `200 OK` 判断AJAX有没有成功。
+
+```js
+if (httpRequest.status === 200) {
+    // Perfect!
+} else {
+    // There was a problem with the request.
+    // For example, the response may have a 404 (Not Found)
+    // or 500 (Internal Server Error) response code.
+}
+```
+
+在检查完请求状态和HTTP响应码后， 你就可以用服务器返回的数据做任何你想做的了。你有两个方法去访问这些数据：
+
+- `httpRequest.responseText` – 服务器以文本字符的形式返回
+- `httpRequest.responseXML` – 以 XMLDocument 对象方式返回，之后就可以使用JavaScript来处理
+
+注意上面这一步只在你发起异步请求时有效（即 `open()` 的第三个参数未特别指定或设为 `true`）。如果你你发起的是**同步**请求则不必使用函数，但是非常不推荐这样子做，它的用户体验很糟糕。

@@ -22,7 +22,7 @@
 
 ### 写法
 
-```
+```js
         1.$(document).ready(function(){        });
         2.jQuery(document).ready(function(){        })
         3.$(function(){        })
@@ -335,5 +335,31 @@ $(".son").on("myClick",function(){
     alert("s")
 })
 $(".son")。trigger("myClick")
+```
+
+事件命名空间
+
+我们可以将事件名变为`action.usename`
+
+```js
+$(".son").trigger("click.ls")//选择触发事件
+```
+
+> 带命名空间的子元素会触发带有相同命名空间的相同事件的父元素
+>
+> 不带命名空间的子元素会触发所有相同事件的父元素事件
+
+### 事件委托
+
+请别人帮忙做事情，然后将做完的事情结果反馈给我
+
+在jQuery种当找到很多个元素添加事件时会遍历
+
+找一个从入口函数就有的元素来完成其他元素的事件新增
+
+```js
+$("ul").delegate("li","click",function(){
+    console.log($(this).html())
+})
 ```
 
