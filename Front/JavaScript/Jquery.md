@@ -137,6 +137,14 @@ var $div = $("div:parent")
 
 `$("input[type='submit']")`submit类型的input
 
+`$(this).index`批处理的索引
+
+`$("ul").eq(0)`第一个ul
+
+`$( ).siblings()`获取除了自己其他的选中元素
+
+`$("url").children.children("div")`所有的div子标签
+
 ### attr方法
 
 ```js
@@ -166,11 +174,13 @@ $("span").removeAttr("a b")//同时删除a和b
  $("span").removeProp("dome")//删除获取的元素的节点
 ```
 
-类操作
+### 类操作
 
 addClass添加类
 
 deleteClass删除类
+
+removeClass
 
 toggleClass修改类
 
@@ -198,8 +208,8 @@ $("input").val()
 
 ```js
  $("div").css("width","100px")
-            $("div").css("height","100px")
-            $("div").css("background","red")
+ $("div").css("height","100px")
+ $("div").css("background","red")
 ```
 
 2.链式操作
@@ -212,10 +222,10 @@ $("div").css("width","100px").css("height","100px").css("background","red")
 
 ```js
 $("div").css({
-                width:"100px",
-                height:"100px",
-                background:"yellow"
-            })
+    width: "100px",
+    height: "100px",
+    background: "yellow"
+})
 ```
 
 
@@ -226,7 +236,7 @@ offset().left获取距离窗口的偏移位
 
 修改：
 
-```js
+```css
 offset({
 	left:10
 })
@@ -237,6 +247,15 @@ postion().获取定位元素的偏移位
 postion不能修改
 
 ### 滚动
+
+滚动监听
+
+```js
+$(window).scroll(function(){
+    //获取滚动位置
+    var offset = $("html,body").scrollTop();
+}
+```
 
 获取滚动距离
 
@@ -362,4 +381,178 @@ $("ul").delegate("li","click",function(){
     console.log($(this).html())
 })
 ```
+
+### 移入和移出
+
+```js
+$(function(){
+    //子元素的移入和移出也会触发方法
+    // $(".father").mouseover(function(){
+    //     console.log("father被移入")
+    // })
+    // $(".father").mouseout(function(){
+    //     console.log("father被移出")
+    // })
+
+    //子元素的移入和移出不会触发方法
+    // $(".father").mouseenter(function(){
+    //     console.log("father被移入")
+    // })
+    // $(".father").mouseleave(function(){
+    //     console.log("father被移出")
+    // })
+
+    //若参数一个方法移动都触发，两个（移入，移出）
+    $(".father").hover(function(){
+        console.log("father移入")
+    },function(){
+        console.log("father移出")
+    })
+})
+```
+
+## 动画效果
+
+```js
+//弹出动画
+$("div").show(1000,function(){
+})
+//消失动画
+$("div").hide(1000,function(){
+})
+//切换动画
+$("div").toggle(1000,function(){
+})
+//拉起
+ $("div").slideUp(1000, function () {
+ })
+//拉下
+$("div").slideDown(1000, function () {
+})
+//淡入
+$("div").fadeIn(1000,function(){
+})
+//淡出
+$("div").fadeOut(1000,function(){
+})
+//切换
+$("div").fadeToggle(1000,function(){
+})
+//淡入到0.2
+$("div").fadeTo(1000,0.2,function(){
+})
+```
+
+使用连续动画
+
+```js
+$(".ad").stop(1000).slideDown(1000).fadeOut(1000).fadeIn(1000)
+```
+
+stop用于规避动画
+
+### 自定义动画
+
+animate
+1.接受一个对像
+2.指定时长
+3.指定节奏默认“swing”
+4.动画执行完后的回调函数
+
+```js
+$(".one").animate({
+    width:500//变为宽度500
+},1000,function(){
+})
+$(".one").animate({
+    marginLeft:500//右移500
+},1000,function(){
+})
+$(".one").animate({
+    width: "+=100"//自增100
+},1000,function(){
+})
+ $(".one").animate({
+     width: "toggle"
+ },1000,function(){
+ })
+```
+
+`animate().delay(2000)`等待两秒
+
+stop
+
+```js
+// 立即停止当前动画, 继续执行后续的动画
+$("div").stop();
+$("div").stop(false);
+$("div").stop(false, false);
+// 立即停止当前和后续所有的动画
+$("div").stop(true);
+$("div").stop(true, false);
+// 立即完成当前的, 继续执行后续动画
+$("div").stop(false, true);
+// 立即完成当前的, 并且停止后续所有的
+$("div").stop(true, true);
+```
+
+## 节点
+
+### 添加
+
+内部插入
+
+```js
+var $li = $("<li>新增的li</li>")
+$li.appendTo("ul")
+$("ul").append($li)//尾插
+$li.prependTo("ul")
+$("ul").prepend($li)//头插
+```
+
+外部插入
+
+```js
+ $("ul").after($li)//在ul的后面插入
+ $li.insertAfter("ul")
+ $("ul").before($li)//ul前面插入
+```
+
+### 删除
+
+```js
+$("li").empty() //清空内容
+$("li").remove(".item") //删除.item的div
+```
+
+### 替换
+
+```js
+var $h6 = $("<h6>我是标题6</h6>") 
+$h6.replaceAll("div")
+$("div").replaceWith($h6)
+```
+
+### 复制
+
+> 浅复制只会复制元素不会复制事件
+> 深复制会将元素和事件都复制
+
+```js
+$("button").eq(0).click(function () {//深复制
+   var $li = $("li:first").clone(false);
+   $("ul").append($li)
+})
+$("button").eq(1).click(function () {//浅复制
+    var $li = $("li:first").clone(true);
+   $("ul").append($li)
+})
+$("li").click(function(){
+    alert("弹了")
+})
+```
+
+
+
+<!--江南老师的p49-p51 p56-p134-->
 

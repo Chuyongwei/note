@@ -906,6 +906,8 @@ ip addr
 
 安装net-tool
 
+以获取==ipconfig==
+
 ```
 yum install net-tools
 ```
@@ -1336,7 +1338,7 @@ git config --global color.ui false #关闭
 
 ## 网络安全
 
-wget
+### wget
 
 ```powershell
 sudo yum install wget
@@ -1360,7 +1362,7 @@ user@ip:file_name
 
 
 
-ftp&sftp:传输文件
+### ftp&sftp:传输文件
 
 ```
 ftp -p url
@@ -1412,3 +1414,441 @@ rsync -arv --delete /images/username@id:/
 不会删除文件
 
 `--delete`删除不存在文件
+
+
+
+### ipv4和ipv6
+
+主机名
+
+`host url`获取IP地址
+
+
+
+whois
+
+```powershell
+sudo yum install whois
+```
+
+`whois url`获取相关的网址信息
+
+
+
+ifconfig
+
+`lo`本地回环：用于在自己电脑上测试服务器
+
+`wlano`无线网卡
+
+`eth0`有线网卡
+
+`virbr0`虚拟网络接口
+
+enp0s3 en网卡 p（0，3）
+
+新版用systemd替换了initd来引导系统
+
+
+
+列出的网络接口
+
+- 网卡名称，inet参数后面的ip地址
+- ether参数后面的网卡物理地址（MAC）
+- RX TX
+
+ifconfig：配置网路接口
+
+```powershell
+ifconfig interfacr state #开关网卡
+```
+
+- interface 要替换的网络接口（eth0）
+- state up和down打开和关闭
+
+`yum info ifconfig`查看相关信息
+
+
+
+`netstat -i`网络接口的统计信息
+
+`RX`接收 `Tx`发送的包
+
+`MTU`最大传输单元
+
+`RX-ok`接收成功的
+
+`RX-ERR`接收失败的
+
+`RX-DRP`丢弃的
+
+`RX-OVR`过速丢弃的
+
+`netstat -uta`：列出所有开启的链接
+
+`u`UDP
+
+`t`TCP
+
+`a`所有状态
+
+sate
+
+ESTABLISHED 连接已建立
+
+TIME——WAIT：连接正在等待
+
+CLOSE_WAIT:远程服务器终止
+
+CLOSEING 远程服务器关闭
+
+LISTEN监听
+
+
+
+`netstat -i`列出listen的信息
+
+`-s`统计信息
+
+port端口
+
+
+
+## Shell
+
+`sh` `csh` `ksh`
+
+### 配置
+
+切换shell
+
+```shell
+chsh
+```
+
+选择学习bash
+
+- 默认
+- 好用
+
+制作sh文件
+
+```sh
+#!/bin/bash
+#执行的路径👆
+#注释
+ls
+```
+
+给权限
+
+```powershell
+chmod +x test.sh
+```
+
+运行
+
+```shell
+./test.h
+```
+
+bug
+
+```shell
+bash -x test.sh
+```
+
+==必须在当前文件才能运行==
+
+### 环境变量
+
+`echo $PATH`
+
+### 执行文件
+
+`message='hello world'`
+
+- message是变量
+- 'hello world'是值
+- 等于不能有空格
+
+echo:显示内容
+
+- 如果要插入换行符`\n`就要使用`-e`
+- 显示变量需要变量前加上`$`
+
+单引号把所有的特殊符号无效
+
+双引号不无效`、$、?
+
+
+
+### read读取
+
+`-p`描述
+
+`-n 4`写四个字
+
+`-t 4`4秒
+
+`-s`隐藏字符
+
+```sh
+read firstname Lastname
+echo "Hello $firstname $Lastname"
+read -p "Plase press your name: " -t 4 name
+echo -e "\nHello $name"
+```
+
+### let
+
+```sh
+let "a = 5*3"
+echo "$a" #15
+```
+
+### if语句
+
+基本格式
+
+```powershell
+if []
+then
+  做这个
+else
+  做那个
+fi
+```
+
+- `[]`两边要空一格如`[ test ]`
+
+```powershell
+if []
+  事情1
+elif []
+then
+  事情2
+  ...
+fi
+```
+
+条件
+
+字符类
+
+| 条件                 | 意义                 |
+| -------------------- | -------------------- |
+| $string1 = $string2  | 看两个字符是否相等   |
+| $string1 != $string2 | 看两个字符是否不相等 |
+| -z $String           | 判断是否为空，zore   |
+| -n $String           | 判断是否不为空，not  |
+| $num  -eq $num2      | 等于equal            |
+| $num1 -ne $num2      | 不等于not equal      |
+| $num1 -lt $num2      | 小于lower than       |
+| $num1 -le $num2      | 小于等于lower equal  |
+| $num1 -gt $num2      | 大于gather than      |
+| $num1 -ge $num2      | 大于等于gather equal |
+
+
+
+| 条件        | 意义                                                         |
+| -------------------- | -------------------- |
+| [ -a FILE ] | 如果 FILE 存在则为真。                                       |
+| [ -d FILE ]            | 如果 FILE 存在且是一个目录则返回为真。directory              |
+| [ -e FILE ]            | 如果 指定的文件或目录存在时返回为真。exist                   |
+| [ -L FILE ] | 文件是否为Link |
+| [ -f FILE ]            | 如果 FILE 存在且是一个普通文件则返回为真。file               |
+| [ -r FILE ]            | 如果 FILE 存在且是可读的则返回为真。read                     |
+| [ -w FILE ]            | 如果 FILE 存在且是可写的则返回为真。（一个目录为了它的内容被访问必然是可执行的）write |
+| [ -x FILE ]            | 如果 FILE 存在且是可执行的则返回为真。executable             |
+| [ $file1 -nt $file2 ] | 文件file1是否比file2更新。nt是new than |
+| [ $file1 -nt $file2 ] | 文件file1是否比file2更旧。 |
+
+### case
+
+```powershell
+case $1 in
+    "dog")
+      语句1
+      ;;
+    "cat")
+      语句2 
+      ;;
+    *)
+      默认语句
+      ;;
+esac
+```
+
+```shell
+#!/bin/bash
+
+case $1 in
+    "dog" |"cat" |"pig")
+        echo "It is a mammal"
+        ;;
+    "pigeon")
+        echo "It is a bird"
+        ;;
+    *)
+        echo  "I do not know what it is"
+        ;;
+esac
+```
+
+```
+
+```
+
+### 函数
+
+```shell
+function 函数名(){
+	函数体
+}
+
+函数名(){
+
+}
+```
+
+
+
+```shell
+#!/bin/bash
+
+print_something () {
+        echo go $1
+}
+
+print_something dsf
+```
+
+
+
+```shell
+#!/bin/bash
+
+catsome(){
+    cat $1
+}
+
+result=$(catsome $1)
+
+echo "Its result is $result"
+```
+
+### 局部变量
+
+```sh
+local var1="local1" #局部变量
+```
+
+重载
+
+```
+command ls
+```
+
+
+
+
+
+## 开发集成
+
+搜索java版本
+
+```shell
+yum search java | grep openjdk
+```
+
+
+
+```shell
+systemctl status tomcat
+systemctl start tomcat
+systemctl enable tomcat
+rpm -ql tomcat #查看配置文件
+/etc/tomcat/server.xml
+/etc/tomcat/tomcat.conf #配置路径
+yum install tomcat-webapps tomcat-admin-webapps
+yum install tomcat-docs-webapp tomcat-javadoc
+firewall-cmd --zone=public --add-port=8080/tcp --permanent
+#打开8080的口
+firewall-cmd --reload
+```
+
+
+
+设置账户
+
+```
+vim /etc/tomcat/tomcat-users.xml
+systemctl restart tomcat
+```
+
+
+
+```
+semanage fcontext -a -t tomcat_var_lib_t jenkins.rar
+restorecon -Rv .
+/var/lib/tomcat/webapps/jenkins
+
+```
+
+
+
+
+
+```shell
+chown tomcat:tomcat /var/lib/jenkins/
+[root@localhost tomcat]# chown tomcat:tomcat /var/lib/jenkins/
+[root@localhost tomcat]# vim /etc/tomcat/context.xml 
+```
+
+
+
+```xml
+<Context>
+
+    <Environment name="JENKINS_HOME" value="/var/lib/jenkins" type="java.lang.String"/>
+</Context>
+```
+
+
+
+```shell
+vim /var/lib/jenkins/hudson.model.UpdateCenter.xml #改成http
+```
+
+
+
+
+
+### 反向代理
+
+
+
+> 正向代理：建立在客户机的
+>
+> 反向代理：建立在服务器,用于集群服务器，隐藏服务器的信息
+
+[Nginx相关介绍](https://www.cnblogs.com/wcwnina/p/8728391.html)
+
+淘宝的[nginx](https://www.nginx.com/)的[https://tengine.taobao.org/]
+
+apache是堵塞型的
+
+排名[https://www.similartech.com/categories/web-server]
+
+
+
+
+
+安装
+
+```shell
+yum install epel-release
+yum install nginx
+```
+

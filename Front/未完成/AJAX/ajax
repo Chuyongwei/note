@@ -71,3 +71,278 @@ if (httpRequest.status === 200) {
 - `httpRequest.responseXML` – 以 XMLDocument 对象方式返回，之后就可以使用JavaScript来处理
 
 注意上面这一步只在你发起异步请求时有效（即 `open()` 的第三个参数未特别指定或设为 `true`）。如果你你发起的是**同步**请求则不必使用函数，但是非常不推荐这样子做，它的用户体验很糟糕。
+
+
+
+## 创建
+
+```js
+ //1.创建异步对象
+ var xmlhttp = new XMLHttpRequest();
+ //2.设置请求方式
+ xmlhttp.open("GET", "04-ajax.php", true, function () {
+ })
+ //3.发送请求
+ xmlhttp.send()
+ //4.监听状态变化
+ xmlhttp.onreadystatechange = function(){
+     //返回处理结果
+     if(xmlhttp.readyState==4&&xmlhttp.status==200){
+         console.log(xmlhttp.responseText)//收到的文本
+     }else{
+         console.log("没有数据")
+     }
+ }
+```
+
+为了兼容低版本浏览器
+
+```js
+if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp = new XMLHttpRequest();
+}
+else {// code for IE6, IE5
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+```
+
+## 响应
+
+### get
+
+```php
+<?php
+// echo "php数据"
+sleep(2);
+echo $_GET["userName"];
+echo "&";
+echo $_GET["userPwd"];
+?>
+```
+
+### post
+
+```js
+ var xmlhttp;
+ if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+     xmlhttp = new XMLHttpRequest();
+ }
+ else {// code for IE6, IE5
+     xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+ }
+ //var xmlhttp = new XMLHttpRequest();
+ //2.设置请求方式
+ xmlhttp.open("POST", "8-ajax-post.php", true)
+ //必须放在open和send之间
+ xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+ //3.发送请求
+ xmlhttp.send("userName=zs&userPwd=123");
+ //4.监听状态变化
+ xmlhttp.onreadystatechange = function () {
+     //返回处理结果
+     if (xmlhttp.readyState == 4) {
+         if (xmlhttp.status == 200) {
+             console.log(xmlhttp.responseText)
+         } else {
+             console.log("没有数据")
+         }
+     }
+ }
+```
+
+
+
+### 封装
+
+#### 参数
+
+```js
+function obj2str(obj) {
+    obj.t = new Date().getTime();
+    var res = [];
+    for (var key in obj) {
+        res.push(key + "=" + obj[key])
+    }
+    return res.join("&")//数组链接
+}
+
+function ajax(type, url, obj, timeout, success, error) {
+    //0.对象转为字符串
+    var str = obj2str(obj);
+    //1.创建异步对象
+    var xmlhttp, timer;
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {// code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    //var xmlhttp = new XMLHttpRequest();
+    //2.设置请求方式
+    //判断请求
+    if (type == "GET") {
+        xmlhttp.open("GET", url + "?" + str, true)
+        //3.发送请求
+        xmlhttp.send()
+    } else {
+        xmlhttp.open("POST", url, true)
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(str);
+    }
+
+    //4.监听状态变化
+    xmlhttp.onreadystatechange = function () {
+        //返回处理结果
+        if (xmlhttp.readyState == 4) {
+            //既然成功了定时器就可以关了
+            clearInterval(timer)
+
+            if (xmlhttp.status >= 200 && xmlhttp.status < 300 || xmlhttp.status == 304) {
+                success(xmlhttp);
+            } else {
+                error(xmlhttp);
+            }
+        }
+    }
+    //判断外界是否存在超时
+    if (timeout) {
+        timer = setInterval(function () {
+            console.log("中断请求")
+            xmlhttp.abort();
+            clearInterval(timer);
+        }, timeout)
+    }
+}
+```
+
+#### 对象
+
+```js
+function obj2str(data) {
+    data.t = new Date().getTime();
+    var res = [];
+    for (var key in data) {
+        res.push(encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+    }
+    return res.join("&")//数组链接
+}
+
+function ajax(option) {
+    //0.对象转为字符串
+    var str = obj2str(option.data);
+    //1.创建异步对象
+    var xmlhttp, timer;
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    }
+    else {// code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    //var xmlhttp = new XMLHttpRequest();
+    //2.设置请求方式
+    //判断请求
+    if (option.type.toLowerCase() === "get") {
+        xmlhttp.open("GET", option.url + "?" + str, true)
+        //3.发送请求
+        xmlhttp.send()
+    } else {
+        xmlhttp.open("POST", option.url, true)
+        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhttp.send(str);
+    }
+
+    //4.监听状态变化
+    xmlhttp.onreadystatechange = function () {
+        //返回处理结果
+        if (xmlhttp.readyState == 4) {
+            //既然成功了定时器就可以关了
+            clearInterval(option.timer)
+
+            if (xmlhttp.status >= 200 && xmlhttp.status < 300 || xmlhttp.status == 304) {
+                option.success(xmlhttp);
+            } else {
+                option.error(xmlhttp);
+            }
+        }
+    }
+    //判断外界是否存在超时
+    if (option.timeout) {
+        timer = setInterval(function () {
+            console.log("中断请求")
+            xmlhttp.abort();
+            clearInterval(timer);
+        }, option.timeout)
+    }
+}
+```
+
+
+
+## jquery方式
+
+```js
+$.ajax({
+    type: "POST",
+    url: "10-jquery.php",
+    data: "userName=zs&userPwd=123",
+    success: function (msg) {
+        alert(msg)
+    },
+    error:function(xhr){
+        alert(xhr.status)
+    }
+});
+```
+
+
+
+```js
+$.ajax({
+  type: "GET",
+  url: "test.js",
+  dataType: "script"
+});
+```
+
+
+
+## json
+
+相互转换
+
+[`JSON.parse(json)`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse)
+
+解析JSON字符串并返回对应的值，可以额外传入一个转换函数，用来将生成的值和其属性, 在返回之前进行某些修改。
+
+[`JSON.stringify(obj)`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify)
+
+返回与指定值对应的JSON字符串，可以通过额外的参数, 控制仅包含某些属性, 或者以自定义方法来替换某些key对应的属性值。
+
+## Cookie
+
+获取cookie
+
+```
+document.cookie
+```
+
+添加cookie
+
+```js
+document.cookie = "key=value";
+```
+
+`exprise`:过期时间
+
+`path=/`:有效路径
+
+```js
+document.cookie = "username=Bill Gates; expires=Sun, 31 Dec 2017 12:00:00 UTC; path=/";
+```
+
+查找
+
+```js
+getCookie("username");
+```
+
