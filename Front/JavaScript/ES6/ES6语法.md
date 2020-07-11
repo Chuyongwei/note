@@ -538,7 +538,7 @@ function sum (base, ...nums) {
 console.log(sum(1, 2, 3, 5))
 ```
 
-### 数组参数
+### 数组参数（三点）
 
 ```js
 function sum (x, y, z) {
@@ -636,33 +636,6 @@ test.say()
   obj[z + y] = 6
   ```
 
-### y修饰符
-
-```js
-const s = 'aaa_aa_a'
-const r1 = /a+/g // ^ $
-const r2 = /a+/y // 粘连紧跟着查找
-
-console.log(r1.exec(s)) // aaa
-console.log(r2.exec(s)) // aaa
-
-console.log(r1.exec(s)) // aaa
-console.log(r2.exec(s)) // aaa
-```
-
-### u修饰符
-
-[编码](http://www.fileformat.info/info/unicode/char/search.htm)
-
-```js
-let s2 = '\uD842\uDFB7'
-console.log(/^\uD842/.test(s2))
-console.log(/^\uD842/u.test(s2))
-console.log(/^.$/u.test(s2))
-// \u将编码装换成字符
-console.log(/\u{61}/u.test('a'))
-```
-
 
 
 ### 拷贝
@@ -731,3 +704,306 @@ console.log(map.get(o))
 
 
 
+## 字符
+
+### 连接
+
+```js
+const a = 20
+const b = 10
+const c = 'javascript'
+
+// const str = 'my age is ' + (a + b) + ' i love ' + c
+const str = `my age is ${a + b} i love ${c}`
+console.log(str)
+```
+
+### 换行
+
+```js
+let g = `我是第一行
+换行了`
+console.log(g) 
+/*
+我是第一行
+换行了
+*/
+```
+
+### 字符串-函数
+
+```js
+function Price (strings, type) {
+  let s1 = strings[0]
+  const retailPrice = 20
+  const wholeSalePrice = 16
+  let showTxt
+  if (type === 'retail') {
+    showTxt = '购买单价是：' + retailPrice
+  } else {
+    showTxt = '购买的批发价是：' + wholeSalePrice
+  }
+  // console.log(s1) // 您此次的
+  return `${s1}${showTxt}`
+}
+
+let showTxt = Price`您此次的${'retail'}`
+console.log(showTxt)
+```
+
+### 解构赋值
+
+
+
+```js
+let arr = ['hello', 'world']
+let [firstName,surName] = arr // 解构赋值
+console.log(firstName,surName) // hello world
+```
+
+- 选择
+
+  ```js
+  let arr = 'abcd'
+  let [firstName, , thridName] = arr
+  console.log(firstName, ,thridName) //a c
+  ```
+
+- 对象
+
+  ```js
+  let user = { name: 's', surname: 't' };// 对象要加分号
+  [user.name, user.surname] = [1, 2]
+  console.log(user) // 1  2
+  ```
+
+- 显示
+
+  ```js
+  let arr = [1, 2, 3, 4, 5, 6, 7, 8]
+  let [firstName, curName, ...last] = arr
+  console.log(firstName, curName, last)
+  ```
+
+  
+
+- 在解构赋值时若没有参数则显示`undefnd`
+
+- 若不想显示`undefind`则写成
+
+  ```js
+  let [firstName=‘hello’, curName, ...last] = arr
+  ```
+
+- 对象取值
+
+  ```js
+  let options = {
+    title: 'menu',
+    // width: 100,
+    height: 200
+  }
+  let { title: title2, width = 130, height } = options
+  console.log(title2, width, height)
+  ```
+
+  只想关注某些变量
+
+  ```js
+  let options = {
+    title: 'menu',
+    width: 100,
+    height: 200
+  }
+  let { title, ...last } = options
+  // menu {width: 100, height: 200}
+  ```
+
+  复杂点的
+
+  ```js
+  let options = {
+    size: {
+      width: 100,
+      height: 200
+    },
+    items: ['Cake', 'Donut']
+  }
+  
+  let { size: { width: width2, height }, items: [item1] } = options
+  console.log(width2, height, item1)
+  ```
+
+- [解构赋值](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+
+  [Destructuring assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+
+  [ES6 JavaScript Destructuring in Depth](https://ponyfoo.com/articles/es6-destructuring-in-depth)
+
+## 正则
+
+### y修饰符
+
+```js
+const s = 'aaa_aa_a'
+const r1 = /a+/g // ^ $
+const r2 = /a+/y // 粘连紧跟着查找
+
+console.log(r1.exec(s)) // aaa
+console.log(r2.exec(s)) // aaa
+
+console.log(r1.exec(s)) // aaa
+console.log(r2.exec(s)) // aaa
+```
+
+### u修饰符
+
+[编码](http://www.fileformat.info/info/unicode/char/search.htm)
+
+```js
+let s2 = '\uD842\uDFB7'
+console.log(/^\uD842/.test(s2))
+console.log(/^\uD842/u.test(s2))
+console.log(/^.$/u.test(s2))
+// \u将编码装换成字符
+console.log(/\u{61}/u.test('a'))
+```
+
+## 异步操作
+
+### 默认异步
+
+> js是单线程，先加载的1.js文件，然后发生异步操作不等待js文件的运行先让test运行
+
+```js
+function loadScript (src) {
+  let script = document.createElement('script')
+  script.src = src
+  document.head.append(script)
+}
+
+function test () {
+  console.log('test')
+}
+loadScript('./1.js', test())
+
+loadScript('./1.js', function (script) {
+  console.log(script)
+  loadScript('./2.js', function (script) {
+    console.log(script)
+    loadScript('./3.js', function (script) {
+      console.log(script)
+    })
+  })
+})
+```
+
+> 为了解决多层嵌套的问题导致的代码复杂我们使用Promise
+
+### Promise
+
+<!-- 2020.07.11 -->
+
+<!-- 将2.39，40看看 -->
+
+```js
+function loadScript (src) {
+  return new Promise((resolve, reject) => {
+    let script = document.createElement('script')
+    script.src = src
+    script.onload = () => resolve(src)
+    script.onerror = (err) => reject(err)
+    document.head.append(script)
+  })
+}
+loadScript('./4.js')
+  .then(() => {
+    return loadScript('./2.js') // 如果不加return就将方法认为成表达式，无法阻止报错后的运行，加上后就返回了Promise实例
+  }, err => {
+    console.log(err)
+  })
+  .then(() => {
+    loadScript('./3.js')
+  }, err => {
+    console.log(err)
+  })
+```
+
+### Resolve&Reject
+
+> Resolve静态方法
+>
+> Reject报错
+
+```js
+function test (bool) {
+  if (bool) {
+    return new Promise((resolve, reject) => {
+      resolve(20)
+    })
+  } else {
+    // return Promise.resolve(42) // 静态方法
+    return Promise.reject(new Error('ss'))
+  }
+}
+
+test(0).then(value => {
+  console.log(value)
+}, (err) => {
+  console.log(err)
+})
+```
+
+### 集体抓错
+
+```js
+loadScript('./1.js')
+  .then(() => {
+    return loadScript('./2.js')
+  })
+  .then(() => {
+    return loadScript('./3.js')
+  })
+  .catch((err) => { // 实例方法不是静态，使用promise的reject方法不是throw new Error
+    console.log(err)
+  })
+```
+
+### all
+
+```js
+const p1 = Promise.resolve(1)
+const p2 = Promise.resolve(2)
+const p3 = Promise.resolve(3)
+
+Promise.all([p1, p2, p3]).then((value) => {
+console.log(value)
+}) 
+```
+
+### race
+
+```js
+const p1 = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(function () { // 定时器
+      resolve(1)
+    }, 1000)
+  })
+}
+
+const p2 = () => {
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve(2)
+    }, 0)
+  })
+}
+Promise.race([p1(), p2()]).then((value) => {
+  console.log(value)
+})
+```
+
+
+
+## 反射
