@@ -277,7 +277,7 @@ console.log(array)
 
 
 
-## 类
+## 类Class
 
 ### 声明类
 
@@ -635,8 +635,19 @@ test.say()
   }
   obj[z + y] = 6
   ```
-
-
+  
+  es6
+  
+  ```js
+  let x = 1; let y = 2; let z = 3
+  let obj = {
+    x,
+    y,
+    [z + y]: 6
+  }
+  ```
+  
+  
 
 ### 拷贝
 
@@ -753,7 +764,7 @@ console.log(showTxt)
 
 ### 解构赋值
 
-
+<!--lesson2-9-->
 
 ```js
 let arr = ['hello', 'world']
@@ -870,6 +881,8 @@ console.log(/\u{61}/u.test('a'))
 ```
 
 ## 异步操作
+
+<!--lesson2-9-->
 
 ### 默认异步
 
@@ -1006,4 +1019,229 @@ Promise.race([p1(), p2()]).then((value) => {
 
 
 
-## 反射
+## 反射Reflect
+
+[深入理解 ES6 中的反射](https://juejin.im/post/5a0cf3745188254dd935f342)
+
+<!-- lesson2-10 -->
+
+```js
+/* console.log(Math.floor.apply(null, [3.72]))
+console.log(Reflect.apply(Math.floor, null, [3.72]))
+let price = 91.5
+// if (price > 100) {
+//   price = Math.floor.apply(null, [price]) // 先制定方法
+// } else {
+//   price = Math.ceil.apply(null, [price])
+// }
+price = price > 100 ? Math.floor.apply(null, [price]) : Math.ceil.apply(null, [price])
+console.log(price)
+console.log(Reflect.apply(price > 100 ? Math.floor : Math.ceil, null, [price])) // 执行时根据条件调用什么方法
+ */
+
+// let d = Reflect.construct(Date, [])
+// console.log(d.getTime(), d instanceof Date)
+
+// Reflact和object差不多，但是Reflact返回ture
+const studen = {}
+let r = Reflect.defineProperty(studen, 'name', { value: 'Mike' })// 修改属性
+console.log(studen, r)
+const obj = { x: 1, y: 2 }
+// Reflect.deleteProperty(obj, 'x') // 删除属性
+// console.log(obj)
+// console.log(Reflect.get(obj, 'x'))
+
+// console.log(Reflect.getOwnPropertyDescriptor(obj, 'x'))// 静态反射方法
+// console.log(Reflect.has(obj, 'ds3')) // 该属性是否存在 objact方法没有
+// Object.freeze(obj) // 冻结
+console.log(Reflect.isExtensible(obj)) // 是否为可扩展
+
+console.log(Reflect.ownKeys(obj)) // 返回所有的键
+
+// Symbol es6没有用过
+// Reflect.preventExtensions(obj) // 阻止扩展
+// console.log(Reflect.isExtensible(obj))
+Reflect.set(obj, 'z', 4)
+console.log(obj)
+const arr = ['duck', 'duck', 'duck']
+// Reflect.set(arr, 2, 'goose')
+// console.log(arr)
+// console.log(Reflect.getPrototypeOf(arr)) // 获取原型对象
+Reflect.setPrototypeOf(arr, String.prototype) // 修改原型对象
+// arr.sort()
+console.log(Reflect.getPrototypeOf(arr))
+
+```
+
+## 代理
+
+<!-- lesson2-11 -->
+
+```js
+let o = {
+  name: 'xiaoming',
+  price: 190
+}
+let d = new Proxy(o, {
+  get (target, key) {
+    if (key === 'price') {
+      return target[key] + 20
+    } else {
+      return target[key]
+    }
+  }
+})
+console.log(d.price, d.name)
+```
+
+[Object.defineProperty()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty):添加更改方法
+
+[读懂属性描述符](https://juejin.im/post/5c7ca26ae51d457cd40503d2)
+
+值
+
+```js
+let o = {
+  name: 'xiaoming',
+  price: 190
+}
+```
+
+### 只读
+
+<!-- lesson2-11 -->
+
+es5
+
+```js
+for (const [key] of Object.entries(o)) { // entries将对象变为键值对
+  // 属性描述符
+  Object.defineProperty(o, key, {
+    writable: false // 是否可写
+  })
+}
+o.price = 300
+console.log(o.name, o.price)
+
+```
+
+es6
+
+```js
+let d = new Proxy(o, {
+  get (target, key) {
+    return target[key]
+  },
+  set (target, key, value) { // o price 300 类 属性 值
+    return false
+  }
+})
+d.price = 300 // 因为set为false无法改变
+console.log(d.price, d.name)
+```
+
+### 校验
+
+```js
+let d = new Proxy(o, {
+  get (target, key) {
+    return target[key] || ''
+  },
+  set (target, key, value) {
+    if (Reflect.has(target, key)) {
+      if (key === 'price') {
+        if (value > 300) {
+          return false
+        } else {
+          target[key] = value
+        }
+      }
+    } else {
+      return false
+    }
+  }
+})
+d.price = 543 // price大于300的值赋值不了
+d.age = 'fdsf'// 属性不存在，赋值失败
+console.log(d.price, d.name，d.age) 
+```
+
+将set方法拿出
+
+```js
+let validator = (target, key, value) => {
+  if (Reflect.has(target, key)) {
+    if (key === 'price') {
+      if (value > 300) {
+        return false
+      } else {
+        target[key] = value
+      }
+    }
+  } else {
+    return false
+  }
+}
+let d = new Proxy(o, {
+  get (target, key) {
+    return target[key] || ''
+  },
+  set: validator
+})
+```
+
+### 代理和变量管理
+
+```js
+class Component {
+  constructor () {
+    this.proxy = new Proxy({
+      id: Math.random().toString(36).slice(-8) // 36进制截取后8位
+    }, {})
+  }
+
+  get id () {
+    return this.proxy.id
+  }
+}
+
+let com = new Component()
+let com2 = new Component()
+com.id = 43242
+for (let i = 0; i < 10; i++) {
+  console.log(com.id, com2.id)
+}
+```
+
+### 撤销
+
+>  使用revoke将代理撤销
+
+```js
+let d = Proxy.revocable(o, {
+  get (target, key) {
+    if (key === 'price') {
+      return target[key] + 20
+    } else {
+      return target[key]
+    }
+  }
+})
+console.log(d.proxy.price, d)
+setTimeout(function () {
+  d.revoke()
+  setTimeout(function () {
+    console.log(d.proxy.price)
+  }, 100)
+}, 1000)
+```
+
+[**ES6 Proxies in Depth**](https://ponyfoo.com/articles/es6-proxies-in-depth)
+
+[Meta Programming In JavaScript-Part Three: Proxies and Reflection](https://lucasfcosta.com/2016/11/15/Meta-Programming-in-JavaScript-Part-Three.html)
+
+[10 Use Cases for Proxy](http://brianyang.com/es6-features-10-use-cases-for-proxy/)
+
+How to Use Proxies
+
+[ES6 Proxies in practice](https://habr.com/en/post/448214/)
