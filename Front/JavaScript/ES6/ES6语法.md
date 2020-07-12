@@ -599,6 +599,146 @@ let test = {
 test.say()
 ```
 
+###  生成器函数function * (es6)
+
+> function *  生成器函数(*generator function*) 它返回一个  [`Generator`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator) 对象。使用yield打断点 next()方法继续进行
+
+```js
+function * loop () {
+  for (let i = 0; i < 5; i++) {
+    yield console.log(i)
+  }
+}
+
+const l = loop()
+
+l.next()// 0
+l.next()// 1
+l.next()// 2
+```
+
+- 赋值
+
+  ```js
+  function * gen () {
+    let val
+    val = yield 1 // 因为是个数不是输出所以没反应
+    console.log(val)
+  }
+  
+  const l = gen()
+  l.next()// 找业务和函数结尾
+  l.next()// 意思就是业务的返回值是undefined（不是next()）
+  ```
+
+- 数组
+
+  ```js
+  function * gen () {
+    let val
+    val = yield [1, 2, 3] //{value: Array(3), done: false}
+    console.log(val)
+  }
+  const l = gen()
+  console.log(l.next())
+  /*-------加星号后---------*/
+  function * gen () {
+    let val
+    val = yield * [1, 2, 3] // {value: Array(3), done: false}
+    console.log(val)
+  }
+  const l = gen()
+  console.log(l.next()) // {value: 1, done: false}
+  ```
+
+- 赋值
+
+  ```js
+  function * gen () {
+    let val
+    val = yield [1, 2, 3]
+    console.log(val)
+  }
+  
+  const l = gen()
+  console.log(l.next(10)) // 到了yield停止
+  // l.return() 业务提前结束
+  // // console.log(l.return(100)) //返回value为100
+  console.log(l.next(20)) // 业务的返回值为20 外部传到yield的点给val值
+  ```
+
+- 报错
+
+  ```js
+  function * gen () {
+    while (true) {
+      try {
+        yield 1
+      } catch (e) {
+        console.log(e.message)
+      }
+    }
+  }
+  const g = gen()
+  console.log(g.next())
+  console.log(g.next())
+  g.throw(new Error('ss')) // 报错继续运行
+  console.log(g.next())
+  ```
+
+- 实例
+
+  抽奖问题
+
+  > 不能将数据一次性输出希望主持人按一次出一个数字
+
+  ```js
+  function * draw (first = 1, second = 3, third = 5) {
+    let firstPrize = ['1A', '1B', '1C', '1D']
+    let secondPrize = ['2A', '2B', '2C', '2D', '2E', '2F']
+    let thirdPrize = ['3A', '3B', '3C', '3D', '3E', '3F', '3E', '3F']
+    let count = 0
+    let random
+    while (1) {
+      if (count < first) {
+        random = Math.floor(Math.random() * firstPrize.length)
+        yield firstPrize[random]
+        count++
+        firstPrize.splice(random, 1)
+      } else if (count < first + second) {
+        random = Math.floor(Math.random() * secondPrize.length)
+        yield secondPrize[random]
+        count++
+        secondPrize.splice(random, 1)
+      } else if (count < first + second + third) {
+        random = Math.floor(Math.random() * thirdPrize.length)
+        yield thirdPrize[random]
+        count++
+        thirdPrize.splice(random, 1)
+      }
+    }
+  }
+  
+  let d = draw()
+  
+  console.log(d.next().value)
+  console.log(d.next().value)
+  console.log(d.next().value)
+  console.log(d.next().value) 
+  ```
+
+- 文献
+
+  [What are JavaScript Generators and how to use them](https://codeburst.io/what-are-javascript-generators-and-how-to-use-them-c6f2713fd12e)
+
+  [The Basics of ES6 Generators](https://davidwalsh.name/es6-generators)
+
+  [A Practical Introduction to ES6 Generator Functions](https://davidtang.io/2016/10/15/a-practical-introduction-to-es6-generator-functions.html)
+
+  [Generator](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Generator)
+
+  [迭代器和生成器](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Guide/Iterators_and_Generators)
+
 ## Object
 
 属性值支持表达式和变量（要加`[]`）
@@ -1166,7 +1306,8 @@ d.age = 'fdsf'// 属性不存在，赋值失败
 console.log(d.price, d.name，d.age) 
 ```
 
-将set方法拿出
+- 将set方法拿出
+
 
 ```js
 let validator = (target, key, value) => {
@@ -1245,3 +1386,69 @@ setTimeout(function () {
 How to Use Proxies
 
 [ES6 Proxies in practice](https://habr.com/en/post/448214/)
+
+
+
+## 迭代器
+
+<!-- 2020.07.12 -->
+
+<!-- lesson-2.13 -->
+
+### 遍历
+
+对象
+
+```js
+let authors = {
+  allAuthors: {
+    fiction: ['Agla', 'Skks', 'LP'],
+    scienceFiction: ['Neal', 'Arthru', 'Ribert'],
+    fantasy: ['J.R.Tole', 'J.M.R', 'Terry P.K']
+  },
+  Addres: []
+}
+```
+
+遍历规范
+
+```js
+authors[Sysbol.iterator] = function () {
+  return {
+    return {
+      done: false, // 是否遍历完成
+      value: 1 // 遍历的值
+    }
+  }
+}
+```
+
+遍历
+
+```js
+authors[Symbol.iterator] = function * () {
+  let allAuthors = this.allAuthors
+  let keys = Reflect.ownKeys(allAuthors)
+  let values = []
+  while (1) {
+    if (!values.length) {
+      if (keys.length) {
+        values = allAuthors[keys[0]]
+        keys.shift() // keys移动
+        yield values.shift()
+      } else {
+        return false
+      }
+    } else {
+      yield values.shift()
+    }
+  }
+}
+
+let r = []
+for (let v of authors) {
+  r.push(v)
+}
+console.log(r)
+```
+
