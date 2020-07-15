@@ -23,7 +23,7 @@ git config --list #查看配置内容
 git init
 ```
 
-提交
+### 提交
 
 ```powershell
 git add 文件
@@ -34,7 +34,7 @@ git commit --amend #进入文件 修改提交
 https://github.com/Chuyongwei/firse.git
 ```
 
-查看历史
+### 查看历史
 
 ```powershell
 git log
@@ -78,7 +78,7 @@ git cat-file -p #内容
 git cat-file -t #类型
 ```
 
-上传到远程仓库
+### 上传到远程仓库
 
 ```
  git remote add origin https://github.com/Chuyongwei/test.git
@@ -95,17 +95,17 @@ $ git pull --rebase origin master
 
 ## 管理
 
-修改commit
+### 修改commit
 
 ```
-git commit -amend
+git commit --amend
 ```
 
 
 
 ### 合成commit
 
-到最开始的目录制作
+到最开始的节点修改文件
 
 ```powershell
 git rebase -i 编码
@@ -115,10 +115,18 @@ git rebase -i 编码
 ### 检查更新
 
 ```powershell
+git diff HEAD [--- file] # 显示工作目录与git 仓库之间的差异；
+git diff HEAD^ [--- file] #是比较上次的提交；
+git diff HEAD~2 [--- file] #是比较上两次提交，于是有了，git diff HEAD~n 是比较上n次提交与现在工作区间的关系；
+```
+
+> 在我们不指定专门的文件夹的时候，git diff默认比较的是整个项目git 目录
+
+```powershell
 git diff --cached #检查暂存区所有文件与仓库的区别
 git diff #检查工作区和暂存区的区别
 git diff -- 文件 fold/file #查看两个文件的区别
-git diff 分支1 分支2 [-- 文件] #检查两文职的不同
+git diff 分支1 分支2 [-- 文件] #检查两文件的不同
 ```
 
 只会显示删除和修改
@@ -206,7 +214,6 @@ doc
 ```shell
 git rm -r --cached .  #将仓库的文件清除
 git add . #重新加入暂存区
-
 ```
 
 
