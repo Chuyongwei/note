@@ -857,7 +857,7 @@ console.log(map.get(o))
 
 ## 字符
 
-### 连接
+### 连接/变量输出
 
 ```js
 const a = 20
@@ -985,10 +985,12 @@ console.log(firstName,surName) // hello world
   console.log(width2, height, item1)
   ```
 
-- [解构赋值](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
+- 文献
+
+  [解构赋值](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
 
   [Destructuring assignment](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment)
-
+  
   [ES6 JavaScript Destructuring in Depth](https://ponyfoo.com/articles/es6-destructuring-in-depth)
 
 ## 正则
@@ -1023,6 +1025,10 @@ console.log(/\u{61}/u.test('a'))
 ## 异步操作
 
 <!--lesson2-9-->
+
+> 异步处理不用阻塞当前[线程](https://baike.baidu.com/item/线程/103101)来等待处理完成，而是允许后续操作，直至其它线程将处理完成，并回调通知此线程。
+>
+> 做了一系列的操作后告诉主机
 
 ### 默认异步
 
@@ -1434,7 +1440,7 @@ authors[Symbol.iterator] = function * () {
     if (!values.length) {
       if (keys.length) {
         values = allAuthors[keys[0]]
-        keys.shift() // keys移动
+        keys.shift() // shift() 方法从数组中删除第一个元素，并返回该元素的值。此方法更改数组的长度。
         yield values.shift()
       } else {
         return false
@@ -1450,5 +1456,291 @@ for (let v of authors) {
   r.push(v)
 }
 console.log(r)
+```
+
+
+
+文献
+
+[A Simple Guide to ES6 Iterators in JavaScript with Examples](https://codeburst.io/a-simple-guide-to-es6-iterators-in-javascript-with-examples-189d052c3d8e)
+
+[ES6 迭代器：Iterator, Iterable 和 Generator](https://harttle.land/2018/09/29/es6-iterators.html)
+
+[ES6 Iterators and Generators in Practice](http://www.zsoltnagy.eu/es6-iterators-and-generators-in-practice/)
+
+[ES6 Generators and Iterators: a Developer’s Guide](https://www.sitepoint.com/ecmascript-2015-generators-and-iterators/)
+
+## 模块
+
+### 导出
+
+```javascript
+export const name = 'hello'
+export let addr = 'Beijing'
+export var list = [1, 2, 3, 4, 45]
+```
+
+一起
+
+```javascript
+const name = 'hello'
+let addr = 'Beijing'
+var list = [1, 2, 3, 4, 45]
+export default name
+export {
+  addr,
+  list
+}
+```
+
+### 导入
+
+```javascript
+import name, { addr, list } from './lessson2-14-mod'
+console.log(name, addr, list)
+```
+
+### 改名
+
+```javascript
+import { list as list2 } from  './lessson2-14-mod'
+```
+
+> 函数没有问题
+
+### 对象
+
+```js
+const data = {
+  code: 1,
+  message: 'success'
+}
+
+const des = {
+  age: 20,
+  addr: 'Beijing'
+}
+
+export default {
+  data,
+  des
+}
+```
+
+错误方式
+
+```js
+import { data, des } from './lessson2-14-mod'//不知道是对象内容还是对象
+```
+
+正确方式
+
+```js
+import obj from './lessson2-14-mod'
+let { data, des } = obj
+console.log(data, des)
+```
+
+### 类
+
+输入
+
+```javascript
+export class Test {
+  constructor () {
+    this.id = 5
+  }
+}
+
+export class Animal {
+  constructor () {
+    this.name = 'dog'
+  }
+}
+
+export default class People {
+  constructor () {
+    this.id = '132'
+  }
+}
+```
+
+输出
+
+```js
+import { Test, Animal } from './lessson2-14-mod'
+let test = new Test()
+console.log(test.id)
+let animal = new Animal()
+console.log(animal.name)
+```
+
+
+
+```js
+import * as Mod from './lessson2-14-mod'
+let test = new Mod.Test()
+console.log(test.id)
+let animal = new Mod.Animal()
+console.log(animal.name)
+let people = new Mod.default()
+console.log(people.id)
+```
+
+
+
+### 文献
+
+[[es6] import, export, default cheatsheet](https://hackernoon.com/import-export-default-require-commandjs-javascript-nodejs-es6-vs-cheatsheet-different-tutorial-example-5a321738b50f)
+
+[ECMAScript 6 modules: the final syntax](https://2ality.com/2014/09/es6-modules-final.html)
+
+
+
+## ES7
+
+<!-- 2020.07.14 -->
+
+### 包含
+
+```js
+const arr = [1, 2, 3, 4, 5]
+console.log(arr.includes(40)) // arr是否包含40
+```
+
+### 平方
+
+```js
+// console.log(Math.pow(2, 5)) // 2的5次平方
+
+console.log(2 ** 5) // es7
+```
+
+## ES8
+
+### async关键字
+
+<!-- lesson4-1 -->
+
+> 将方法变成promise对象
+
+```js
+async function firstAsunc () {
+  return 27
+}
+
+console.log(firstAsunc()) // Promise{<resolved>: 27}
+```
+
+对象
+
+```js
+async function firstAsunc () {
+  return 27 // 类似于Promise.resolve(27)
+}
+
+console.log(firstAsunc().then(val => {
+  console.log(val)
+}))
+```
+
+### await关键字
+
+> 必须与async一起用
+
+```js
+async function firstAsync () {
+  let promise = new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve('now it is done')
+    }, 1000)
+  })
+
+  promise.then(val => {
+  	console.log(val)
+  })
+  console.log(2)
+  return Promise.resolve(3)
+}
+
+firstAsync().then(val => {
+  console.log(val)
+})
+/*
+2
+3
+now it is done
+*/
+```
+
+await方式
+
+```js
+async function firstAsync () {
+  let promise = new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve('now it is done')
+    }, 1000)
+  })
+
+  let result = await promise
+  console.log(result)
+  console.log(2)
+  return Promise.resolve(3)
+}
+
+firstAsync().then(val => {
+  console.log(val)
+})
+/*
+now it is done
+2
+3
+*/
+```
+
+### 遍历对象
+
+<!-- lesson4-2 -->
+
+```js
+let grade = {
+  'lilei': 96,
+  'hanmeimei': 99
+}
+console.log(Object.keys(grade))
+console.log(Object.keys(grade).filter(item => item === 'lilei'))// lilei // 筛选key为lilei的键
+console.log(Object.values(grade).filter(item => item > 96)) // 99
+```
+
+
+
+```js
+let result = []
+for (let [k, v] of Object.entries(grade)) { // Object.entries使得对象可遍历
+  console.log(k, v)
+  if (k === 'lilei') {
+    result.push(k)
+  }
+}
+
+console.log(result)
+```
+
+### 填补
+
+<!-- lesson4-3 -->
+
+```js
+for (let i = 1; i < 32; i++) {
+ console.log(i.toString().padStart(2, '0')) // 几位字符 填充字符
+}
+// 01 02 03 04 05 06 07 08 09 10...
+```
+
+末位补位
+
+```js
+console.log(i.toString().padEnd(5, 'X$')) // 后面补位
 ```
 
