@@ -1744,3 +1744,165 @@ for (let i = 1; i < 32; i++) {
 console.log(i.toString().padEnd(5, 'X$')) // 后面补位
 ```
 
+## ES9
+
+### 关于多个异步操作运行
+
+同时运行
+
+```js
+function Gen (time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve(time)
+    }, time)
+  })
+}
+async function test () {
+  let arr = [Gen(2000), Gen(1000), Gen(3000)]
+  for (let item of arr) {
+    console.log(Date.now(), item.then(console.log)) // 同时运行完成
+  }
+}
+test()
+```
+
+同时运行，排队结束
+
+```js
+function Gen (time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve(time)
+    }, time)
+  })
+}
+async function test () {
+  let arr = [Gen(2000), Gen(1000), Gen(3000)]
+  for (let item of arr) {
+    console.log(Date.now(), await item.then(console.log)) // 同时运行但是执行完要等到前一个任务完成
+  }
+}
+test() 
+```
+
+排队运行
+
+```js
+function Gen (time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve(time)
+    }, time)
+  })
+}
+async function test () {
+  let arr = [Gen(2000), Gen(1000), Gen(3000)]
+  for await (let item of arr) {
+    console.log(Date.now(), item) // 只有前一个任务完成才能运行后面的操作
+  }
+}
+test()
+```
+
+
+
+### 异步方法
+
+```js
+const obj = {
+  count: 0,
+  Gen (time) {
+    return new Promise((resolve, reject) => {
+      setTimeout(function () {
+        resolve({ done: false, value: time })
+      }, time)
+    })
+  },
+  [Symbol.asyncIterator] () {
+    let self = this
+    return {
+      next () {
+        self.count++
+        if (self.count < 4) {
+          return self.Gen(Math.random() * 1000)
+        } else {
+          return Promise.resolve({
+            done: true,
+            value: ''
+          })
+        }
+      }
+    }
+  }
+}
+```
+
+
+
+### 对象合并
+
+<!-- 2020.07.16 -->
+
+<!-- lesson5-3 -->
+
+```js
+const input = {
+  a: 1,
+  b: 2,
+  c: 3,
+  d: 5
+}
+const output = {
+  ...input,
+  c: 3
+} // 数组嵌套
+console.log(input, output)
+const { a, b, ...rest } = input // 将必填项找到，其余的做成数组
+console.log(a, b, rest)
+```
+
+
+
+### 正则的s模式
+
+```js
+// console.log(/foo.bar/us.test('foo\nbar')) // s匹配换行符，u匹配unicode编码
+const re = /foo.bar/sugi
+console.log(re.dotAll) // 验证正则是否有s模式
+console.log(re.flags) // 显示开启的模式
+```
+
+###  [match](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/String/match)
+
+```js
+/*
+// match
+const t = '2019-06-07'.match(/(\d{4}-(\d){2})-(\d{2})/) // "2019-06-07", "2019-06", "6", "07", index: 0, input: "2019-06-07", group: undefine
+console.log(t[1]) // 2019-06
+console.log(t[2]) // 6
+console.log(t[3]) // 07 */
+
+// groups 是什么？
+// const t = '2019-06-07'.match(/(?<year>\d{4}-(?<mouth>\d){2})-(?<day>\d{2})/) // "2019-06-07", "2019-06", "6", "07", index: 0, input: "2019-06-07",groups: {year: "2019-06", mouth: "6", day: "07"}
+// console.log(t)
+// console.log(t.groups.year) // 2019
+
+// 先行断言
+let test = 'hello world'
+console.log(test.match(/hello(?=\sworld)/)) // 先行断言 先找到hello然后看后面是否有world
+console.log(test.match(/(?<=hello\s)world/))// 后行断言 先找到world然后看前面面是否有hello
+console.log(test.match(/(?<!hello\s)world/)) // 先找到world然后看前面面是否不是hello
+```
+
+
+
+### 文献
+
+[ES2018: asynchronous iteration - 2ality](https://2ality.com/2016/10/asynchronous-iteration.html)
+
+[Promise.prototype.finally() - MDN Web Docs - Mozilla](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise/finally)
+
+[Upcoming regular expression features ](https://developers.google.com/web/updates/2017/07/upcoming-regexp-features)
+
+[JavaScript 正则表达式匹配汉字- 知乎](https://zhuanlan.zhihu.com/p/33335629)                                                                                                                                                                                                                                                                                                             
