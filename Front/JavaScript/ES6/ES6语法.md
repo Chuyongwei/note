@@ -1906,3 +1906,86 @@ console.log(test.match(/(?<!hello\s)world/)) // 先找到world然后看前面面
 [Upcoming regular expression features ](https://developers.google.com/web/updates/2017/07/upcoming-regexp-features)
 
 [JavaScript 正则表达式匹配汉字- 知乎](https://zhuanlan.zhihu.com/p/33335629)                                                                                                                                                                                                                                                                                                             
+
+## ES10
+
+### 扁平化（falt）
+
+- flat扁平化处理 参数扁平化处理几层 默认是1
+
+```js
+let arr = [1, [2, 3], [4, 5, [6, 7, [8, 9]]]]
+console.log(arr.flat(2)) // [1, 2, 3, 4, 5, Array(2)]
+```
+
+- map
+
+  ```js
+  let arr = [1, 2, 3]
+  console.log(arr.map(item => item * 2)) // [2,4,6] 
+  ```
+
+- faltMap
+
+  将一堆数组做遍历后合到一起
+
+  ```js
+  console.log(arr.flatMap(item => [item * 2]))
+  // arr.map(item => [item * 2]).flat(2)
+  ```
+
+去除空格
+
+```js
+let str = '   foo  '
+console.log(str.trimStart()) // trimLeft 去左边
+console.log(str.trimEnd()) // trimRight trimEnd 去右边
+console.log(str.trim()) // 都去掉
+```
+
+
+
+### 数组转对象
+
+```js
+const arr = [['foo', 1], ['bar', 2]]
+const obj = Object.fromEntries(arr)
+console.log(obj.bar)
+```
+
+### 挑选对象
+
+```js
+const obj = {
+  abc: 1,
+  def: 2,
+  ghksks: 3
+}
+
+let res = Object.fromEntries(
+  Object.entries(obj).filter(([key, val]) => key.length === 3)
+)
+
+console.log(res)
+```
+
+
+
+### try ...catch
+
+> catch不再需要（e）
+
+
+
+### bigint
+
+>  11n bigint 2^53时使用 
+
+
+
+文献
+
+[Well-formed JSON.stringify · V8](https://v8.dev/features/well-formed-json-stringify)
+
+[BigInt: arbitrary-precision integers in JavaScript · V8](https://v8.dev/features/bigint)
+
