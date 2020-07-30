@@ -1,4 +1,10 @@
-## 创建
+
+
+中文文档
+
+https://www.springcloud.cc/
+
+# 创建
 
 1. 建module
 2. 改pom
@@ -6,9 +12,13 @@
 4. 主启动
 5. 业务类
 
-## Eureka
+# 注册中心
 
-### 创建（包括多机）
+## 样例
+
+### Eureka
+
+#### 创建（包括多机）
 
 pom
 
@@ -111,7 +121,7 @@ public class EurekaMain7001 {
 
 
 
-### 将消费者和生产者加入eureka
+#### 将消费者和生产者加入eureka
 
 
 
@@ -163,7 +173,7 @@ public class PaymentMain8001 {
 
 
 
-### 多生产者运行
+#### 多生产者运行
 
 1. 消费者访问接口
 
@@ -186,10 +196,7 @@ public class PaymentMain8001 {
 
 
 
-
-### 访问地址
-
-
+访问地址
 
 ```java
 @GetMapping(value = "/payment/discovery")
@@ -219,3 +226,935 @@ public class PaymentMain8002 {
 }
 ```
 
+
+
+#### 自我保护机制
+
+> 当端口不见的时候，不会了立刻删除
+
+关闭自我保护
+
+eureka.yaml
+
+```yaml
+server:
+  port: 7002
+
+eureka:
+  instance:
+    hostname: eureka7002.com
+  client:
+    register-with-eureka: false     #false表示不向注册中心注册自己。
+  fetch-registry: false     #false表示自己端就是注册中心，我的职责就是维护服务实例，并不需要去检索服务
+  service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/
+    server:
+      #关闭自我保护机制，保证不可用服务被及时踢除
+      enable-self-preservation: false
+      eviction-interval-timer-in-ms: 2000
+```
+
+### zookeeper
+
+
+
+## consul
+
+[consul](https://www.consul.io/)
+
+### Consul 是什么？
+
+Consul 是一套开源的分布式服务发现和配置管理系统，由 HashiCorp 公司 用 Go 语言开发
+
+Consul 提供了微服务系统中的服务治理、配置中心、控制总线等功能。这些功能中的每一个都可以根据需要单独使用，也可以一起使用以构建全方位的服务网格，总之 Consul 提供了一种完整的服务网格解决方案
+
+它具有很多优点。包括：基于 raft 协议，比较简洁；支持健康检查，同时支持 HTTP 和 DNS 协议支持跨数据中心的 WAN 集群提供图形界面跨平台，支持 Linux、Mac、Windows
+
+### SpringCloud Consul 具有如下特性
+
+- 服务注册与发现（主要功能，提供 HTTP 和 DNS 两种发现方式）
+- 健康检查（支持多种方式，HTTP、TCP、Docker、Shell 脚本定制化）
+- 键值对的存储（Key、Value 的存储方式）
+- 安全加固
+- 多数据中心（Consul 支持多数据中心）
+- 可视化 Web 界面
+
+### Consul 的下载安装
+
+[Consul 的下载地址 https://www.consul.io/downloads.html](https://www.consul.io/downloads.html) ，根据版本下载即可，这里下载的是 Windows 版本的
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326153948681.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+下载之后解压就一个 exe 可执行文件
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154019969.png)
+查看版本，用 cmd 打开，输入 **consul --version** 即可
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154230175.png)
+输入 consul 还可以查看所有参数
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154652952.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+### 启动 Consul
+
+输入以下命令启动 Consul
+
+```java
+consul agent -dev
+1
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154825461.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+#### 访问页面
+
+启动 Consul 之后在浏览器输入 http://localhost:8500/ 即可访问 Consul 的控制界面
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326155001828.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+这样 Consul 的下载安装并且运行成功了
+
+### 新建 Module（8006）
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326155347942.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+#### 添加依赖
+
+```xml
+<dependencies>
+    <!--SpringCloud consul-server -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+    </dependency>
+    <!-- SpringBoot整合Web组件 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <!--日常通用jar包配置-->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>cn.hutool</groupId>
+        <artifactId>hutool-all</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+    </dependency>
+    <dependency>
+        <groupId>cn.hutool</groupId>
+        <artifactId>hutool-all</artifactId>
+        <version>RELEASE</version>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+123456789101112131415161718192021222324252627282930313233343536373839404142434445
+```
+
+#### 编写 application.yml
+
+```yml
+server:
+  port: 8006
+
+spring:
+  application:
+    name: consul-provider-payment
+  # consul 注册中心地址
+  cloud:
+    consul:
+      host: localhost
+      port: 8500 # consul 的端口号
+      discovery:
+        # hostname：127.0.0.1
+        service-name: ${spring.application.name}
+1234567891011121314
+```
+
+#### 启动类
+
+```java
+package com.java.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/26 16:02
+ */
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class ConsulPaymentMain {
+    public static void main(String[] args){
+        SpringApplication.run(ConsulPaymentMain.class,args);
+    }
+}
+123456789101112131415161718
+```
+
+#### 编写 Controller
+
+```java
+package com.java.springcloud.controller;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import java.util.UUID;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/26 16:03
+ */
+
+@RestController
+@Slf4j
+public class PaymentController {
+
+    @Value("${server.port}")
+    private String serverPort;
+
+    @RequestMapping(value = "/payment/consul")
+    public String paymentConsul() {
+        return "SpringCloud with Consul : " + serverPort + "\t" + UUID.randomUUID().toString();
+    }
+}
+12345678910111213141516171819202122232425
+```
+
+#### 测试
+
+8006 访问 OK
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326160834222.png)
+而且 8006 也成功注册到 Consul
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020032616072577.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+### 新建 Module（80）
+
+新建的步骤跟上面一样
+
+#### 添加依赖
+
+```xml
+<dependencies>
+    <!--SpringCloud consul-server -->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+    </dependency>
+    <!-- SpringBoot整合Web组件 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <!--日常通用jar包配置-->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+123456789101112131415161718192021222324252627282930313233
+```
+
+#### 编写 application.yml 文件
+
+```yml
+server:
+  port: 80
+
+spring:
+  application:
+    name: consul-consumer-order
+  # consul 注册中心地址
+  cloud:
+    consul:
+      host: localhost
+      port: 8500 # consul 的端口号
+      discovery:
+        # hostname：127.0.0.1
+        service-name: ${spring.application.name}
+1234567891011121314
+```
+
+#### 编写启动类
+
+```java
+package com.java.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/26 16:14
+ */
+
+@SpringBootApplication
+@EnableDiscoveryClient
+public class OrderConsulMain80 {
+    public static void main(String[] args){
+        SpringApplication.run(OrderConsulMain80.class,args);
+    }
+}
+123456789101112131415161718
+```
+
+#### 配置 Bean
+
+这个配置类其实就加了个 @LoadBalance 实现负载均衡的能力
+
+```java
+package com.java.springcloud.config;
+
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/26 16:15
+ */
+
+@Configuration
+public class ApplicationContextConfig {
+
+    @Bean
+    @LoadBalanced
+    public RestTemplate getResTemplate() {
+        return new RestTemplate();
+    }
+}
+123456789101112131415161718192021
+```
+
+#### 编写 Controller
+
+```java
+package com.java.springcloud.controller;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.Resource;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/26 16:17
+ */
+
+@RestController
+@Slf4j
+public class OrderConsulController {
+
+	// 这里调的是 consul 界面提供者的实例名称
+    private static final String INVOCE_URL = "http://consul-provider-payment";
+
+    @Resource
+    private RestTemplate restTemplate;
+
+    @GetMapping(value = "consumer/payment/consul")
+    public String paymentInfo() {
+        String result = restTemplate.getForObject(INVOCE_URL + "/payment/consul", String.class);
+        return result;
+    }
+}
+123456789101112131415161718192021222324252627282930
+```
+
+#### 测试
+
+访问 http://localhost:8500/ui/dc1/services 可以发现已经注册到 Consul 控制界面
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326163135592.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+可以正常访问 http://localhost:8006/payment/consul
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326163226558.png)
+也可以正常访问 http://localhost/consumer/payment/consul
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326163308117.png)
+在 Consul 的控制台可以看到一直在检测服务的状态
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326163523376.png)
+
+## Eureka 自我保护机制
+
+### 概述
+
+    保护模式主要用于一组客户端和 Eureka Server 之间存在网络分区场景下的保护。一旦进入保护模式，Eureka Server 将会尝试保护其服务注册表中的信息，不再删除服务注册表中的数据，也就是不会注销任何微服务
+
+如果在 Eureka Server 的首页看到以下这段提示，则说明 Eureka 进入了保护模式：
+
+> **EMERGENCY! EUREKA MAY BE INCORRECTLY CLAIMING INSTANCES ARE UP WHEN THEY’RE NOT. RENEWALS ARE LESSER THAN THRESHOLD AND HENCE THE INSTANCES ARE NOT BEING EXPIRED JUST TO BE SAFE.**
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326131920647.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+    简单地说就是某时刻某一个微服务不可用了，Eureka 不会立刻清理，依旧会对该服务的信息进行保存，属于 CAP 里面的 AP 分支
+
+### 为什么会产生 Eureka 自我保护机制？
+
+    为了防止 EurekaClient 可以正常运行，但是与 EurekaServer 网络不通的情况下，EurekaServer 不会立刻 将 EurekaClient 服务剔除
+
+### 什么是自我保护模式？
+
+    默认情况下，如果 EurekaServer 在一定时间内没有接收到某个微服务实例的心跳，EurekaServer 将会注销该实例（默认 90 s）。但是当网络分区故障发生（延时、卡顿、拥挤时）时，微服务与 EurekaServer 之间无法正常通信，以上行为可能变得非常危险了 —— 因为微服务本身其实是健康的，此时本不应该注销这个微服务。Eureka 通过 “**自我保护模式**” 来解决这个问题 —— 当 EurekaServer 节点在短时间内丢失过多客户端时（可能发生了网络分区故障），那么这个节点就会进入自我保护模式
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326133049937.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+    自我保护机制：默认情况下 EurekaClient 定时向 EurekaServer 端发送心跳包，如果 Eureka 在 Server 端在一定时间内（默认 90 s）没有收到 EurekaClient 发送的心跳包，便会直接从服务注册列表中删除该服务，但是在短时间（90 s 中）内丢失了大量的服务实例心跳，这时候 EurekaServer 会开启自启保护机制，不会剔除该服务（该现象可能出现在如果网络不通但是 EurekaClient 为出现宕机，此时如果换做别的注册中心如果一定时间内没有收到心跳会将剔除该服务，这样就出现了严重的失误，因为客户端还能正常发送心跳，只是网络延迟问题，而保护机制是为了解决此问题而产生的）
+
+在自我保护模式中，Eureka Server 会保护服务注册表中的信息，不在注销任何服务实例
+
+它的设计哲学就是宁可保留错误的服务注册信息，也不盲目注销任何可能健康的服务实例
+
+    综上所述，自我保护模式是一种应对网络异常的安全保护措施。它的架构哲学是宁可同时保留所有微服务（健康的微服务和不健康的微服务都会保留）也不盲目注销任何健康的微服务。使用自我保护模式，可以让 Eureka 集群更加的健壮、稳定
+
+### 怎么禁止自我保护
+
+```yml
+eureka:
+  server:
+    # 关闭自我保护机制，保证不可用服务被及时剔除
+    enable-self-preservation: false
+```
+
+## 三个注册中心的异同点
+
+
+
+| 组件名    | 语言 | CAP  | 服务健康检查 | 对外暴露接口 | SpringCloud 集成 |
+| --------- | ---- | ---- | ------------ | ------------ | ---------------- |
+| Eureka    | Java | AP   | 可配支持     | HTTP         | 支持             |
+| Consul    | Go   | CP   | 支持         | HTTP/DNS     | 支持             |
+| Zookeeper | Java | CP   | 支持         | 客户端       | 支持             |
+
+另外，Eureka 和 Consul 都是有界面的，而 Zookeeper 没有
+
+1. #### 什么是 CAP？
+
+   - C：Consistency（强一致性）
+   - A：Availability（可用性）
+   - P：Partition tolerance（分区容错性）
+
+   最多只能同时较好的满足两个
+
+   CAP 理论的核心是：一个分布式系统不可能同时很好的满足一致性、可用性、分区容错性这三个需求，因此，根据 CAP 原理将 NoSQL 数据库分成了满足 CA 原则、满足 CP 原则和满足 AP 原则三大类：
+
+   - CA：单点集群，满足一致性，可用性的系统，通常在可扩展性上不太强大
+   - CP：满足一致性，分区容忍性的系统，通常性能不是特别高
+   - AP：满足可用性，分区容忍性的系统，通常可能对一致性要求低一些
+
+   CAP 理论关注粒度是数据，而不是整个系统设计的策略
+
+   ------
+
+2. #### AP 架构
+
+   当网络分区出现后，为了保证可用性，系统 B 可以返回旧值，保证系统的可用性
+
+   结论：违背了一致性 C 的要求，只满足可用性和分区容错，即 AP
+
+   ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326175249477.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+   #### 
+
+3. #### CP 架构
+
+   当网络分区出现后，为了保证一致性，就必须拒接请求，否则无法保证一致性
+
+   结论：违背了可用性 A 的要求，只满足一致性和分区容错，即 AP
+   
+   ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326175713633.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+
+
+# Ribbon
+
+[文档](http://netflix.github.io/ribbon/ribbon-core-javadoc/index.html)
+
+## 什么是 Ribbon？
+
+SpringCloud Ribbon 是基于 Netflix Ribbon 实现的一套 客户端负载均衡的工具
+
+    简单地说，Ribbon 是 Netflix 发布的开源项目，主要功能是提供 客户端软件负载均衡算法和服务调用。Ribbon 客户端组件提供一系列完善的配置项，如连接超时、重试等等。
+
+    简单地说，就是在配置文件中列出 Load Balance（简称 LB）后面所有的机器，Ribbon 会自动的帮助你基于某种规则（如简单轮询，随机连接等）去连接这些机器。我们很容易使用 Ribbon 实现自定义的负载均衡算法
+
+## Ribbon 能干什么？
+
+### 负载均衡（LB）
+
+**什么是负载均衡？
+**
+简单地说就是将用户的请求平摊的分配到多个服务上，从而达到系统的 HA（高可用）
+常见的负载均衡软件有有 Nginx，LVS，硬件 F5 等
+
+**Ribbon 本地负载均衡客户端 VS Nginx 服务端负载均衡的区别
+**
+
+Nginx 是服务器负载均衡，客户端所有请求都会交给 Nginx，然后由 Nginx 实现转发请求。即负载均衡是由服务器端实现的
+
+Ribbon 本地负载均衡，在调用微服务接口的时候，会在注册中心上获取注册信息服务列表之后缓存到 JVM 本地，从而在本地实现 RPC 远程服务调用技术
+
+### 集中式 LB
+
+即在服务的消费方和提供方之间使用独立的 LB 设施（可以是硬件，如 F5，也可以是软件，如 Nginx），由该设施负责把访问请求通过某种策略转发至服务的提供方
+
+### 进程内 LB
+
+将 LB 逻辑集成到消费方，消费方从服务注册中心获取有哪些地址可以用，然后自己再从这些地址中选择出一个合适的服务器
+
+**Ribbon 就属于进程内 LB**，它只是一个类库，集成与消费方进程，消费方通过它来获取到服务提供方的地址
+
+------
+
+简单地说 Ribbon == 负载均衡 + RESTTemplate 调用
+
+### 总结：
+
+Ribbon 其实就是一个软负载均衡的客户端组件，它可以和其它所需请求的客户端结合使用，和 Eureka 结合只是其中的一个实例
+
+## Ribbon 的负载均衡和 REST 调用
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327102925164.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+Ribbon 在工作时分成两步：
+
+- 第一步先选择 EurekaServer，它优先选择在同一个区域内负载较少的 Server
+- 第二步在根据用户指定的策略，再从 Server 取到的服务注册列表中选择一个地址
+
+其中 Ribbon 提供了多种策略：比如轮询、随机和根据响应事件加权
+
+### 添加依赖
+
+在前面的文章中其实已经简单地探讨过 Ribbon 的负载均衡，https://blog.csdn.net/Woo_home/article/details/105093023
+
+```xml
+<dependencies>
+   <!--包含了sleuth+zipkin-->
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-zipkin</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <scope>runtime</scope>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+        <groupId>org.projectlombok</groupId>
+        <artifactId>lombok</artifactId>
+        <optional>true</optional>
+    </dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+</dependencies>
+1234567891011121314151617181920212223242526272829303132333435
+```
+
+细心的朋友会发现，这里并没有引入 Ribbon 的依赖，那怎么使用负载均衡呢？
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327103718311.png)
+其实 spring-cloud-starter-netflix-eureka-client （在新版本中）自带了 spring-cloud-starter-ribbon 引用，可以打开 Maven 看下：
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327103900713.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+如果想直接添加 Ribbon 依赖的也可以，Ribbon 的依赖如下（别搞得 jar 冲突了）：
+
+```xml
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>
+</dependency>
+1234
+```
+
+### RestTemplate 的使用
+
+#### getForObject 和 getForEntity 方法
+
+**getForObject 返回对象为响应体中数据转化成的对象，基本上可以立即为 JSON**
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327104537527.png)
+**getForEntity 返回对象为 ResponseEntity 对象，包含了响应中的一些重要信息，比如响应头、响应状态码、响应体等**
+
+```java
+@GetMapping("/consumer/payment/getForEntity/{id}")
+public CommonResult<Payment> getPayment2(@PathVariable("id") Long id) {
+    ResponseEntity<CommonResult> forEntity = restTemplate.getForEntity(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
+    if (forEntity.getStatusCode().is2xxSuccessful()) {
+        return forEntity.getBody();
+    } else {
+        return new CommonResult<>(404,"操作失败");
+    }
+}
+123456789
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327112743913.png)
+
+#### postForObject 和 postForEntity 方法
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327105403162.png)
+
+```java
+@GetMapping("/consumer/payment/create")
+public CommonResult<Payment> create2(Payment payment) {
+    return restTemplate.postForEntity(PAYMENT_URL + "/payment/create", payment, CommonResult.class).getBody();
+}
+1234
+```
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327112650106.png)
+
+## Ribbon 核心组件 IRule
+
+### IRule
+
+IRule 是一个接口，根据特定算法中从服务列表中选取一个要访问的服务，看下 IRule 的一些实现类
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327100255671.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+- com.netflix.loadbalancer.RoundRobinRule：轮询
+- com.netflix.loadbalancer.RandomRule：随机
+- com.netflix.loadbalancer.RetryRule：先按照 RoundRobinRule 的策略获取服务，如果获取服务失败则在指定的时间内会进行重试，获取可用的服务
+- WeightedResponseTimeRule：对 RoundRobinRule 的扩展，响应速度越快的实例选择权重越大，越容易被选择
+- BestAvailableRule：会先过滤掉由于多次访问故障而处于断路器跳闸状态的服务，然后选择一个并发量最小的服务
+- AvailabilityFilteringRule：会先过滤掉故障实例，再选择并发较小的实例
+- ZoneAvoiddanceRule：默认规则，复合判断 server 所在区域的性能和 server 的可用性选择服务器
+
+### 如何替换负载规则？
+
+#### 注意：
+
+**在自定义配置类的时候不能放在 @ComponentScan 所扫描的当前包下以及子包下，否则我们自定义的这个配置类就会被所有的 Ribbon 客户端所共享，这样达不到特殊化定制的目的了**
+
+这话什么意思呢？因为 @SpringBootApplication 注解包含了 @ComponentScan 这个注解
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327113326590.png)
+简单地说，就是我们自定义的配置类不能放在与 启动类同一子包下
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327113503919.png)
+
+##### 新建规则类
+
+```java
+package com.ruleconfig.myrule;
+
+import com.netflix.loadbalancer.IRule;
+import com.netflix.loadbalancer.RandomRule;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/27 11:11
+ */
+
+@Configuration
+public class MySelfRule {
+
+    @Bean
+    public IRule myRule() {
+        // 返回随机
+        return new RandomRule();
+    }
+}
+123456789101112131415161718192021
+```
+
+##### 修改启动类
+
+```java
+package com.java.springcloud;
+
+import com.ruleconfig.myrule.MySelfRule;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/24 14:09
+ */
+
+@SpringBootApplication
+@EnableEurekaClient
+// name 是服务提供者的实例名称
+@RibbonClient(name = "DEMO-PROVIDER-PAYMENT",configuration = MySelfRule.class)
+public class OrderMain80 {
+    public static void main(String[] args){
+        SpringApplication.run(OrderMain80.class,args);
+    }
+}
+12345678910111213141516171819202122
+```
+
+##### 访问页面
+
+下面是连续刷新页面返回的结果，可以发现端口号并不是默认的轮询了
+![localhost:/consumer/payment/postForEntity/create](https://img-blog.csdnimg.cn/20200327112835208.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327112844821.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327112857469.png)
+
+## Ribbon 负载均衡原理
+
+负载均衡算法：REST 接口第几次请求数 % 服务器集群总数量 = 实际调用服务器位置下标，每次服务启动后 REST 接口计数从 1 开始
+
+```java
+List<ServiceInstance> instances = discoveryClient.getInstances("DEMO-PROVIDER-PAYMENT");
+1
+```
+
+如：
+List[0] instances = 127.0.0.1:8001
+List[1] instances = 127.0.0.1:8002
+
+1 % 2 = 1 ——》index = 1 list.get(index)
+2 % 2 = 0 ——》index = 0 list.get(index)
+3 % 2 = 1 ——》index = 1 list.get(index)
+4 % 2 = 0 ——》index = 0 list.get(index)
+5 % 2 = 1 ——》index = 1 list.get(index)
+
+8001 + 8002 组合成为集群，共计两台机器，集群总数为 2，按照轮询算法原理：
+
+当总请求数为 1 时：1 % 2 = 1 对应下标位置为 1，则获得服务地址为 127.0.0.1:8002
+当总请求数为 1 时：2 % 2 = 0 对应下标位置为 0，则获得服务地址为 127.0.0.1:8001
+当总请求数为 1 时：3 % 2 = 1 对应下标位置为 1，则获得服务地址为 127.0.0.1:8002
+当总请求数为 1 时：4 % 2 = 0 对应下标位置为 0，则获得服务地址为 127.0.0.1:8001
+当总请求数为 1 时：5 % 2 = 1 对应下标位置为 1，则获得服务地址为 127.0.0.1:8002
+
+以此类推…
+
+## Ribbon 源码分析
+
+先来看下 IRule 的 UML 图
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327115314434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+下面是 IRule 的接口源码
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327121156296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+IRule 的实现类
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327115541332.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+### RoundRobinRule
+
+来看下默认的轮询算法源码 RoundRobinRule.java
+
+可以发现 RoundRobinRule 类中定义了一个 AtomicInteger， 并初始化为 0
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327123411844.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+再来看下 RoundRobinRule 实现 IRule 的 choose 方法
+
+```java
+public Server choose(ILoadBalancer lb, Object key) {
+	// 如果 lb 等于 null，也就是说没有负载均衡
+    if (lb == null) {
+        log.warn("no load balancer");
+        // 返回 null
+        return null;
+    }
+
+    Server server = null;
+    int count = 0;
+    // 如果服务器为 null 并且 count++ < 10
+    while (server == null && count++ < 10) {
+    	// 获取可达（健康的）的机器（服务器）
+        List<Server> reachableServers = lb.getReachableServers();
+        // 获取所有机器
+        List<Server> allServers = lb.getAllServers();
+        // 获取健康服务的数量
+        int upCount = reachableServers.size();
+        // 获取所有服务的数量，这里也就是上面所说的获取集群总数量如 8001 + 8002 两台机器
+        int serverCount = allServers.size();
+
+		// 一般只要有服务启动成功，通常不会执行这个 if
+        if ((upCount == 0) || (serverCount == 0)) {
+            log.warn("No up servers available from load balancer: " + lb);
+            return null;
+        }
+
+		// 这里得到的值为 1，为什么是 1，下面会讲到
+        int nextServerIndex = incrementAndGetModulo(serverCount);
+        // 获取下一个服务下标，如 0、1、0、1
+        server = allServers.get(nextServerIndex);
+
+        if (server == null) {
+            /* Transient. */
+            Thread.yield();
+            continue;
+        }
+
+        if (server.isAlive() && (server.isReadyToServe())) {
+            return (server);
+        }
+
+        // Next.
+        server = null;
+    }
+
+    if (count >= 10) {
+        log.warn("No available alive servers after 10 tries from load balancer: "
+                + lb);
+    }
+    // 返回下标对应的服务
+    return server;
+}
+1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253
+```
+
+### getReachableServers()
+
+返回可访问的服务器
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327130300989.png)
+
+### getAllServers()
+
+返回所有已知的服务器，包括可访问的和不可访问的
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327130331809.png)
+
+### incrementAndGetModulo
+
+```java
+// 根据上面的代码如果集群数量为 2，那么这里 modulo 传的就是 2
+private int incrementAndGetModulo(int modulo) {
+	// 以下是一个自旋锁
+    for (;;) {
+        // nextServerCyclicCounter 上面已经介绍过，初始值为 0，那么也就是说 current = 0
+        int current = nextServerCyclicCounter.get();
+        // （0 + 1）% 2 = 1，根据上面提到的负载均衡原理，这里的下标就是 1
+        int next = (current + 1) % modulo;
+        // 这里使用的是 CAS （比较并交换），将当前的值（current）传进去，下一次的值传进去
+        // 假设 next 值没修改过的话，那么 next 值就是 1，否则开始自旋，不断比较
+        if (nextServerCyclicCounter.compareAndSet(current, next))
+        	// 返回 next 值
+            return next;
+    }
+}
+123456789101112131415
+```
+
+## 自定义轮询算法
+
+先定义一个接口
+
+```java
+package com.java.springcloud.lb;
+
+import org.springframework.cloud.client.ServiceInstance;
+import java.util.List;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/27 13:13
+ */
+
+public interface LoadBalancer {
+    ServiceInstance instances(List<ServiceInstance> serviceInstances);
+}
+12345678910111213
+```
+
+创建实现类
+
+```java
+package com.java.springcloud.lb;
+
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.stereotype.Component;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/27 13:14
+ */
+
+@Component // 一定要加上这个注解，否则无法扫描
+public class MyLB implements LoadBalancer{
+
+    private AtomicInteger atomicInteger = new AtomicInteger(0);
+
+    public final int getAndIncrement() {
+        int current;
+        int next;
+        do {
+            current = this.atomicInteger.get();
+            // 这一串数字是 Integer.MAX_VALUE 的值
+            next = current >= 2147483647 ? 0 : current + 1;
+        } while (!this.atomicInteger.compareAndSet(current,next)); // 这里不要忘记加上 ！，不然打印的结果出乎你的意料
+        System.out.println("****** 第 " + next + " 次访问 ****** : ");
+        // 返回的是第几次访问
+        return next;
+    }
+
+    // 负载均衡算法：REST 接口第几次请求数 % 服务器集群总数量 = 实际调用服务器位置下标，每次服务启动后 REST 接口计数从 1 开始
+    @Override
+    public ServiceInstance instances(List<ServiceInstance> serviceInstances) {
+        int index = getAndIncrement() % serviceInstances.size();
+        return serviceInstances.get(index);
+    }
+}
+12345678910111213141516171819202122232425262728293031323334353637
+```
+
+修改消费者端 Controller
+
+```java
+@GetMapping(value = "/consumer/payment/lb")
+public String getPaymentLB() {
+	// 获取服务实例
+    List<ServiceInstance> instances = discoveryClient.getInstances("DEMO-PROVIDER-PAYMENT");
+    if (instances == null || instances.size() <= 0) {
+        return null;
+    }
+
+	// 使用自定义的轮询算法
+    ServiceInstance serviceInstance = loadBalancer.instances(instances);
+    URI uri = serviceInstance.getUri();
+
+    return restTemplate.getForObject(uri + "/payment/lb",String.class);
+}
+1234567891011121314
+```
+
+访问页面
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327133842634.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327133906555.png)
+控制台输出
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327133923398.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
