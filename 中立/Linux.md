@@ -1348,7 +1348,7 @@ sudo yum install wget
 
 `wget -c url`继续下载
 
-`scp`网间拷贝
+### `scp`网间拷贝
 
 `scp 源文件 目标文件`
 
@@ -1511,6 +1511,24 @@ LISTEN监听
 `-s`统计信息
 
 port端口
+
+
+
+### 防火墙
+
+- 打开防火墙
+
+  ```powershell
+  systemctl stop firewalld
+  ```
+
+- 查看状态
+
+  ```
+  systemctl status firewalld
+  ```
+
+  
 
 
 

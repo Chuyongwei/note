@@ -28,6 +28,7 @@ git init
 ```powershell
 git add 文件
 git add -u #已提交的文件添加
+git reset . #重置暂存区
 git status 
 git -commit -m'介绍'
 git commit --amend #进入文件 修改提交
@@ -62,6 +63,7 @@ git mv 旧文件名 新文件名
 git log --all #查看分支
 git log --all --graph 
 git branch -b 分支名 #删除分支
+git branch -m oldName newName #重命名
 ```
 
 查看
