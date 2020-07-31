@@ -283,10 +283,10 @@ Consul 提供了微服务系统中的服务治理、配置中心、控制总线�
 ![Consul 的下载安装](image/springcloud/001.png)
 下载之后解压就一个 exe 可执行文件
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154019969.png)
-查看版本，用 cmd 打开，输入 **consul --version** 即可
+查看版本，用 cmd 打开，输入 **consul --version** 即可:
 ![consul-version](image/springcloud/consulVersion.png)
 输入 consul 还可以查看所有参数
-![consul-help](image\springcloud\consul-help.png)
+![consul-help](image/springcloud/consul-help.png)
 
 ### 启动 Consul
 
