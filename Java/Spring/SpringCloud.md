@@ -280,11 +280,11 @@ Consul 提供了微服务系统中的服务治理、配置中心、控制总线�
 ### Consul 的下载安装
 
 [Consul 的下载地址 https://www.consul.io/downloads.html](https://www.consul.io/downloads.html) ，根据版本下载即可，这里下载的是 Windows 版本的
-![Consul 的下载安装](image\springcloud\001.png)
+![Consul 的下载安装](image/springcloud/001.png)
 下载之后解压就一个 exe 可执行文件
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154019969.png)
 查看版本，用 cmd 打开，输入 **consul --version** 即可
-![consul-version](image\springcloud\consulVersion.png)
+![consul-version](image/springcloud/consulVersion.png)
 输入 consul 还可以查看所有参数
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154652952.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
 
@@ -1438,8 +1438,8 @@ logging:
 
 ### 启动服务访问页面
 
-![服务访问页面](image\springcloud\服务访问页面.png)
+![服务访问页面](image/springcloud/服务访问页面.png)
 
 ### 控制台输出
 
-![控制台输出](.\image\springcloud\控制台输出.png)
+![控制台输出](image/springcloud/控制台输出.png)
