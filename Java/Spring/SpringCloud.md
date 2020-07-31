@@ -1,5 +1,3 @@
-
-
 中文文档
 
 https://www.springcloud.cc/
@@ -282,11 +280,11 @@ Consul 提供了微服务系统中的服务治理、配置中心、控制总线�
 ### Consul 的下载安装
 
 [Consul 的下载地址 https://www.consul.io/downloads.html](https://www.consul.io/downloads.html) ，根据版本下载即可，这里下载的是 Windows 版本的
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326153948681.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+![Consul 的下载安装](.\image\springcloud\Consul 的下载安装.png)
 下载之后解压就一个 exe 可执行文件
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154019969.png)
 查看版本，用 cmd 打开，输入 **consul --version** 即可
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154230175.png)
+![consul-version](.\image\springcloud\consul-version.png)
 输入 consul 还可以查看所有参数
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200326154652952.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
 
@@ -970,6 +968,20 @@ List[1] instances = 127.0.0.1:8002
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327115314434.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
 下面是 IRule 的接口源码
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327121156296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+```java
+public interface IRule {
+    Server choose(Object key);
+
+    void setLoadBalancer(ILoadBalancer lb);
+
+    ILoadBalancer getLoadBalancer();
+}
+
+```
+
+
+
 IRule 的实现类
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327115541332.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
 
@@ -1158,3 +1170,276 @@ public String getPaymentLB() {
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327133906555.png)
 控制台输出
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327133923398.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+
+
+# OpenFeign
+
+## 什么是 OpenFeign？
+
+Feign 是一个声明式 WebService 客户端，使用 Feign 能让编写 Web Service 客户端更加简单
+
+    它的使用方法是 定义一个服务接口然后在上面添加注解。Feign 也支持可插拔式的编码器和解码器。SpringCloud 对 Feign 进行了封装，使其支持了 SpringMVC 标准注解和 HttpMessageConverters。Feign 可以与 Eureka 和 Ribbon 组合使用以支持负载均衡
+
+简单地说：Feign 是一个声明式的 Web 服务客户端，让编写 Web 服务客户端变得非常容易，只需创建一个接口并在接口上添加注解即可
+
+## Feign 能干什么？
+
+Feign 旨在使编写 Java Http 客户端变得更加容易
+
+    在前面的文章里使用 Ribbon + RestTemplate 时 [SpringCloud —— Ribbon
+](https://blog.csdn.net/Woo_home/article/details/105125602)，利用 RestTemplate 对 http 请求的封装处理，形成了一套模板化的调用方法。但是在实际开发中，由于对服务依赖的调用可能不止一处，往往一个接口会被多处调用，所以通常会针对每个微服务自行封装一些客户端类来包装这些依赖的调用。所以，Feign 在此基础上做了进一步封装，由他来帮助我们定义和实现依赖服务接口的定义。
+
+    在 Feign 的实现下，我们 只需创建一个接口并使用注解的方式来配置它（以前是 Dao 接口上面标注 @Mapper 注解，现在是一个微服务接口上面标注一个 @Feign 注解即可），即可完成对服务提供方的接口绑定，简化了使用 SpringCloud Ribbon 时自动封装服务调用客户端的开发量
+
+## Feign 集成了 Ribbon
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328015350128.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+    利用 Ribbon 维护了提供方的服务列表信息，并且通过轮询实现了客户端的负载均衡。而与 Ribbon 不同的是，通过 Feign 只需要定义服务绑定接口且以声明式的方法，优雅而简单的实现了服务调用
+
+## Feign 和 OpenFeign 的区别
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327203841619.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+## 新建 Module（80）
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327204559430.png)
+
+### 编写 application.yml 文件
+
+```yml
+server:
+  port: 80
+
+eureka:
+  client:
+    register-with-eureka: false
+    service-url:
+      defualtZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com/eureka/
+12345678
+```
+
+### 编写启动类
+
+```java
+package com.java.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/27 20:48
+ */
+
+@SpringBootApplication
+@EnableFeignClients
+public class OrderOpenFeignMain80 {
+    public static void main(String[] args){
+        SpringApplication.run(OrderOpenFeignMain80.class,args);
+    }
+}
+123456789101112131415161718
+```
+
+### 编写业务接口
+
+```java
+package com.java.springcloud.service;
+
+import com.java.springcloud.entity.CommonResult;
+import com.java.springcloud.entity.Payment;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/27 20:50
+ */
+
+@Component
+@FeignClient(value = "DEMO-PROVIDER-PAYMENT") // 服务实例名称
+public interface OpenFeignPaymentService {
+
+    // 跟 8001 的访问路径一致
+    @GetMapping(value = "/payment/get/{id}")
+    CommonResult<Payment> getPayment(@PathVariable("id") Long id);
+}
+12345678910111213141516171819202122
+```
+
+### 编写控制器代码
+
+```java
+package com.java.springcloud.controller;
+
+import com.java.springcloud.entity.CommonResult;
+import com.java.springcloud.entity.Payment;
+import com.java.springcloud.service.OpenFeignPaymentService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import javax.annotation.Resource;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/27 20:56
+ */
+
+@RestController
+@Slf4j
+public class OpenFeignController {
+
+    @Resource
+    private OpenFeignPaymentService paymentFeignService;
+
+    @GetMapping(value = "/consumer/payment/get/{id}")
+    public CommonResult<Payment> getPaymentById(@PathVariable("id") Long id) {
+    	// 使用接口调用服务
+        return paymentFeignService.getPayment(id);
+    }
+}
+
+123456789101112131415161718192021222324252627282930
+```
+
+### 启动服务
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328000251513.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+先后启动 8001、8002、7001、7002，最后启动新建的 OrderOpenFeignMain80
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327213608821.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+连续刷新页面
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020032721344456.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200327213510983.png)
+OK，可以实现轮询访问
+
+## OpenFeign 超时控制
+
+### 超时演示出错情况
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328011358385.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+### 服务提供方 8001 故意写暂停程序
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328011921260.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+### 服务消费方 80 添加超时方法 OpenFeignPaymentService
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328012003576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+### 服务消费方 80 添加超时方法 OpenFeignController
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328012537154.png)
+
+### 测试
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020032801120973.png)
+报错页面，因为 Feign 客户端只等待一秒钟，导致 Feign 客户端不想等待了，直接返回报错
+![在这里插入图片描述](https://img-blog.csdnimg.cn/20200328011358385.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+
+### 修改 application.yml 开启 OpenFeign 客户端超时控制
+
+为了避免这样的情况，有时候我们需要设置 Feign 客户端的超时控制，如下：
+
+```yml
+server:
+  port: 80
+
+eureka:
+  client:
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/
+
+# 设置 feign 客户端超时时间（OpenFeign 默认支持 Ribbon）
+ribbon:
+  # 指的是建立连接所用的时间，适用于网络状况正常的情况下，两端连接所用的时间
+  ReadTimeout: 5000
+  # 指的是建立连接后从服务器读取到可用资源所用的时间
+  ConnectTimeout: 5000
+123456789101112131415
+```
+
+再来测试下
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2020032802002719.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1dvb19ob21l,size_16,color_FFFFFF,t_70)
+正常访问
+在 application.yml 文件中开启配置
+
+## OpenFeign 日志打印功能
+
+Feign 提供了日志打印功能，我们可以通过配置来调整日志级别，从而了解 Feign 中 HTTP 请求细节
+
+简单地说：就是 对 Feign 接口的调用情况进行监控和输出
+
+### 日志级别
+
+- NONE：默认的，不显示任何日志
+- BASIC：仅记录请求方法、URL、响应状态码以及执行时间
+- HEADERS：除了 BASIC 中定义的信息之外，还有请求和响应的头信息
+- FULL：除了 HEADERS 中定义的信息之外，还有请求和响应的正文及元数据
+
+### 配置 Bean
+
+![配置 Bean](.\image\springcloud\配置 Bean.png)
+
+```java
+package com.java.springcloud.config;
+
+import feign.Logger;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+/**
+ * @author Woo_home
+ * @create 2020/3/28 2:06
+ */
+
+@Configuration
+public class FeignConfig {
+
+    @Bean
+    Logger.Level feignLoggerLevel() {
+    	// 除了 HEADERS 中定义的信息之外，还有请求和响应的正文及元数据
+        return Logger.Level.FULL;
+    }
+
+}
+123456789101112131415161718192021
+```
+
+### 修改 application.yml 文件
+
+```yml
+server:
+  port: 80
+
+eureka:
+  client:
+    register-with-eureka: false
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/
+#设置feign客户端超时时间(OpenFeign默认支持ribbon)
+ribbon:
+  #指的是建立连接所用的时间，适用于网络状况正常的情况下,两端连接所用的时间
+  ReadTimeout: 5000
+  #指的是建立连接后从服务器读取到可用资源所用的时间
+  ConnectTimeout: 5000
+
+logging:
+  level:
+    # Feign 日志以什么级别监控哪个接口（这里扫描的是接口）
+    com.java.springcloud.service.OpenFeignPaymentService: debug
+12345678910111213141516171819
+```
+
+### 启动服务访问页面
+
+![服务访问页面](image\springcloud\服务访问页面.png)
+
+### 控制台输出
+
+![控制台输出](.\image\springcloud\控制台输出.png)
