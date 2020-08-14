@@ -1134,10 +1134,9 @@ public Customer findByCustName(String custName);
 
 1. 实现Specification接口（提供泛型：查询的对象类型）
 2. 实现toPredicate方法（构造查询条件）
-3. 需要借助方法参数中的两个参数（
+3. 需要借助方法参数中的两个参数
    + root：获取需要查询的对象属性    
    + CriteriaBuilder：构造查询条件的，内部封装了很多的查询条件（模糊匹配，精准匹配）
-      ）
 
 样本：
 

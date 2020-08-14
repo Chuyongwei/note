@@ -1989,3 +1989,30 @@ console.log(res)
 
 [BigInt: arbitrary-precision integers in JavaScript · V8](https://v8.dev/features/bigint)
 
+
+
+
+
+## vue
+
+
+
+```powershell
+D:\baidu\doc\VScode\Font\ESlearn\vue-lesson>eslint --init
+√ How would you like to use ESLint? · style
+√ What type of modules does your project use? · esm
+√ Which framework does your project use? · vue
+√ Does your project use TypeScript? · No / Yes
+√ Where does your code run? · browser
+√ How would you like to define a style for your project? · guide
+√ Which style guide do you want to follow? · standard
+√ What format do you want your config file to be in? · JavaScript
+Checking peerDependencies of eslint-config-standard@latest
+The config that you've selected requires the following dependencies:
+
+eslint-plugin-vue@latest eslint-config-standard@latest eslint@>=6.2.2 eslint-plugin-import@>=2.18.0 eslint-plugin-node@>=9.1.0 eslint-plugin-promise@>=4.2.1 eslint-plugin-standard@>=4.0.0
+√ Would you like to install them now with npm? · No / Yes
+Installing eslint-plugin-vue@latest, eslint-config-standard@latest, eslint@>=6.2.2, eslint-plugin-import@>=2.18.0, eslint-plugin-node@>=9.1.0, eslint-plugin-promise@>=4.2.1, eslint-plugin-standard@>=4.0.0
+[..................] \ rollbackFailedOptional: verb npm-session 424791964e0b55c1
+```
+
