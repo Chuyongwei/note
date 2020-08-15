@@ -161,6 +161,8 @@ ustc是老牌的linux镜像服务提供者了，还在遥远的ubuntu 5.04版本
 
 编辑该文件：
 
+> 记得创建docker文件夹
+
 ```
 vi /etc/docker/daemon.json  
 ```
@@ -192,7 +194,7 @@ systemctl stop docker
 重启docker：
 
 ```
-systemctl restart docker
+systemctl restart docker
 ```
 
 查看docker状态：
