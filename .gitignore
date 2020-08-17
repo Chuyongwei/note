@@ -1,4 +1,5 @@
-*.pdf
-*.docx
-*.doc
-*.html
+.pdf
+.docx
+.doc
+.html
+*/.git/

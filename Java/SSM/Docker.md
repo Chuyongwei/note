@@ -175,6 +175,16 @@ vi /etc/docker/daemon.json 
 }
 ```
 
+我的建议是这个
+
+```
+{
+  "registry-mirrors": ["https://9cpn8tt6.mirror.aliyuncs.com"]
+}
+```
+
+
+
 ## 2.3 Docker的启动与停止
 
 **systemctl**命令是系统服务管理器指令
@@ -461,8 +471,7 @@ docker pull tomcat:7-jre7
 创建容器  -p表示地址映射
 
 ```
-docker run -di --name=mytomcat -p 9000:8080 
--v /usr/local/webapps:/usr/local/tomcat/webapps tomcat:7-jre7
+docker run -di --name=mytomcat -p 9000:8080 -v /usr/local/webapps:/usr/local/tomcat/webapps tomcat:7-jre7
 ```
 
 ## 4.3 Nginx部署 
