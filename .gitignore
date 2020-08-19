@@ -2,4 +2,4 @@
 .docx
 .doc
 .html
-*/.git/
+# */.git/

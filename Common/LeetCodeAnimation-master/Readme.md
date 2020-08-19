@@ -3,7 +3,6 @@
 [![Travis](https://img.shields.io/badge/language-C++-red.svg)](https://developer.apple.com/.md)
 [![Travis](https://img.shields.io/badge/language-Java-yellow.svg)](https://developer.apple.com/.md)
 
-
 [There is an English version of README here. just click it！](https://github.com/MisterBooo/LeetCodeAnimation/blob/master/README-En.md)
 
 我会尽力将 LeetCode 上所有的题目都用动画的形式演示出来，计划用 3 到 4 年时间去完成它，期待与你见证这一天！
