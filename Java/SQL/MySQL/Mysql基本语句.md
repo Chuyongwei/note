@@ -1,36 +1,80 @@
-# SQL数据库基本操作
-
 [toc]
 
-导入sql文件
+# 写在前面
+
+- 导入sql文件
+
 
 ```sql
 source sql文件路径
 ```
 
-编码问题
+- 编码问题
 
-`show variables like '%char%';`
+  `show variables like '%char%';`
 
-Mysql命令行中文乱码的解决方法
+  Mysql命令行中文乱码的解决方法
 
 
-​		数据库本身安装时默认已经是使用utf8编码的了，但在命令行中执行查询时，查询到的中文依然乱码，解决方法如下：
+  ​		数据库本身安装时默认已经是使用utf8编码的了，但在命令行中执行查询时，查询到的中文依然乱码，解决方法如下：
 
-方法一：
-登录mysql命令行前指定gbk编码而不是utf8编码：>mysql -u用户名 -p --default-character-set=gbk
+  方法一：
+  登录mysql命令行前指定gbk编码而不是utf8编码：>mysql -u用户名 -p --default-character-set=gbk
 
-`utf8mb4`
+  `utf8mb4`
 
-方法二：
-登录mysql命令行后设置gbk编码：
+  方法二：
+  登录mysql命令行后设置gbk编码：
 
->mysql -u用户名 -p
->mysql>set names gbk;
->注：set names utf8 等同于同时运行了如下三条命令：
->set character_set_client=utf8;
->set character_set_results=utf8;
->set character_set_connection=utf8;
+  >mysql -u用户名 -p
+  >mysql>set names gbk;
+  >注：set names utf8 等同于同时运行了如下三条命令：
+  >set character_set_client=utf8;
+  >set character_set_results=utf8;
+  >set character_set_connection=utf8;
+
+## 密码
+
+### 修改密码
+
+```sql
+ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
+或者
+ALTER USER 'root'@'%' IDENTIFIED BY '123456';
+-- 具体看mysql.user表
+```
+
+### 修改密码安全性
+
+[参考](https://blog.csdn.net/an0708/article/details/101806521?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.channel_param)
+
+查看
+
+```
+show variables like 'validate_password%'; 
+```
+
+修改
+
+修改策略（将策略要求置为LOW，长度要求置为1）
+
+```mysql
+set global validate_password_policy=0; # 1
+set global validate_password_length=1; # 8
+```
+
+绝对
+
+```mysql
+mysql> set global validate_password_policy=0;       # 关闭密码复杂性策略
+mysql> set global validate_password_length=1;      # 设置密码复杂性要求密码最低长度为1
+mysql> select @@validate_password_policy;          # 查看密码复杂性策略
+mysql> select @@validate_password_length;          # 查看密码复杂性要求密码最低长度大小
+```
+
+
+
+# SQL数据库基本操作
 
 ## SQL数据库操作
 
@@ -1015,6 +1059,10 @@ HAVING <条件>
 - WHERE 子句不可以包含聚合函数，HAVING 子句中的条件可以包含聚合函数。
 - HAVING 子句是在数据分组后进行过滤，WHERE 子句会在数据分组前进行过滤。WHERE 子句排除的行不包含在分组中，可能会影响 HAVING 子句基于这些值过滤掉的分组。
 
+
+
+
+
 # 常用运算符详解
 
 ​		例如，学生表中存在一个 birth 字段，这个字段表示学生的出生年份。而运用 MySQL 的算术运算符用当前的年份减学生出生的年份，那么得到的就是这个学生的实际年龄数据。
@@ -1380,3 +1428,80 @@ mysqldump [options] --database DB1 [DB2,DB3...]
 mysqldump --user [username] --password=[password] [database name] [table name] >table_name.sql
 ```
 
+
+
+# 写在后面
+
+## 远程连接MySQL
+
+### 1.确保远程端的端口是打开的
+
+1. 查询端口号
+
+   ```mysql
+   show variables like '%port%'
+   ```
+
+   ![](images/vmware_NgdnENRd8B.png)
+
+2. 打开端口
+
+   ```sh
+   firewall-cmd --zone=public --add-port=3306/tcp --permanent
+   ```
+
+3. 查看防火墙状态
+
+   ```sh
+   firewall-cmd --state
+   ```
+
+4. 检查开放端口
+
+   ```sh
+   firewall-cmd --list-ports
+   ```
+
+5. 重启防火墙
+
+   ```sh
+   firewall-cmd --reload
+   ```
+
+6. 删除端口
+
+   ```sh
+   firewall-cmd --zone=public --remove-port=80/tcp --permanent
+   ```
+
+### 2.MySQL开启权限
+
+1. ```mysql
+   use mysql;
+   ```
+
+2. ```
+   select host, user from user;
+   ```
+
+   
+   
+3. ```sql
+   update user set host='%' where user='root'
+   ```
+
+4. ```mysql
+   grant all privileges on *.* to 'root'@'%' identififed by '密码' with grant option;
+   ```
+
+5. ```mysql
+   GRANT ALL ON *.* TO 'root'@'%'
+   或者
+   GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'WITH GRANT OPTION;
+   ```
+
+6. ```mysql
+   flush privileges;
+   ```
+
+   
