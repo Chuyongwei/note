@@ -774,3 +774,41 @@ select * from emp e where sal > (select avg(sal) from emp where job = e.job);
    - 系统要用1.2倍的硬盘和内存
    - 更新慢
 
+
+
+# 写在后面
+
+## linux安装
+
+[参考](https://blog.csdn.net/Holmofy/article/details/77622284)
+
+[解决方案](https://blog.csdn.net/Adnerly/article/details/50945906)
+
+
+
+依赖包
+
+```
+yum install binutils compat-libstdc++ compat-libcap elfutils-libelf elfutils-libelf-devel elfutils-libelf-devel-static gcc gcc-c++ glibc glibc-common glibc-devel glibc-headers kernel-headers ksh libaio libaio-devel libgcc libgcc libgomp libstdc++ libstdc++-devel make sysstat unixODBC unixODBC-devel glibc-static
+```
+
+检查
+
+```
+# rpm -q binutils compat-libstdc++ elfutils-libelf elfutils-libelf-devel elfutils-libelf-devel-static gcc gcc-c++ glibc glibc-common glibc-devel glibc-headers kernel-headers ksh libaio libaio-devel libgcc libgomp libstdc++ libstdc++-devel make sysstat unixODBC unixODBC-devel
+```
+
+pdksh compat-libstdc
+
+```
+rpm -e ksh
+rpm -ivh --force --nodeps pdksh-5.2.14-30.x86_64.rpm 
+```
+
+
+
+```
+LANG=en_US ./runInstaller
+```
+
+https://blog.51cto.com/lorysun/1606952

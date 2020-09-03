@@ -1130,7 +1130,7 @@ sudo yum install vim
 
 `vimtutor`vim的教程
 
-三种模式
+### 三种模式
 
 1. 交互模式
 
@@ -2080,13 +2080,15 @@ command ls
 
 ## 开发集成
 
+### java
+
 搜索java版本
 
 ```shell
 yum search java | grep openjdk
 ```
 
-
+### tomcat搭建与部署
 
 ```shell
 systemctl status tomcat
@@ -2122,8 +2124,6 @@ restorecon -Rv .
 
 
 
-
-
 ```shell
 chown tomcat:tomcat /var/lib/jenkins/
 [root@localhost tomcat]# chown tomcat:tomcat /var/lib/jenkins/
@@ -2147,9 +2147,21 @@ vim /var/lib/jenkins/hudson.model.UpdateCenter.xml #改成http
 
 
 
+#### 多个tomcat的部署
+
+修改conf/server.xml的端口port
+
+```xml
+<Server port="80" shutdown="SHUTDOWN">
+<Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443" />
+<Connector port="8009" protocol="AJP/1.3" redirectPort="8443" />
+```
 
 
-### 反向代理
+
+### 反向代理(Nginx)
 
 
 
@@ -2167,8 +2179,6 @@ apache是堵塞型的
 
 
 
-
-
 安装
 
 ```shell
@@ -2176,3 +2186,79 @@ yum install epel-release
 yum install nginx
 ```
 
+使用
+
+```powershell
+systemctl status nginx
+```
+
+配置
+
+nginx.conf
+
+```powershell
+upstream server_lb{ #服务器列表
+	server localhost:8080; #weight = 10 权值 
+	server localhost:8081;
+	# ip_hash; 专一模式
+}
+server{
+	location / {
+		proxy pass 代理
+	}
+}
+```
+
+共享session
+
+- 一个机子，只使用一个tomcat
+
+- 共享：
+
+  - 广播式(集群) (linux上会出错)
+
+    ```xml
+    <!-- tomcat的配置server。xml -->
+    <Cluster className="org.apache.catalina.ha.tcp.SimpleTcpCluster"/>
+    <!--在项目的web.xml中加入-->
+    <distributable/>
+    ```
+
+  - redis
+
+## 磁盘管理
+
+### 存储
+
+df:报告文件
+
+df -h
+
+进程
+
+ w 
+
+free:显示系统的使用情况
+
+- m 按m算
+- g 按g算
+
+top 显示进程
+
+### 版本
+
+uname -a
+
+cat /proc/cpuinfo
+
+cat /proc/meminfo
+
+
+
+<!-- 11.1-11.5 35：09 -->
+
+### 磁盘
+
+SSD:固态硬盘
+
+HHD：机械硬盘

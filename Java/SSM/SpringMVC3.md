@@ -104,7 +104,7 @@
 
  
 
-<img src="..\image\ssm\springmvc执行流程原理.jpg" style="zoom:80%;" />
+<img src="../image/ssm/springmvc执行流程原理.jpg" style="zoom:80%;" />
 
 ## 注释
 
