@@ -2262,3 +2262,54 @@ cat /proc/meminfo
 SSD:固态硬盘
 
 HHD：机械硬盘
+
+
+
+
+
+
+
+# 写在后面
+
+## 屏幕适应
+
+```powershell
+yum install xorg-x11-drv-vmware
+ 
+yum install open-vm-tools
+ 
+yum install open-vm-tools-desktop
+```
+
+## 网络连接
+
+```powershell
+前两部已经有大量博客说明 但是往往不能真正解决问题
+在安装好centos7后 不能连接外网的主要原因是启动的时候没有启动网卡 解决方法是：
+** cd /etc/sysconfig/network-scripts/
+**ls
+**找到 ifcfg-ensxxxx文件
+**使用 vi打开 vi ifcfg-ens33 将其中的ONBOOT=on  改为yes
+** 按‘退出’ + ‘：’+wq 保存并退出
+**重启动网络 service network restart
+```
+
+
+
+## 开机报错
+
+### centos 虚拟机出问题 Oh no,something has gone wrong! 解决方法
+
+然后ctrl+alt+F2 进入命令模式，然后输入root 账号和密码。
+
+```
+root
+输入密码
+yum update
+...等待
+输入 y
+...等待
+就可以了
+```
+
+[https://www.365jz.com/article/24845]

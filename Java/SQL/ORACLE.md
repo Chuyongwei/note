@@ -774,6 +774,69 @@ select * from emp e where sal > (select avg(sal) from emp where job = e.job);
    - 系统要用1.2倍的硬盘和内存
    - 更新慢
 
+# 用户管理
+
+## 密码
+
+### 密码过期
+
+#### 设置密码不过期
+
+1.查看用户的profile设置：
+
+
+
+```sql
+SQL>  SELECT username,profile FROM dba_users;
+```
+
+
+
+一般用户的profile设置都为DEFAULT。
+
+2.查看系统profiles中PASSWORD_LIFE_TIME设置。
+
+
+
+```sql
+SQL> SELECT * FROM dba_profiles s WHERE s.profile='DEFAULT' AND resource_name='PASSWORD_LIFE_TIME';
+```
+
+```powershell
+PROFILE            RESOURCE_NAME          RESOURCE           LIMIT
+
+------------------------------ -------------------------------- ------------------------------------------------
+
+DEFAULT            PASSWORD_LIFE_TIME        PASSWORD        180dys
+==============================================================
+```
+
+3.修改DBA_PROFILES中PASSWORD_LIFE_TIM的设置，改为ULIMITED。
+
+```sql
+ALTER PROFILE DEFAULT LIMIT PASSWORD_LIFE_TIME UNLIMITED;
+```
+
+修改后设置立即生效，不需要重启数据库，此时密码永远不会过期。
+
+#### 如果过期
+
+**以system用户为例**
+
+```sql
+sqlplus / as sysdba
+
+SQL> alter user system identified by root;
+```
+
+再连接数据再也不会出现密码过期的事情了。
+
+**如果是其他用户的话，那么就使用其他用户名。**
+
+```sql
+ alter user scott identified by tiger;
+```
+
 
 
 # 写在后面
