@@ -430,7 +430,7 @@ Jedis: 一款java操作redis数据库的工具.
 
 * 使用：
      1. 创建JedisPool连接池对象
-     			
+     	
      2. 调用方法 getResource()方法获取Jedis连接
 
           ```java

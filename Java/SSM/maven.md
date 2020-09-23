@@ -1,45 +1,29 @@
-RDB：默认记录
+### 命令
 
-1.编辑redis.windows.conf
+|命令|操作|
+|--|--|
+| mvn compile | 编译maven工程 |
+| mvn install | 打包并安装到本地仓库 |
+| mvn package | 编译并打包工程 |
+| mvn deploy | 打包并安装到远程仓库 |
+| mvn clean | 清除target目录 |
 
->   In the example below the behaviour will be to save:
->   after 900 sec (15 min) if at least 1 key changed
->   after 300 sec (5 min) if at least 10 keys changed
->   after 60 sec if at least 10000 keys changed
+### 元素
 
-```
-save 900 1
-save 300 10
-save 60 10000
-```
+`groupId`：表示项目所属的组
 
-设置完后在`cmd`中使用`redis-server.exe redis.windows.conf`开启服务器
+`artifactId`：项目唯一标识
 
-AOF：日志记录
+`packageing`：项目类型
 
-1.编辑redis.windows.conf
+`version`：项目版本号
 
-​	`appendonly no` 改成`yes`
+`modelVersion`：代表pom文件的maven版本
 
-	# appendfsync always//每一次保存
-	appendfsync everysec//每一秒保存
+`dependencies`：此元素下包含多个depenency，声明依赖
 
-Jedis(redis的连接方法)
+`dependency`：声明项目依赖
 
-> commons-pool2.2.4.2.jar
->
-> jedis.jar
+`scope`:此类库与项目的关系
 
-
-
-```java
-    public void test1() {
-        //链接
-        Jedis jedis = new Jedis("localhost",6379);
-        //建立
-        jedis.set("username","zhangsan");
-        //关闭
-        jedis.close();
-    }
-```
-
+`build`：辅助项目的构建
