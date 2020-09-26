@@ -1,5 +1,9 @@
 # 开始
 
+参考文档https://www.tslang.cn/docs/home.html
+
+> typescript是一个开源的，渐进是包含类型的javascript超集
+
 安装
 
 ```shell
@@ -765,3 +769,278 @@ var Db = new MysqlDb<ArticleCate>()
 Db.add(a)
 ```
 
+
+
+## 模块
+
+> 从ECMAScript 2015开始，JavaScript引入了模块的概念。TypeScript也沿用这个概念。
+>
+> 模块在其自身的作用域里执行，而不是在全局作用域里；这意味着定义在一个模块里的变量，函数，类等等在模块外部是不可见的，除非你明确地使用[`export`形式](https://www.tslang.cn/docs/handbook/modules.html#export)之一导出它们。 相反，如果想使用其它模块导出的变量，函数，类，接口等的时候，你必须要导入它们，可以使用 [`import`形式](https://www.tslang.cn/docs/handbook/modules.html#import)之一。
+>
+> 模块是自声明的；两个模块之间的关系是通过在文件级别上使用imports和exports建立的。
+>
+> 模块使用模块加载器去导入其它的模块。 在运行时，模块加载器的作用是在执行此模块代码前去查找并执行这个模块的所有依赖。 大家最熟知的JavaScript模块加载器是服务于Node.js的 [CommonJS](https://en.wikipedia.org/wiki/CommonJS)和服务于Web应用的[Require.js](http://requirejs.org/)。
+>
+> TypeScript与ECMAScript 2015一样，任何包含顶级`import`或者`export`的文件都被当成一个模块。相反地，如果一个文件不带有顶级的`import`或者`export`声明，那么它的内容被视为全局可见的（因此对模块也是可见的）。
+
+
+
+```typescript
+var dbUrl = 'xxxxxx'
+
+export function getData():any[]{
+    console.log("获取数据库的值");
+    return[
+        {
+            title:'12312'
+        },
+        {
+            title:'123213'
+        }
+    ]
+}
+```
+
+或者
+
+```typescript
+var dbUrl = 'xxxxxx'
+
+function getData():any[]{
+    console.log("获取数据库的值");
+    return[
+        {
+            title:'12312'
+        },
+        {
+            title:'123213'
+        }
+    ]
+}
+// export default {getData,dbUrl}
+export {getData,dbUrl}
+```
+
+
+
+```typescript
+import {getData} from './modules/db';
+// import {getData as get} from './modules/db';
+getData();
+```
+
+## 命名空间
+
+```typescript
+namespace A{
+    interface Amimal{
+        name:string
+        eat():void
+    }
+    export class Dog implements Amimal{
+        name: string
+        constructor(name:string){
+            this.name = name
+        }
+        eat(): void {
+            console.log(`${this.name}在吃狗粮`,`);
+        }
+    }
+    export class Cat implements Amimal{
+        name: string
+        constructor(name:string){
+            this.name = name
+        }
+        eat(): void {
+            console.log(`${this.name}在吃猫粮`);
+        }
+    }
+}
+
+var d = new A.Dog('狼狗')
+d.eat()
+```
+
+## 装饰器
+
+### 类装饰器
+
+```json
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "experimentalDecorators": true
+    }
+}
+```
+
+
+
+```typescript
+function logClass(params:any){
+    console.log(params);   
+    params.prototype.run = function(){
+        console.log("我是一个run方法");
+        
+    }
+}
+
+@logClass
+class HttpClient{
+    constructor(){
+
+    }
+    getData(){
+
+    }
+}
+
+var http:any = new HttpClient()
+http.run()
+
+/*
+HttpClient() {
+    }
+*/
+```
+
+
+
+
+
+```typescript
+function logClass(params:string){
+    return function(target:any){
+        console.log(target,params);
+    }
+}
+
+@logClass('hello')
+class HttpClient{
+    constructor(){
+
+    }
+    getData(){
+
+    }
+}
+
+var http:any = new HttpClient()
+```
+
+
+
+### 方法
+
+#### 可以改值
+
+```typescript
+// 方法装饰器
+function logMethod(params:any){
+    return function(target:any,methodName:any,desc:any){
+        console.log(target);//原型对象
+        console.log(methodName);//方法名
+        console.log(desc);//描述
+        target.apiUrl='xxxx'
+        target.run = function(){
+            console.log('run');
+            
+        }
+    }
+}
+
+// @logClass('hello')
+class HttpClient{
+    public url:any|undefined
+    constructor(){
+
+    }
+    @logMethod('http://')
+    getData(){
+        console.log(this.url)
+    }
+}
+
+var http:any = new HttpClient()
+// http.run()
+console.log(http.apiUrl);
+
+http.run()
+
+```
+
+#### 修改方法
+
+```typescript
+function logMethod(params:any){
+    return function(target:any,methodName:any,desc:any){
+        console.log(target);//原型对象
+        console.log(methodName);//方法名
+        console.log(desc.value);//描述
+        target.apiUrl='xxxx'
+        var oMethod=desc.value;
+        desc.value =function(...args:any[]){
+            oMethod.apply(this,args) //我的方法
+            args = args.map((value)=>{
+                return String(value)
+            })
+            console.log(args);
+        }
+    }
+}
+
+// @logClass('hello')
+class HttpClient{
+    public url:any|undefined
+    constructor(){
+
+    }
+    @logMethod('http://')
+    getData(...args:any[]){
+        console.log(args)
+        console.log('我是getData的方法')
+    }
+}
+
+var http:any = new HttpClient()
+// http.run()
+// console.log(http.apiUrl);
+
+http.getData(123,'xxx');
+
+
+```
+
+
+
+### 方法参数
+
+```typescript
+function logParams(params:any){
+    return function(target:any,MethodName:any,paramsIndex:any){
+        console.log(params);
+        console.log(target);//
+        console.log(MethodName);
+        console.log(paramsIndex);//参数索引        
+        target.apiUrl = params
+    }
+}
+
+class HttpClient{
+    public url:any|undefined
+    constructor(){
+    }
+    
+    getData(@logParams('uuid')uuid:any){
+        console.log('我是getData的方法')
+    }
+}
+var http:any = new HttpClient()
+http.getData(123);
+
+console.log(http.apiUrl);
+```
+
+### 执行顺序
+
+属性 方法 装饰器 方法参数 属性 类
