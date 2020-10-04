@@ -144,7 +144,36 @@ using namespace std;
 
 ## 实例
 
-\#include <string.h> #include <vector> #include <iostream> using namespace std;  int main() {    vector<int>obj;//创建一个向量存储容器 int    for(int i=0;i<10;i++) // push_back(elem)在数组最后添加数据     {        obj.push_back(i);        cout<<obj[i]<<",";        }     for(int i=0;i<5;i++)//去掉数组最后一个数据     {        obj.pop_back();    }     cout<<"\n"<<endl;     for(int i=0;i<obj.size();i++)//size()容器中实际数据个数     {        cout<<obj[i]<<",";    }     return 0; }
+```c++
+#include <string.h>
+#include <vector>
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+    vector<int>obj;//创建一个向量存储容器 int
+    for(int i=0;i<10;i++) // push_back(elem)在数组最后添加数据 
+    {
+        obj.push_back(i);
+        cout<<obj[i]<<",";    
+    }
+ 
+    for(int i=0;i<5;i++)//去掉数组最后一个数据 
+    {
+        obj.pop_back();
+    }
+ 
+    cout<<"\n"<<endl;
+ 
+    for(int i=0;i<obj.size();i++)//size()容器中实际数据个数 
+    {
+        cout<<obj[i]<<",";
+    }
+ 
+    return 0;
+}
+```
 
 输出结果为：
 
@@ -158,7 +187,30 @@ using namespace std;
 
 ## 实例
 
-\#include <string.h> #include <vector> #include <iostream> using namespace std;  int main() {    vector<int>obj;    for(int i=0;i<10;i++)//push_back(elem)在数组最后添加数据     {        obj.push_back(i);        cout<<obj[i]<<",";    }     obj.clear();//清除容器中所以数据    for(int i=0;i<obj.size();i++)    {        cout<<obj[i]<<endl;    }     return 0; }
+```C++
+#include <string.h>
+#include <vector>
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+    vector<int>obj;
+    for(int i=0;i<10;i++)//push_back(elem)在数组最后添加数据 
+    {
+        obj.push_back(i);
+        cout<<obj[i]<<",";
+    }
+ 
+    obj.clear();//清除容器中所以数据
+    for(int i=0;i<obj.size();i++)
+    {
+        cout<<obj[i]<<endl;
+    }
+ 
+    return 0;
+}
+```
 
 输出结果为：
 
@@ -170,7 +222,40 @@ using namespace std;
 
 ## 实例
 
-\#include <string.h> #include <vector> #include <iostream> #include <algorithm> using namespace std;  int main() {    vector<int>obj;     obj.push_back(1);    obj.push_back(3);    obj.push_back(0);     sort(obj.begin(),obj.end());//从小到大     cout<<"从小到大:"<<endl;    for(int i=0;i<obj.size();i++)    {        cout<<obj[i]<<",";      }      cout<<"\n"<<endl;     cout<<"从大到小:"<<endl;    reverse(obj.begin(),obj.end());//从大到小     for(int i=0;i<obj.size();i++)    {        cout<<obj[i]<<",";    }    return 0; }
+```c++
+#include <string.h>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+ 
+int main()
+{
+    vector<int>obj;
+ 
+    obj.push_back(1);
+    obj.push_back(3);
+    obj.push_back(0);
+ 
+    sort(obj.begin(),obj.end());//从小到大
+ 
+    cout<<"从小到大:"<<endl;
+    for(int i=0;i<obj.size();i++)
+    {
+        cout<<obj[i]<<",";  
+    } 
+ 
+    cout<<"\n"<<endl;
+ 
+    cout<<"从大到小:"<<endl;
+    reverse(obj.begin(),obj.end());//从大到小 
+    for(int i=0;i<obj.size();i++)
+    {
+        cout<<obj[i]<<",";
+    }
+    return 0;
+}
+```
 
 输出结果为：
 
@@ -186,7 +271,7 @@ using namespace std;
 
 2.如果想 sort 来降序，可重写 sort
 
-```
+```c++
 bool compare(int a,int b) 
 { 
     return a< b; //升序排列，如果改为return a>b，则为降序 
@@ -201,7 +286,39 @@ sort(a,a+20,compare);
 
 ## 实例
 
-\#include <string.h> #include <vector> #include <iostream> #include <algorithm> using namespace std;  int main() {    //顺序访问    vector<int>obj;    for(int i=0;i<10;i++)    {        obj.push_back(i);       }      cout<<"直接利用数组：";     for(int i=0;i<10;i++)//方法一     {        cout<<obj[i]<<" ";    }     cout<<endl;     cout<<"利用迭代器：" ;    //方法二，使用迭代器将容器中数据输出     vector<int>::iterator it;//声明一个迭代器，来访问vector容器，作用：遍历或者指向vector容器的元素     for(it=obj.begin();it!=obj.end();it++)    {        cout<<*it<<" ";    }    return 0; }
+```c++
+#include <string.h>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+ 
+int main()
+{
+    //顺序访问
+    vector<int>obj;
+    for(int i=0;i<10;i++)
+    {
+        obj.push_back(i);   
+    } 
+ 
+    cout<<"直接利用数组："; 
+    for(int i=0;i<10;i++)//方法一 
+    {
+        cout<<obj[i]<<" ";
+    }
+ 
+    cout<<endl; 
+    cout<<"利用迭代器：" ;
+    //方法二，使用迭代器将容器中数据输出 
+    vector<int>::iterator it;//声明一个迭代器，来访问vector容器，作用：遍历或者指向vector容器的元素 
+    for(it=obj.begin();it!=obj.end();it++)
+    {
+        cout<<*it<<" ";
+    }
+    return 0;
+}
+```
 
 输出结果为：
 
@@ -214,13 +331,63 @@ sort(a,a+20,compare);
 
 ## 方法一
 
-\#include <string.h> #include <vector> #include <iostream> #include <algorithm> using namespace std;   int main() {    int N=5, M=6;     vector<vector<int> > obj(N); //定义二维动态数组大小5行     for(int i =0; i< obj.size(); i++)//动态二维数组为5行6列，值全为0     {         obj[i].resize(M);     }      for(int i=0; i< obj.size(); i++)//输出二维动态数组     {        for(int j=0;j<obj[i].size();j++)        {            cout<<obj[i][j]<<" ";        }        cout<<"\n";    }    return 0; }
+```c++
+#include <string.h>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+ 
+ 
+int main()
+{
+    int N=5, M=6; 
+    vector<vector<int> > obj(N); //定义二维动态数组大小5行 
+    for(int i =0; i< obj.size(); i++)//动态二维数组为5行6列，值全为0 
+    { 
+        obj[i].resize(M); 
+    } 
+ 
+    for(int i=0; i< obj.size(); i++)//输出二维动态数组 
+    {
+        for(int j=0;j<obj[i].size();j++)
+        {
+            cout<<obj[i][j]<<" ";
+        }
+        cout<<"\n";
+    }
+    return 0;
+}
+```
 
 
 
 ## 方法二
 
-\#include <string.h> #include <vector> #include <iostream> #include <algorithm> using namespace std;   int main() {    int N=5, M=6;     vector<vector<int> > obj(N, vector<int>(M)); //定义二维动态数组5行6列      for(int i=0; i< obj.size(); i++)//输出二维动态数组     {        for(int j=0;j<obj[i].size();j++)        {            cout<<obj[i][j]<<" ";        }        cout<<"\n";    }    return 0; }
+```c++
+#include <string.h>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+ 
+ 
+int main()
+{
+    int N=5, M=6; 
+    vector<vector<int> > obj(N, vector<int>(M)); //定义二维动态数组5行6列 
+ 
+    for(int i=0; i< obj.size(); i++)//输出二维动态数组 
+    {
+        for(int j=0;j<obj[i].size();j++)
+        {
+            cout<<obj[i][j]<<" ";
+        }
+        cout<<"\n";
+    }
+    return 0;
+}
+```
 
 输出结果为：
 
@@ -231,3 +398,71 @@ sort(a,a+20,compare);
 0 0 0 0 0 0 
 0 0 0 0 0 0 
 ```
+
+## 遍历
+
+```c++
+#include <vector>
+#include <iostream>
+ 
+using namespace std;
+ 
+struct Point
+{
+	double x;
+	double y;
+	Point()
+	{
+		x = 0;
+		y = 0;
+	}
+};
+ 
+ 
+int main()
+{
+	vector<Point> m_testPoint;
+	m_testPoint.clear();
+	m_testPoint.shrink_to_fit();
+ 
+	for (int i = 0; i<10; ++i)
+	{
+		Point temp;
+		temp.x = i*i;
+		temp.y = i*i;
+		m_testPoint.push_back(temp);
+	}
+ 
+	//第一种遍历方式，下标
+	cout << "第一种遍历方式，下标访问" << endl;
+	for (int i = 0; i<m_testPoint.size(); ++i)
+	{
+ 
+		cout << m_testPoint[i].x << "	" << m_testPoint[i].y << endl;
+	}
+ 
+	//第二种遍历方式，迭代器
+	cout << "第二种遍历方式，迭代器访问" << endl;
+	for (vector<Point>::iterator iter = m_testPoint.begin(); iter != m_testPoint.end(); iter++)
+	{
+		cout << (*iter).x << "	" << (*iter).y << endl;
+	}
+ 
+	//第三种遍历方式，auto关键字
+	cout << "C++11,第三种遍历方式，auto关键字" << endl;
+	for (auto iter = m_testPoint.begin(); iter != m_testPoint.end(); iter++)
+	{
+		cout << (*iter).x << "	" << (*iter).y << endl;
+	}
+ 
+	//第四种遍历方式，auto关键字的另一种方式
+	cout << "C++11,第四种遍历方式，auto关键字" << endl;
+	for (auto i : m_testPoint)
+	{
+		cout << i.x << "	" << i.y << endl;
+	}
+ 
+	return 0;
+}
+```
+
