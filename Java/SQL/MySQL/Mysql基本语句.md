@@ -33,6 +33,30 @@ source sql文件路径
   >set character_set_results=utf8;
   >set character_set_connection=utf8;
 
+## 安装mysql
+
+1. 修改环境变量
+
+2. 初始化
+
+   ```sh
+   mysqld --initialize-insecure
+   ```
+
+3. 安装
+
+   ```sh
+   mysqld -install [服务名默认mysql]
+   ```
+
+4. 连接服务
+
+   ```sh
+   net start mysql
+   ```
+
+   
+
 ## 密码
 
 ### 修改密码
@@ -1505,3 +1529,7 @@ mysqldump --user [username] --password=[password] [database name] [table name] >
    ```
 
    
+
+### 3.CentO S安装MySQL8
+
+https://learnku.com/articles/38526

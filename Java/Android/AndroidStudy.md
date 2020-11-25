@@ -12,6 +12,8 @@
 
 activity name：
 
+1. 创建activity
+
 ### 布局
 
 添加布局窗口
