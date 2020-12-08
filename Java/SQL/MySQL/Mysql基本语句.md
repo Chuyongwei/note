@@ -1083,9 +1083,287 @@ HAVING <条件>
 - WHERE 子句不可以包含聚合函数，HAVING 子句中的条件可以包含聚合函数。
 - HAVING 子句是在数据分组后进行过滤，WHERE 子句会在数据分组前进行过滤。WHERE 子句排除的行不包含在分组中，可能会影响 HAVING 子句基于这些值过滤掉的分组。
 
+## 数据表的其他操作
 
+<!-- 2020.12.5 -->
 
+### 插入数据
 
+> 数据库与表创建成功以后，需要向数据库的表中插入数据。在 [MySQL](http://c.biancheng.net/mysql/) 中可以使用 INSERT 语句向数据库已有的表中插入一行或者多行元组数据。
+
+#### 1) INSERT…VALUES语句
+
+INSERT VALUES 的语法格式为：
+
+```sql
+INSERT INTO <表名> [ <列名1> [ , … <列名n>] ]
+VALUES (值1) [… , (值n) ];
+```
+
+语法说明如下。
+
+- `<表名>`：指定被操作的表名。
+- `<列名>`：指定需要插入数据的列名。若向表中的所有列插入数据，则全部的列名均可以省略，直接采用 INSERT<表名>VALUES(…) 即可。
+- `VALUES` 或 `VALUE` 子句：该子句包含要插入的数据清单。数据清单中数据的顺序要和列的顺序相对应。
+
+#### 2) INSERT…SET语句
+
+语法格式为：
+
+```sql
+INSERT INTO <表名>
+SET <列名1> = <值1>,
+    <列名2> = <值2>,
+    …
+```
+
+此语句用于直接给表中的某些列指定对应的列值，即要插入的数据的列名在 SET 子句中指定，col_name 为指定的列名，等号后面为指定的数据，而对于未指定的列，列值会指定为该列的默认值。
+
+由 INSERT 语句的两种形式可以看出：
+
+- 使用 INSERT…VALUES 语句可以向表中插入一行数据，也可以插入多行数据；
+- 使用 INSERT…SET 语句可以指定插入行中每列的值，也可以指定部分列的值；
+- INSERT…SELECT 语句向表中插入其他表的数据。
+- 采用 INSERT…SET 语句可以向表中插入部分列的值，这种方式更为灵活；
+- INSERT…VALUES 语句可以一次插入多条数据。
+
+### 使用 INSERT INTO…FROM 语句复制表数据
+
+INSERT INTO…SELECT…FROM 语句用于快速地从一个或多个表中取出数据，并将这些数据作为行数据插入另一个表中。
+
+SELECT 子句返回的是一个查询到的结果集，INSERT 语句将这个结果集插入指定表中，结果集中的每行数据的字段数、字段的数据类型都必须与被操作的表完全一致。
+
+在数据库 test_db 中创建一个与 tb_courses 表结构相同的数据表 tb_courses_new，创建表的 SQL 语句和执行过程如下所示。
+
+```sql
+mysql> CREATE TABLE tb_courses_new
+    -> (
+    -> course_id INT NOT NULL AUTO_INCREMENT,
+    -> course_name CHAR(40) NOT NULL,
+    -> course_grade FLOAT NOT NULL,
+    -> course_info CHAR(100) NULL,
+    -> PRIMARY KEY(course_id)
+    -> );
+Query OK, 0 rows affected (0.00 sec)
+mysql> SELECT * FROM tb_courses_new;
+Empty set (0.00 sec)
+```
+
+### 修改数据（更新数据）
+
+#### UPDATE 语句的基本语法
+
+> 在 [MySQL](http://c.biancheng.net/mysql/) 中，可以使用 UPDATE 语句来修改、更新一个或多个表的数据。
+
+使用 UPDATE 语句修改单个表，语法格式为：
+
+```sql
+UPDATE <表名> SET 字段 1=值 1 [,字段 2=值 2… ] [WHERE 子句 ]
+[ORDER BY 子句] [LIMIT 子句]
+```
+
+语法说明如下：
+
+- `<表名>`：用于指定要更新的表名称。
+- `SET` 子句：用于指定表中要修改的列名及其列值。其中，每个指定的列值可以是表达式，也可以是该列对应的默认值。如果指定的是默认值，可用关键字 DEFAULT 表示列值。
+- `WHERE` 子句：可选项。用于限定表中要修改的行。若不指定，则修改表中所有的行。
+- `ORDER BY` 子句：可选项。用于限定表中的行被修改的次序。
+- `LIMIT` 子句：可选项。用于限定被修改的行数。
+
+> 注意：修改一行数据的多个列值时，SET 子句的每个值用逗号分开即可。
+
+### 删除数据
+
+> 在 [MySQL](http://c.biancheng.net/mysql/) 中，可以使用 DELETE 语句来删除表的一行或者多行数据。
+
+#### 删除单个表中的数据
+
+使用 DELETE 语句从单个表中删除数据，语法格式为：
+
+```sql
+DELETE FROM <表名> [WHERE 子句] [ORDER BY 子句] [LIMIT 子句]
+```
+
+语法说明如下：
+
+- `<表名>`：指定要删除数据的表名。
+- `ORDER BY` 子句：可选项。表示删除时，表中各行将按照子句中指定的顺序进行删除。
+- `WHERE` 子句：可选项。表示为删除操作限定删除条件，若省略该子句，则代表删除该表中的所有行。
+- `LIMIT` 子句：可选项。用于告知服务器在控制命令被返回到客户端前被删除行的最大值。
+
+> 注意：在不使用 WHERE 条件的时候，将删除所有数据。
+
+### TRUNCATE：清空表记录
+
+> MySQL 提供了 DELETE 和 TRUNCATE 关键字来删除表中的数据。本节主要讲解 TRUNCATE 关键字的使用。
+
+**TRUNCATE** 关键字用于完全清空一个表。其语法格式如下：
+
+```sql
+TRUNCATE [TABLE] 表名
+```
+
+其中，TABLE 关键字可省略。
+
+#### TRUNCATE 和 DELETE 的区别
+
+从逻辑上说，TRUNCATE 语句与 DELETE 语句作用相同，但是在某些情况下，两者在使用上有所区别。
+
+- DELETE 是 DML 类型的语句；TRUNCATE 是 DDL 类型的语句。它们都用来清空表中的数据。
+- DELETE 是逐行一条一条删除记录的；TRUNCATE 则是直接删除原来的表，再重新创建一个一模一样的新表，而不是逐行删除表中的数据，执行数据比 DELETE 快。因此需要删除表中全部的数据行时，尽量使用 TRUNCATE 语句， 可以缩短执行时间。
+- DELETE 删除数据后，配合事件回滚可以找回数据；TRUNCATE 不支持事务的回滚，数据删除后无法找回。
+- DELETE 删除数据后，系统不会重新设置自增字段的计数器；TRUNCATE 清空表记录后，系统会重新设置自增字段的计数器。
+- DELETE 的使用范围更广，因为它可以通过 WHERE 子句指定条件来删除部分数据；而 TRUNCATE 不支持 WHERE 子句，只能删除整体。
+- DELETE 会返回删除数据的行数，但是 TRUNCATE 只会返回 0，没有任何意义。
+
+# MySQL存储
+
+## 备份与恢复
+
+数据库的主要作用就是对数据进行保存和维护，所以备份数据是数据库管理中最常用的操作。为了防止数据库意外崩溃或硬件损伤而导致的数据丢失，数据库系统提供了备份和恢复策略。
+
+保证数据安全的最重要的一个措施就是定期的对数据库进行备份。这样即使发生了意外，也会把损失降到最低。
+
+数据库备份是指通过导出数据或者复制表文件的方式来制作数据库的副本。当数据库出现故障或遭到破坏时，将备份的数据库加载到系统，从而使数据库从错误状态恢复到备份时的正确状态。
+
+> MySQL 中提供了两种备份方式，即 mysqldump 命令以及 mysqlhotcopy 脚本。由于 mysqlhotcopy 只能用于 MyISAM 表，所以 MySQL 5.7 移除了 mysqlhotcopy 脚本。
+
+### 备份一个数据库
+
+使用 mysqldump 命令备份一个数据库的语法格式如下：
+
+```sh
+mysqldump -u username -p dbname [tbname ...]> filename.sql
+```
+
+对上述语法参数说明如下：
+
+- username：表示用户名称；
+- dbname：表示需要备份的数据库名称；
+- tbname：表示数据库中需要备份的数据表，可以指定多个数据表。省略该参数时，会备份整个数据库；
+- 右箭头“>”：用来告诉 mysqldump 将备份数据表的定义和数据写入备份文件；
+- filename.sql：表示备份文件的名称，文件名前面可以加绝对路径。通常将数据库备份成一个后缀名为`.sql`的文件。
+
+注意：mysqldump 命令备份的文件并非一定要求后缀名为`.sql`，备份成其他格式的文件也是可以的。例如，后缀名为`.txt`的文件。通常情况下，建议备份成后缀名为`.sql` 的文件。因为，后缀名为`.sql`的文件给人第一感觉就是与数据库有关的文件。
+
+### 备份所有的数据库
+
+mysqldump 命令备份所有数据库的语法格式如下：
+
+```sh
+mysqldump -u username -P --all-databases>filename.sql
+```
+
+使用`--all-databases`参数时，不需要指定数据库名称。
+
+### 恢复数据
+
+当数据丢失或意外损坏时，可以通过恢复已经备份的数据来尽量减少数据的丢失和破坏造成的损失。本节主要介绍如何对备份的数据进行恢复操作。
+
+在《[MySQL mysqldump备份数据库](http://c.biancheng.net/view/7373.html)》一节中介绍了如何使用 mysqldump 命令将数据库中的数据备份成一个文本文件，且备份文件中通常包含 CREATE 语句和 INSERT 语句。
+
+在 MySQL 中，可以使用 mysql 命令来恢复备份的数据。mysql 命令可以执行备份文件中的 CREATE 语句和 INSERT 语句，也就是说，mysql 命令可以通过 CREATE 语句来创建数据库和表，通过 INSERT 语句来插入备份的数据。
+
+mysql 命令语法格式如下：
+
+```
+mysql -u username -P [dbname] < filename.sql
+```
+
+其中：
+
+- username 表示用户名称；
+- dbname 表示数据库名称，该参数是可选参数。如果 filename.sql 文件为 mysqldump 命令创建的包含创建数据库语句的文件，则执行时不需要指定数据库名。如果指定的数据库名不存在将会报错；
+- filename.sql 表示备份文件的名称。
+
+注意：mysql 命令和 mysqldump 命令一样，都直接在命令行（cmd）窗口下执行。
+
+索引与视图
+
+### 索引
+
+添加
+
+```sql
+create UNIQUE index <索引名> on <列名>(表名)
+```
+
+删除
+
+```sql
+drop index index_stu_no;
+```
+
+查看
+
+```
+show keys from student;
+ show index from student;
+```
+
+### 视图
+
+1. 创建视图
+
+   ```sql
+    create view VIEW_EMP
+     as
+     select empno,ename,job,deptno
+     from emp
+     where deptno = 20
+   ```
+
+2. 使用视图
+
+   ```sql
+   select * from VIEW_EMP
+   ```
+
+3. 添加视图信息
+
+   ```sql
+   insert into VIEW_EMP values(...)
+   ```
+
+4. 更新视图
+
+   ```sql
+   update VIEW_EMP set ename = '西方' where
+   ```
+
+5. 删除视图内容
+
+   ```sql
+   delete from emp where ...
+   ```
+
+6. 删除视图
+
+   ```sql
+   drop view VIEW_EMP;
+   ```
+
+7. 查看所有视图
+
+   ```sql
+   show table status where comment='view';
+   ```
+
+   
+
+- 只读视图
+
+  1. 创建
+
+     ```sql
+     create or replace view VIEW_EMP
+       as
+       select empno,ename,job,deptno
+       from emp
+       where deptno = 20 read only;
+     ```
+
+## 
 
 # 常用运算符详解
 
@@ -1361,89 +1639,6 @@ UPDATE <表名> SET 字段 1=值 1 [,字段 2=值 2… ] [WHERE 子句 ]
 ```sql
 DELETE from <数据表> [where <条件>]
 ```
-
-## 索引
-
-添加
-
-```sql
-create UNIQUE index <索引名> on <列名>(表名)
-```
-
-删除
-
-```sql
-drop index index_stu_no;
-```
-
-查看
-
-```
-show keys from student;
- show index from student;
-```
-
-## 视图
-
-1. 创建视图
-
-   ```sql
-    create view VIEW_EMP
-     as
-     select empno,ename,job,deptno
-     from emp
-     where deptno = 20
-   ```
-
-2. 使用视图
-
-   ```sql
-   select * from VIEW_EMP
-   ```
-
-3. 添加视图信息
-
-   ```sql
-   insert into VIEW_EMP values(...)
-   ```
-
-4. 更新视图
-
-   ```sql
-   update VIEW_EMP set ename = '西方' where
-   ```
-
-5. 删除视图内容
-
-   ```sql
-   delete from emp where ...
-   ```
-
-6. 删除视图
-
-   ```sql
-   drop view VIEW_EMP;
-   ```
-
-7. 查看所有视图
-
-   ```sql
-   show table status where comment='view';
-   ```
-
-   
-
-- 只读视图
-
-  1. 创建
-
-     ```sql
-     create or replace view VIEW_EMP
-       as
-       select empno,ename,job,deptno
-       from emp
-       where deptno = 20 read only;
-     ```
 
 ## 备份与恢复
 
