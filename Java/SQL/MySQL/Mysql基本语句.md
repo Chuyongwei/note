@@ -375,7 +375,7 @@ ALTER TABLE <表名> [修改选项]
 | RENAME TO <新表名> }
 ```
 
-##### 添加字段
+#### 添加字段
 
 例：
 
@@ -390,7 +390,7 @@ mysql> ALTER TABLE tb_emp1
 
 <font color = "red">提示</font>：“FIRST 或 AFTER 已存在的字段名”用于指定新增字段在表中的位置，如果 SQL 语句中没有这两个参数，则默认将新添加的字段设置为数据表的最后列。
 
-##### 修改字段：
+#### 修改字段：
 
 ###### 类型
 
@@ -412,10 +412,17 @@ ALTER TABLE <表名> CHANGE <旧字段名> <新字段名> <新数据类型>；
 ALTER TABLE <旧表名> RENAME [TO] <新表名>；
 ```
 
-##### 删除字段
+#### 删除字段
 
 ```sql
 ALTER TABLE <表名> DROP <字段名>；
+```
+
+#### 移动字段
+
+```mysql
+alter table employee modify user_name varchar(100) after password;
+alter table employee modify user_name varchar(100) first;
 ```
 
 ### 删除数据表
@@ -449,6 +456,14 @@ DROP TABLE [IF EXISTS] <表名> [ , <表名1> , <表名2>] …
   ```sql
   <字段名> <数据类型> PRIMARY KEY [默认值]
   ```
+
+删除主键
+
+```sql
+ALTER TABLE <数据表名> DROP PRIMARY KEY;
+```
+
+
 
 ### 外键（FOREIGN KEY）
 

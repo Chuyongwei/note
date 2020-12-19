@@ -841,6 +841,22 @@ SQL> alter user system identified by root;
 
 # 写在后面
 
+## 忘记密码
+
+管理员模式cmd
+
+```sql
+ sqlplus /nolog
+ connect  /  as  sysdba
+ alter user sys identified by cj; 
+ alter user system identified by cj; 
+ alter user scott identified by cj; 
+```
+
+> ORA-01034: ORACLE not available
+>
+> 执行sartup
+
 ## linux安装
 
 [参考](https://blog.csdn.net/Holmofy/article/details/77622284)
@@ -875,3 +891,4 @@ LANG=en_US ./runInstaller
 ```
 
 https://blog.51cto.com/lorysun/1606952
+
