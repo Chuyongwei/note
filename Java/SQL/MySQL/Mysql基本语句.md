@@ -1743,3 +1743,44 @@ mysqldump --user [username] --password=[password] [database name] [table name] >
 ### 3.CentO S安装MySQL8
 
 https://learnku.com/articles/38526
+
+
+
+## 设置时间
+
+>  一般我们不允许手动设置时间
+
+创建时添加时间 
+
+```sql
+`create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+`update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间' ;
+```
+
+添加创建时间
+
+```sql
+ALTER TABLE `table_name`
+ADD COLUMN  `CreateTime` datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ;
+```
+
+修改创建时间
+
+```sql
+ALTER TABLE dept MODIFY COLUMN create_time datetime NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间' ;
+```
+
+添加修改时间
+
+```sql
+TABLE `table_name`
+ADD COLUMN `UpdateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间' ;
+```
+
+修改修改时间
+
+```sql
+ALTER TABLE `table_name`
+MODIFY COLUMN `UpdateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间' ;
+```
+
