@@ -7,11 +7,13 @@
            <dependency>
                <groupId>mysql</groupId>
                <artifactId>mysql-connector-java</artifactId>
+               <version>8.0.20</version>
            </dependency>
+           <!--  mybatisplus -->
            <dependency>
-               <groupId>org.mybatis.spring.boot</groupId>
-               <artifactId>mybatis-spring-boot-starter</artifactId>
-               <version>2.1.4</version>
+               <groupId>com.baomidou</groupId>
+               <artifactId>mybatis-plus-boot-starter</artifactId>
+               <version>3.3.1.tmp</version>
            </dependency>
        </dependencies>
    ```
@@ -66,15 +68,26 @@
    @AllArgsConstructor
    @NoArgsConstructor
    public class User {
-   
        private Long id;
        private String name;
        private Integer age;
        private String email;
    }
    ```
+   
+6. 在启动类上添加扫描
 
-6. 运行mybatis
+   ```java
+   @MapperScan("nuc.wcy.edu.mapper")
+   @SpringBootApplication
+   public class mybatisplusApplication {
+       public static void main(String[] args) {
+           SpringApplication.run(mybatisplusApplication.class,args);
+       }
+   }
+   ```
+   
+7. 运行mybatis
 
    ```java
    @RunWith(SpringRunner.class)
@@ -141,12 +154,30 @@ public enum IdType {
 }
 ```
 
+1. 实体类上进行设置id的填充模式
+
+   ```java
+   @Data
+   @AllArgsConstructor
+   @NoArgsConstructor
+   public class User {
+       @TableId(type = IdType.AUTO)
+       private Long id;
+       private String name;
+       private Integer age;
+       private String email;
+   }
+   ```
+
+   
+
 #### 时间
 
 1. 通过使用sql语句
 
-   ```
-   
+   ```sql
+   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment '更新时间',
    ```
 
    
@@ -360,7 +391,8 @@ public class mybatisTest {
    mybatis-plus.global-config.db-config.logic-not-delete-value=0
    ```
 
-   
+
+最后我们的删除操作就变成了逻辑删除
 
 
 

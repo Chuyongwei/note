@@ -2329,6 +2329,3 @@ yum update
 tomcat redis zookeeper
 
 java:使用yum
-
-
-
