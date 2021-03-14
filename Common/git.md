@@ -58,9 +58,10 @@ git mv 旧文件名 新文件名
 
 ```powershell
  git branch -v #查看分支
- git checkout -b 分支名 f7f25d009228a20e5c7eb7594aa726cdc5910545 #创建分支
+ git branch 分支名 #创建分支
  git checkout 分支名#选择分支
-git log --all #查看分支
+ git checkout -b 分支名 f7f25d009228a20e5c7eb7594aa726cdc5910545 #创建并选择分支
+git log --all #查看所有分支的记录
 git log --all --graph 
 git branch -b 分支名 #删除分支
 git branch -m oldName newName #重命名

@@ -57,7 +57,7 @@ gnome-terminal
 
 
 
-`pwd`查看当前文件
+`pwd`查看当前文件路经
 
 `which 命令`查看命令所在位置
 
@@ -230,11 +230,7 @@ x：在目录上表示这个文件可以被读
 
 文件详情的
 
-`d`      `rwx`   `rwx               `               `rwx`
 
-属性 所有者 群组用户  其他用户
-
-`chmod`
 
 | 权限 | 数字 |
 | ---- | ---- |
@@ -2315,6 +2311,24 @@ yum update
 [https://www.365jz.com/article/24845]
 
 
+
+
+
+# 教学
+
+```
+systemctl get-default
+systemctl set-default graphical.target
+systemctl set-default multi-user.target
+```
+
+
+
+
+
+```sh
+hostnamectl set-hostname 名字
+```
 
 
 
