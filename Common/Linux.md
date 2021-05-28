@@ -2320,21 +2320,26 @@ yum update
 
 # 教学
 
-```
+## 设置
+
+```sh
 systemctl get-default
 systemctl set-default graphical.target
 systemctl set-default multi-user.target
 ```
 
-
-
-
-
 ```sh
 hostnamectl set-hostname 名字
 ```
 
+#### sudo
 
+```bash
+visudo #学习
+/etc/sudoers
+```
+
+#### shell编程
 
 # 附录
 
