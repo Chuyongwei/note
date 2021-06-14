@@ -35,6 +35,62 @@ var add = (x,y)=>x+y
 add(3,6)//9
 ```
 
+## 类和对象
+
+### 创建类和对象
+
+> 使用`constructor()`，默认有constructor()
+
+方法
+
+1. 不用加function关键字
+2. 不要方法之间加逗号
+
+### 继承
+
+```js
+class Father {
+    constructor(x, y) {
+        this.x = x
+        this.y = y
+    }
+    money() {
+        console.log("我有钱");
+    }
+    sum() {
+        console.log(this.x + this.y);
+    }
+    say(){
+        return "我是爸爸"
+    }
+}
+class Son extends Father {
+    constructor(x, y) {
+        super(x, y)//继承父类的构造方法
+        // sum方法的x，y用的是父类的我们需要在父类上写
+    }
+    say(){
+        // console.log("我是儿子");
+        console.log(super.say()+"的儿子");
+        // super.say()是调用父类的方法
+    }
+    substract(){
+        console.log(this.x-this.y);
+    }
+}
+var son = new Son(1, 2)
+son.money()// 我有钱
+son.sum() // 3
+son.say() // 我是爸爸的儿子
+son.substract() // -1
+```
+
+注意：
+
+- `super()`必须在构造方法第一行调用
+- 必须先有类才能定义对象
+- 对象的属性和方法一定要加`this`
+
 # 你不知道的JavaScript 笔记
 
 ## 作用域闭包
