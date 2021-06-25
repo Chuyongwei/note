@@ -870,7 +870,7 @@ public class AccountServiceTest {
     public void testFindAll() {
         //3.执行方法
         List<Account> accounts = as.findAllAccount();
-        for(Account account : SpringJUnit4ClassRunneraccounts){
+        for(Account account : accounts){
             System.out.println(account);
         }
     }

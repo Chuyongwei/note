@@ -704,3 +704,28 @@ Octotree
 
 Sourcegraph
 
+
+
+## SSH发送
+
+### 检查是否3有ssh密钥
+
+```sh
+$ ls -al ~/.ssh
+```
+
+应该会有如下目录
+
+- id_rsa.pub
+- id_ecdsa.pub
+- id_ed25519.pub
+
+### 创建密钥
+
+#### windows
+
+```shell
+$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+然后把`id_rsa.pub`的内容导入GitHub中
