@@ -1,5 +1,4 @@
 {
-  "policy": null,
   "log": {
     "access": "",
     "error": "",
@@ -20,95 +19,58 @@
       },
       "settings": {
         "auth": "noauth",
-        "udp": true,
-        "ip": null,
-        "address": null,
-        "clients": null
-      },
-      "streamSettings": null
+        "udp": true
+      }
     }
   ],
   "outbounds": [
     {
       "tag": "proxy",
-      "protocol": "vmess",
+      "protocol": "shadowsocks",
       "settings": {
-        "vnext": [
+        "servers": [
           {
-            "address": "a3038a16ae0fee245.awsglobalaccelerator.com",
-            "port": 8080,
-            "users": [
-              {
-                "id": "dd8e4c7f-3650-4922-9cc2-b9b9e5f87641",
-                "alterId": 1,
-                "email": "t@t.tt",
-                "security": "auto"
-              }
-            ]
+            "address": "198.8.92.84",
+            "method": "aes-256-gcm",
+            "ota": false,
+            "password": "J9Y2ncrdPEC38gwydNFFGBna",
+            "port": 35294,
+            "level": 1
           }
-        ],
-        "servers": null,
-        "response": null
+        ]
       },
       "streamSettings": {
-        "network": "ws",
-        "security": null,
-        "tlsSettings": null,
-        "tcpSettings": null,
-        "kcpSettings": null,
-        "wsSettings": {
-          "connectionReuse": true,
-          "path": "/WebSocket",
-          "headers": null
-        },
-        "httpSettings": null,
-        "quicSettings": null
+        "network": "tcp"
       },
       "mux": {
-        "enabled": true,
-        "concurrency": 8
+        "enabled": false,
+        "concurrency": -1
       }
     },
     {
       "tag": "direct",
       "protocol": "freedom",
-      "settings": {
-        "vnext": null,
-        "servers": null,
-        "response": null
-      },
-      "streamSettings": null,
-      "mux": null
+      "settings": {}
     },
     {
       "tag": "block",
       "protocol": "blackhole",
       "settings": {
-        "vnext": null,
-        "servers": null,
         "response": {
           "type": "http"
         }
-      },
-      "streamSettings": null,
-      "mux": null
+      }
     }
   ],
-  "stats": null,
-  "api": null,
-  "dns": null,
   "routing": {
     "domainStrategy": "IPIfNonMatch",
     "rules": [
       {
         "type": "field",
-        "port": null,
         "inboundTag": [
           "api"
         ],
-        "outboundTag": "api",
-        "ip": null,
-        "domain": null
+        "outboundTag": "api"
       }
     ]
   }
