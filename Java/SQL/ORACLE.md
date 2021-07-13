@@ -168,7 +168,7 @@ alter table 表名 drop constraint 约束名
 - 删除表
 
   ```sql
-drop table 表名[cascade constraints];
+  drop table 表名[cascade constraints];
   ```
   
   如果该表存在约束，关联的视图等，则必须使用`cascade constraints`才能删除
@@ -654,8 +654,8 @@ select * from emp e where sal > (select avg(sal) from emp where job = e.job);
 
    ```sql
    connect system/manager
-   grant create any view tcott;
-   conn cott/tiger
+   grant create any view scott;
+   conn scott/tiger
    ```
 
 2. 创建视图
