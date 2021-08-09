@@ -1244,7 +1244,7 @@ sudo yum install vim
 
   1. 输入大写的 O 可以在光标上方打开新的一行。
 
-    2. 输入小写的 a 可以在光标所在位置之后插入文本。
+        2. 输入小写的 a 可以在光标所在位置之后插入文本。
 
 输入大写的 A 可以在光标所在行的行末之后插入文本。
      
@@ -2351,3 +2351,45 @@ visudo #学习
 tomcat redis zookeeper
 
 java:使用yum
+
+
+
+## 清理
+
+### 删除旧内核
+
+```shell
+package-cleanup --oldkernels --count=1
+```
+
+
+
+### 删除孤儿包
+
+```powershell
+#检查
+package-cleanup --quiet --leaves --exclude-bin
+#执行
+package-cleanup --quiet --leaves --exclude-bin | xargs yum remove -y
+```
+
+### 清理YUM缓存
+
+清理yum缓存很简单：
+
+```powershell
+yum clean all
+```
+
+请注意，上面的命令不会删除yum已安装的与之相关的所有文件。
+您可能希望释放禁用或删除的存储库中的孤立数据占用的空间：
+
+```powershell
+rm -rf /var/cache/yum
+```
+
+此外，当您意外地`yum`通过普通用户（忘记sudo）时，yum将创建用户缓存。所以我们也删除它：
+
+```powershell
+rm -rf /var/tmp/yum-*
+```
