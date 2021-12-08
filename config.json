@@ -30,11 +30,11 @@
       "settings": {
         "servers": [
           {
-            "address": "137.59.52.107",
+            "address": "134.195.196.3",
             "method": "aes-256-gcm",
             "ota": false,
-            "password": "CUndSZnYsPKcu6Kj8THVMBHD",
-            "port": 39772,
+            "password": "g5MeD6Ft3CWlJId",
+            "port": 5003,
             "level": 1
           }
         ]
