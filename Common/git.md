@@ -14,7 +14,7 @@ git config [--local|--global] user.email "sdf"
 ```powershell
 git config [--local] user.name 
 git config [--local] user.email 
-git config --list #查看配置内容
+git config --list #查看配置内容看
 ```
 
 初始化
