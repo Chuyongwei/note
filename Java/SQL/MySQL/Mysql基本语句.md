@@ -62,7 +62,7 @@ source sql文件路径
 ### 修改密码
 
 ```sql
-ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '65';
 或者
 ALTER USER 'root'@'%' IDENTIFIED BY '123456';
 -- 具体看mysql.user表
@@ -392,13 +392,13 @@ mysql> ALTER TABLE tb_emp1
 
 #### 修改字段：
 
-###### 类型
+##### 类型
 
 ```sql
 ALTER TABLE <表名> MODIFY <字段名> <数据类型>
 ```
 
-###### 名称
+##### 名称
 
 ```sql
 ALTER TABLE <表名> CHANGE <旧字段名> <新字段名> <新数据类型>；
@@ -406,7 +406,7 @@ ALTER TABLE <表名> CHANGE <旧字段名> <新字段名> <新数据类型>；
 
 <font color="red">提示:</font>   由于不同类型的数据在机器中的存储方式及长度并不相同，修改数据类型可能会影响数据表中已有的数据记录，因此，当数据表中已经有数据时，不要轻易修改数据类型。
 
-###### 表名
+##### 表名
 
 ```sql
 ALTER TABLE <旧表名> RENAME [TO] <新表名>；
@@ -1673,7 +1673,7 @@ mysqldump --user [username] --password=[password] [database name] [table name] >
 1. 查询端口号
 
    ```mysql
-   show variables like '%port%'
+   show variables like '%port%';
    ```
 
    ![](images/vmware_NgdnENRd8B.png)
