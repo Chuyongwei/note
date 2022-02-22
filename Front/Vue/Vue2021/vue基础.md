@@ -860,6 +860,8 @@ new Vue({
 
 ### 动态路由匹配
 
+#### 传参方案一
+
 路由
 
 ```js
@@ -885,6 +887,30 @@ new Vue({
 
 ```html
 <div>{{$route.params.name}}</div>
+```
+
+#### 传参方案二
+
+```js
+       this.$router.push({
+          name: 'Describe',
+          params: {
+            id: id
+          }
+        })
+```
+
+#### 传参方案三
+
+这个属于get的代码了吧
+
+```js
+    this.$router.push({
+          path: '/describe',
+          query: {
+            id: id
+          }
+        })
 ```
 
 
@@ -1143,6 +1169,18 @@ https://ustbhuangyi.github.io/vue-analysis/v2/components/lifecycle.html
 
 https://www.processon.com/view/link/5e146d6be4b0da16bb15aa2a#map
 
+### 使用
+
+```powershell
+vue add vuex
+```
+
+### 安装
+
+```powershell
+npm install vuex@3.6.2 --savev
+```
+
 
 
 
@@ -1380,7 +1418,7 @@ vue inspect --rule svg
 
 # Vue测试
 
-###  v-if和v-for哪个优先级高
+##  v-if和v-for哪个优先级高
 
 ```vue
 <!DOCTYPE html>
@@ -1455,7 +1493,7 @@ with(this){return _c('div',{attrs:{"id":"demo"}},[_c('h1',[_v("v-for和v-if谁�
 3. 要避免出现这种情况，则在外层嵌套template，在这一层进行v-if判断，然后在内部进行v-for循环
 4. 如果条件出现在循环内部，可通过计算属性提前过滤掉那些不需要显示的项
 
-### Vue组件data为什么必须是个函数而Vue的根实例则没有此限制？
+## Vue组件data为什么必须是个函数而Vue的根实例则没有此限制？
 
 
 

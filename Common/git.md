@@ -82,6 +82,21 @@ git cat-file -p #内容
 git cat-file -t #类型
 ```
 
+### 标签
+
+> 创建的标签都只存储在本地，不会自动推送到远程。所以，打错的标签可以在本地安全删除。
+
+```powershell
+git tag <name> #创建标签
+git tag -a <name> -m "version 0.1 released" 1094adb # 上传带有说明的标签
+git tag #查看标签
+git tag -d <name> # 删除标签
+git push origin v1.0 # 上传标签
+git push origin --tags # 上传本地未上传的标签
+```
+
+
+
 ### 上传到远程仓库
 
 ```

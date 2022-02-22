@@ -43,3 +43,28 @@ amodule.exports = {
 axios.defaults.baseURL = '/api'
 ```
 
+## 去除引用未使用组件限制
+
+package.json
+
+```js
+"eslintConfig": {
+  "rules": {
+    "vue/no-unused-components": "off"
+  }
+}
+
+```
+
+
+
+# 编程问题
+
+# 使用引号
+
+```vue
+<div :style="item+''">
+    
+</div>
+```
+

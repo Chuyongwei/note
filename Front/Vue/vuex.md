@@ -24,17 +24,20 @@ Vue.use(Vuex)
 
 //创建vuex中的所有组件可以直接调用的数据管理对象
 export default new Vuex.Store({
-    state:{
+    state:{ //状态
 
     },
-    mutations:{
+    getters:{ // 状态的表现形式
+        
+    }
+    mutations:{ // 更改state的值用store.commit进行使用，必须使用同步操作
 
     },
-    actions:{
+    actions:{ // 异步操作，提交的是mutation不直接变更状态，用store.dispatch使用
 
     },
-    actions:{
-
+    moudule:{ // 一大堆上面的订阅
+        
     }
 })
 ```
@@ -47,23 +50,39 @@ export default new Vuex.Store({
 
 ### 3.项目中vuex的使用
 
-1. **配置属性state**
-
-   用于定义项目中被管理和使用的数据变量
+1. 创建store.js
 
    ```js
-       state:{
-           //key:value
-           msg:"vuex.msg",
-           arr:[1,2,3]
+   import Vuex from 'vuex'
+   import Vue from 'vue'
+   Vue.use(Vuex)
+   
+    export default new Vuex.Store({
+       state(){
+           return {
+               count: 0,
+               msg: "bugao"
+           }
        },
+       mutations:{
+           increment(state){
+               state.count++
+           }
+       }
+   })
    ```
 
-2. 
+2. 导入store
 
-士大夫
+   ```js
+   import store from './store'
+   
+   new Vue({
+       store
+   })
+   ```
 
-
+3. 之后数据就会存储到`this.$store`中
 
 
 
