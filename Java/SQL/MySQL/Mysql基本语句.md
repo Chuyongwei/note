@@ -234,19 +234,19 @@ SET default_storage_engine=< 存储引擎名 >
 
 在 MySQL 中常见的数据类型如下：
 
-##### 1) 整数类型
+#### 1) 整数类型
 
 包括 TINYINT、SMALLINT、MEDIUMINT、INT、BIGINT，浮点数类型 FLOAT 和 DOUBLE，定点数类型 DECIMAL。
 
-##### 2) 日期/时间类型
+#### 2) 日期/时间类型
 
 包括 YEAR、TIME、DATE、DATETIME 和 TIMESTAMP。
 
-##### 3) 字符串类型
+#### 3) 字符串类型
 
 包括 CHAR、VARCHAR、BINARY、VARBINARY、BLOB、TEXT、ENUM 和 SET 等。
 
-##### 4) 二进制类型
+#### 4) 二进制类型
 
 包括 BIT、BINARY、VARBINARY、TINYBLOB、BLOB、MEDIUMBLOB 和 LONGBLOB。
 
@@ -308,13 +308,13 @@ Query OK, 0 rows affected (0.37 sec)
 
 ### 显示数据表
 
-##### 显示所有表
+#### 显示所有表
 
 ```sql
 SHOW TABLES;
 ```
 
-##### 显示单个表
+#### 显示单个表
 
 DESCRIBE/DESC 语句可以查看表的字段信息，包括字段名、字段数据类型、是否为主键、是否有默认值等，语法规则如下：
 
@@ -1509,19 +1509,19 @@ MySQL 中的逻辑运算符如下表所示。
 
 下面分别介绍不同的逻辑运算符的使用方法。
 
-#### 1) NOT 或者 !
+### 1) NOT 或者 !
 
 ​		逻辑非运算符 NOT 或者 !，表示当操作数为 0 时，返回值为 1；当操作数为非零值时，返回值为 0；当操作数为 NULL 时，返回值为 NULL。
 
-#### 2) AND 或者 &&
+### 2) AND 或者 &&
 
 ​		逻辑与运算符 AND 或者 &&，表示当所有操作数均为非零值并且不为 NULL 时，返回值为 1；当一个或多个操作数为 0 时，返回值为 0；其余情况返回值为 NULL。
 
-#### 3) OR 或者 ||
+### 3) OR 或者 ||
 
 ​		逻辑或运算符 OR 或者 ||，表示当两个操作数均为非 NULL 值且任意一个操作数为非零值时，结果为 1，否则结果为 0；当有一个操作数为 NULL 且另一个操作数为非零值时，结果为 1，否则结果为 NULL；当两个操作数均为 NULL 时，所得结果为 NULL。
 
-#### 4) XOR
+### 4) XOR
 
 ​		逻辑异或运算符 XOR。当任意一个操作数为 NULL 时，返回值为 NULL；对于非 NULL 的操作数，若两个操作数都不是 0 或者都是 0 值，则返回结果为 0；若一个为 0，另一个不为非 0，则返回结果为 1。
 
@@ -1612,7 +1612,7 @@ MySQL 中提供的位运算符如下表所示。
 
 > INSERT 语句有两种语法形式，分别是 INSERT…VALUES 语句和 INSERT…SET 语句。
 
-##### 1) INSERT…VALUES语句
+#### 1) INSERT…VALUES语句
 
 **[INSERT VALUES 的语法格式为：**
 
@@ -1621,7 +1621,7 @@ INSERT INTO <表名> [ <列名1> [ , … <列名n>] ]
 VALUES (值1) [… , (值n) ];
 ```
 
-##### 2) INSERT…SET语句
+#### 2) INSERT…SET语句
 
 **语法格式为：**
 
@@ -1753,7 +1753,7 @@ https://learnku.com/articles/38526
 创建时添加时间 
 
 ```sql
-`create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP comment '创建时间',
+`create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
 `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间' ;
 ```
 
