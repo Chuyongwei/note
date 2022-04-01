@@ -26,25 +26,40 @@
   "outbounds": [
     {
       "tag": "proxy",
-      "protocol": "shadowsocks",
+      "protocol": "vmess",
       "settings": {
-        "servers": [
+        "vnext": [
           {
-            "address": "134.195.196.227",
-            "method": "aes-256-gcm",
-            "ota": false,
-            "password": "KixLvKzwjekG00rm",
-            "port": 5500,
-            "level": 1
+            "address": "dfuh.ml",
+            "port": 443,
+            "users": [
+              {
+                "id": "e969c7ae-b03f-4a1b-fd0b-3800fb5ce1d7",
+                "alterId": 0,
+                "email": "t@t.tt",
+                "security": "auto"
+              }
+            ]
           }
         ]
       },
       "streamSettings": {
-        "network": "tcp"
+        "network": "ws",
+        "security": "tls",
+        "tlsSettings": {
+          "allowInsecure": false,
+          "serverName": "dfuh.ml"
+        },
+        "wsSettings": {
+          "path": "/",
+          "headers": {
+            "Host": "dfuh.ml"
+          }
+        }
       },
       "mux": {
-        "enabled": false,
-        "concurrency": -1
+        "enabled": true,
+        "concurrency": 8
       }
     },
     {
