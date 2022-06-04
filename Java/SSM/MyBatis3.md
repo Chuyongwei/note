@@ -145,7 +145,7 @@
 
    
 
-   ![mybatis of operating principle](D:\baidu\MarkDown\Java\SSM\image\SSM\mybatis of operating principle.png)
+   ![mybatis of operating principle](.\image\SSM\mybatis of operating principle.png)
 
 <center>图1.1 mybatis的运行原理</center>
 
@@ -259,7 +259,7 @@ insert  into `user_role`(`UID`,`RID`) values (41,1),(45,1),(41,2);
 
 
 
-![](D:\baidu\MarkDown\Java\SSM\image\SSM\connect1.png)
+![](.\image\SSM\connect1.png)
 
 
 
@@ -267,7 +267,7 @@ insert  into `user_role`(`UID`,`RID`) values (41,1),(45,1),(41,2);
 
 
 
-![connect2](D:\baidu\MarkDown\Java\SSM\image\SSM\connect2.png)
+![connect2](.\image\SSM\connect2.png)
 
 
 

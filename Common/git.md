@@ -90,6 +90,7 @@ git cat-file -t #类型
 git tag <name> #创建标签
 git tag -a <name> -m "version 0.1 released" 1094adb # 上传带有说明的标签
 git tag #查看标签
+git tag -ln # 显示标签的s
 git tag -d <name> # 删除标签
 git push origin v1.0 # 上传标签
 git push origin --tags # 上传本地未上传的标签
