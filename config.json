@@ -30,12 +30,12 @@
       "settings": {
         "vnext": [
           {
-            "address": "dfuh.ml",
-            "port": 443,
+            "address": "jp06-vm5.entry.sdjighbiuodrfhgiuo.beauty",
+            "port": 668,
             "users": [
               {
-                "id": "e969c7ae-b03f-4a1b-fd0b-3800fb5ce1d7",
-                "alterId": 0,
+                "id": "a0fec1fb-e217-344b-84e1-45b412ccd670",
+                "alterId": 1,
                 "email": "t@t.tt",
                 "security": "auto"
               }
@@ -45,17 +45,7 @@
       },
       "streamSettings": {
         "network": "ws",
-        "security": "tls",
-        "tlsSettings": {
-          "allowInsecure": false,
-          "serverName": "dfuh.ml"
-        },
-        "wsSettings": {
-          "path": "/",
-          "headers": {
-            "Host": "dfuh.ml"
-          }
-        }
+        "wsSettings": {}
       },
       "mux": {
         "enabled": true,
