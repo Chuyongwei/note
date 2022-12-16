@@ -62,7 +62,7 @@ source sql文件路径
 ### 修改密码
 
 ```sql
-ALTER USER 'root'@'localhost' IDENTIFIED BY '65';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '654';
 或者
 ALTER USER 'root'@'%' IDENTIFIED BY '123456';
 -- 具体看mysql.user表
