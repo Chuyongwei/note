@@ -154,7 +154,7 @@ alter table 表名 drop constraint 约束名
   表名
 
   ```sql
-  alter table 表名 remane to 新表名
+  alter table 表名 rename to 新表名
   ```
 
   列名
@@ -301,6 +301,15 @@ select constraint_name from user_cons_columns where table_name = '表名' and co
 
 3. 多列
 
+   ```sql
+   insert into dept
+   values(23,'qianfeng','beijing'),
+   (24,'qianfeng','beijing');
+   
+   ```
+
+   
+
 ## update
 
 更新数据
@@ -410,9 +419,9 @@ dual是一个万能表，可以用来测试函数
 
 # DQL操作
 
-> ​	(Data Query Language 数据查询语言 )用于查询数据
+> (Data Query Language 数据查询语言 )用于查询数据
 
-### 查询select
+## 查询select
 
 ​	
 

@@ -278,7 +278,11 @@ DECIMAL 类型不同于 FLOAT 和 DOUBLE。DOUBLE 实际上是以字符串的形
 | DATE | YYYY-MM-DD HH:MM:SS | 1000-01-01 00:00:00 ~ 9999-12-31 23:59:59 | 8 个字节 |
 | TIMESTAMP | YYYY-MM-DD HH:MM:SS | 1980-01-01 00:00:01 UTC ~ 2040-01-19 03:14:07 UTC | 4 个字节 |
 
-## 数据表
+## 数据表(DDL)
+
+> (Data Definition Language 数据定义语言）用于操作对象及对象本身，这种对象包括数据库,表对象，及视图对象
+
+
 
 ### 创建数据表
 
@@ -692,9 +696,11 @@ show create table tb_emp8 \G;
 
 
 
-## 数据查询
+## 数据查询(DQL)
 
-### 表单查询
+> (Data Query Language 数据查询语言 )用于查询数据
+
+### 表单查询格式
 
 ```sql
 SELECT
@@ -765,56 +771,6 @@ FROM <表 1>, <表 2>…
 
 <font color ="red">注意：在为表取别名时，要保证不能与数据库中的其他表的名称冲突。</font>
 
-### 限制查询结果的记录条数（LIMIT）
-
-在使用 MySQL SELECT 语句时往往返回的是所有匹配的行，有些时候我们仅需要返回第一行或者前几行，这时候就需要用到 MySQL LIMT 子句。
-
-基本的语法格式如下：
-
-```sql
-<LIMIT> [<位置偏移量>,] <行数>
-```
-
-LIMIT 接受一个或两个数字参数。参数必须是一个整数常量。如果给定两个参数，第一个参数指定第一个返回记录行的偏移量，第二个参数指定返回记录行的最大数目。
-
-例：
-
-```sql
- SELECT * FROM tb_students_info LIMIT 3,4;
-```
-
-### 对查询结果进行排序(ORDER BY)
-
-SELECT 语句中，ORDER BY 子句主要用来将结果集中的数据按照一定的顺序进行排序。其语法格式为：
-
-```sql
-ORDER BY {<列名> | <表达式> | <位置>} [ASC|DESC]
-```
-
-	语法说明如下
-
-- 1) 列名
-  指定用于排序的列。可以指定多个列，列名之间用逗号分隔。
-
-- 2) 表达式
-  指定用于排序的表达式。
-
-- 3) 位置
-  指定用于排序的列在 SELECT 语句结果集中的位置，通常是一个正整数。
-
-- 4) ASC|DESC
-
-  关键字 ASC 表示按升序分组，关键字 DESC 表示按降序分组，其中 ASC 为默认值。这两个关键字必须位于对应的列名、表达式、列的位置之后
-
-使用 ORDER BY 子句应该注意以下几个方面：
-
-  - ORDER BY 子句中可以包含子查询。
-  - 当排序的值中存在空值时，ORDER BY 子句会将该空值作为最小值来对待。
-  - 当在 ORDER BY 子句中指定多个列进行排序时，MySQL 会按照列的顺序从左到右依次进行排序。
-- 查询的数据并没有以一种特定的顺序显示，如果没有对它们进行排序，则将根据插入到数据表中的顺序显示。使用 ORDER BY 子句对指定的列数据进行排序。
-
-
-
 ### 条件查询（WHERE）
 
 可以使用 WHERE 子句来指定查询条件，从 FROM 子句的中间结果中选取适当的数据行，达到数据过滤的效果。
@@ -829,7 +785,7 @@ WHERE <查询条件> {<判定运算1>，<判定运算2>，…}
 
 判定运算的语法分类如下：
 
-- <表达式1>`{=|<|<=|>|>=|<=>|<>|！=}`<表达式2>
+- <表达式1>`{=|<|<=|>|>=|<=>|<>|!=}`<表达式2>
 - <表达式1>`[NOT]LIKE`<表达式2>
 - <表达式1>`[NOT][REGEXP|RLIKE]`<表达式2>
 - <表达式1>`[NOT]BETWEEN`<表达式2>`AND`<表达式3>
@@ -900,7 +856,7 @@ SELECT * FROM tb_students_info
 
 语法格式如下：
 
-```SQL
+```sql
 SELECT <列名1，列名2 …>
 FROM <表名1> INNER JOIN <表名2> [ ON子句]
 ```
@@ -930,7 +886,7 @@ FROM <表名1> INNER JOIN <表名2> [ ON子句]
 
 【实例 1】在 tb_students_info 表和 tb_departments 表中查询所有学生，包括没有学院的学生，输入的 SQL 语句和执行结果如下所示。
 
-```
+```powershell
 mysql> SELECT name,dept_name
     -> FROM tb_students_info s
     -> LEFT OUTER JOIN tb_departments d
@@ -996,7 +952,7 @@ mysql> SELECT name,dept_name
 
 【实例 1】在 tb_departments 表中查询 dept_type 为 A 的学院 ID，并根据学院 ID 查询该学院学生的名字，输入的 SQL 语句和执行结果如下所示。
 
-```
+```powershell
 mysql> SELECT name FROM tb_students_info
     -> WHERE dept_id IN
     -> (SELECT dept_id
@@ -1016,7 +972,7 @@ mysql> SELECT name FROM tb_students_info
 
 ​		上述查询过程可以分步执行，首先内层子查询查出 tb_departments 表中符合条件的学院 ID，单独执行内查询，查询结果如下所示。
 
-```
+```powershell
 mysql> SELECT dept_id
     -> FROM tb_departments
     -> WHERE dept_type='A';
@@ -1031,7 +987,7 @@ mysql> SELECT dept_id
 
 ​		可以看到，符合条件的 dept_id 列的值有两个：1 和 2。然后执行外层查询，在 tb_students_info 表中查询 dept_id 等于 1 或 2 的学生的名字。嵌套子查询语句还可以写为如下形式，可以实现相同的效果。
 
-```
+```powershell
 mysql> SELECT name FROM tb_students_info
     -> WHERE dept_id IN(1,2);
 +-------+
@@ -1048,7 +1004,7 @@ mysql> SELECT name FROM tb_students_info
 
 上例说明在处理 SELECT 语句时，MySQL 实际上执行了两个操作过程，即先执行内层子查询，再执行外层查询，内层子查询的结果作为外部查询的比较条件。
 
-### 分组查询
+### 分组查询（GROUP BY）
 
 ​		在 [MySQL](http://c.biancheng.net/mysql/) SELECT 语句中，允许使用 GROUP BY 子句，将结果集中的数据行根据选择列的值进行逻辑分组，以便能汇总表内容的子集，实现对每个组而不是对整个结果集进行整合。
 
@@ -1064,6 +1020,54 @@ GROUP BY { <列名> | <表达式> | <位置> } [ASC | DESC]
 mysql> SELECT dept_id,GROUP_CONCAT(name) AS names
     -> FROM tb_students_info
     -> GROUP BY dept_id;
+```
+
+### 对查询结果进行排序(ORDER BY)
+
+SELECT 语句中，ORDER BY 子句主要用来将结果集中的数据按照一定的顺序进行排序。其语法格式为：
+
+```sql
+ORDER BY {<列名> | <表达式> | <位置>} [ASC|DESC]
+```
+
+语法说明如下:
+
+- 1) 列名
+     指定用于排序的列。可以指定多个列，列名之间用逗号分隔。
+
+- 2) 表达式
+     指定用于排序的表达式。
+
+- 3) 位置
+     指定用于排序的列在 SELECT 语句结果集中的位置，通常是一个正整数。
+
+- 4) ASC|DESC
+
+  关键字 ASC 表示按升序分组，关键字 DESC 表示按降序分组，其中 ASC 为默认值。这两个关键字必须位于对应的列名、表达式、列的位置之后
+
+使用 ORDER BY 子句应该注意以下几个方面：
+
+  - ORDER BY 子句中可以包含子查询。
+  - 当排序的值中存在空值时，ORDER BY 子句会将该空值作为最小值来对待。
+  - 当在 ORDER BY 子句中指定多个列进行排序时，MySQL 会按照列的顺序从左到右依次进行排序。
+- 查询的数据并没有以一种特定的顺序显示，如果没有对它们进行排序，则将根据插入到数据表中的顺序显示。使用 ORDER BY 子句对指定的列数据进行排序。
+
+### 限制查询结果的记录条数（LIMIT）
+
+在使用 MySQL SELECT 语句时往往返回的是所有匹配的行，有些时候我们仅需要返回第一行或者前几行，这时候就需要用到 MySQL LIMT 子句。
+
+基本的语法格式如下：
+
+```sql
+<LIMIT> [<位置偏移量>,] <行数>
+```
+
+LIMIT 接受一个或两个数字参数。参数必须是一个整数常量。如果给定两个参数，第一个参数指定第一个返回记录行的偏移量，第二个参数指定返回记录行的最大数目。
+
+例：
+
+```sql
+ SELECT * FROM tb_students_info LIMIT 3,4;
 ```
 
 ### 集合查询
@@ -1098,7 +1102,9 @@ HAVING <条件>
 - WHERE 子句不可以包含聚合函数，HAVING 子句中的条件可以包含聚合函数。
 - HAVING 子句是在数据分组后进行过滤，WHERE 子句会在数据分组前进行过滤。WHERE 子句排除的行不包含在分组中，可能会影响 HAVING 子句基于这些值过滤掉的分组。
 
-## 数据表的其他操作
+## 数据表的其他操作(DML)
+
+> （Data Manipulation Language 数据操控语言）： 用于操作数据库对象对象中包含的数据
 
 <!-- 2020.12.5 -->
 
@@ -1231,69 +1237,7 @@ TRUNCATE [TABLE] 表名
 - DELETE 的使用范围更广，因为它可以通过 WHERE 子句指定条件来删除部分数据；而 TRUNCATE 不支持 WHERE 子句，只能删除整体。
 - DELETE 会返回删除数据的行数，但是 TRUNCATE 只会返回 0，没有任何意义。
 
-# MySQL存储
-
-## 备份与恢复
-
-数据库的主要作用就是对数据进行保存和维护，所以备份数据是数据库管理中最常用的操作。为了防止数据库意外崩溃或硬件损伤而导致的数据丢失，数据库系统提供了备份和恢复策略。
-
-保证数据安全的最重要的一个措施就是定期的对数据库进行备份。这样即使发生了意外，也会把损失降到最低。
-
-数据库备份是指通过导出数据或者复制表文件的方式来制作数据库的副本。当数据库出现故障或遭到破坏时，将备份的数据库加载到系统，从而使数据库从错误状态恢复到备份时的正确状态。
-
-> MySQL 中提供了两种备份方式，即 mysqldump 命令以及 mysqlhotcopy 脚本。由于 mysqlhotcopy 只能用于 MyISAM 表，所以 MySQL 5.7 移除了 mysqlhotcopy 脚本。
-
-### 备份一个数据库
-
-使用 mysqldump 命令备份一个数据库的语法格式如下：
-
-```sh
-mysqldump -u username -p dbname [tbname ...]> filename.sql
-```
-
-对上述语法参数说明如下：
-
-- username：表示用户名称；
-- dbname：表示需要备份的数据库名称；
-- tbname：表示数据库中需要备份的数据表，可以指定多个数据表。省略该参数时，会备份整个数据库；
-- 右箭头“>”：用来告诉 mysqldump 将备份数据表的定义和数据写入备份文件；
-- filename.sql：表示备份文件的名称，文件名前面可以加绝对路径。通常将数据库备份成一个后缀名为`.sql`的文件。
-
-注意：mysqldump 命令备份的文件并非一定要求后缀名为`.sql`，备份成其他格式的文件也是可以的。例如，后缀名为`.txt`的文件。通常情况下，建议备份成后缀名为`.sql` 的文件。因为，后缀名为`.sql`的文件给人第一感觉就是与数据库有关的文件。
-
-### 备份所有的数据库
-
-mysqldump 命令备份所有数据库的语法格式如下：
-
-```sh
-mysqldump -u username -P --all-databases>filename.sql
-```
-
-使用`--all-databases`参数时，不需要指定数据库名称。
-
-### 恢复数据
-
-当数据丢失或意外损坏时，可以通过恢复已经备份的数据来尽量减少数据的丢失和破坏造成的损失。本节主要介绍如何对备份的数据进行恢复操作。
-
-在《[MySQL mysqldump备份数据库](http://c.biancheng.net/view/7373.html)》一节中介绍了如何使用 mysqldump 命令将数据库中的数据备份成一个文本文件，且备份文件中通常包含 CREATE 语句和 INSERT 语句。
-
-在 MySQL 中，可以使用 mysql 命令来恢复备份的数据。mysql 命令可以执行备份文件中的 CREATE 语句和 INSERT 语句，也就是说，mysql 命令可以通过 CREATE 语句来创建数据库和表，通过 INSERT 语句来插入备份的数据。
-
-mysql 命令语法格式如下：
-
-```
-mysql -u username -P [dbname] < filename.sql
-```
-
-其中：
-
-- username 表示用户名称；
-- dbname 表示数据库名称，该参数是可选参数。如果 filename.sql 文件为 mysqldump 命令创建的包含创建数据库语句的文件，则执行时不需要指定数据库名。如果指定的数据库名不存在将会报错；
-- filename.sql 表示备份文件的名称。
-
-注意：mysql 命令和 mysqldump 命令一样，都直接在命令行（cmd）窗口下执行。
-
-索引与视图
+## 索引与视图
 
 ### 索引
 
@@ -1355,7 +1299,7 @@ show keys from student;
 6. 删除视图
 
    ```sql
-   drop view VIEW_EMP;
+   drop view VIEW_EMP [CASCADE];
    ```
 
 7. 查看所有视图
@@ -1378,7 +1322,123 @@ show keys from student;
        where deptno = 20 read only;
      ```
 
-## 
+## 触发器
+
+格式
+
+```sql
+CREATE TRIGGER trigger_name
+BEFORE|AFTER ON oversee_table
+FOR EACH ROW|STATEMENT
+<处理语句>
+```
+
+例
+
+建表：
+
+```sql
+CREATE TABLE employees_audit (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    employeeNumber INT NOT NULL,
+    lastname VARCHAR(50) NOT NULL,
+    changedat DATETIME DEFAULT NULL,
+    action VARCHAR(50) DEFAULT NULL
+); 
+```
+
+设置触发器
+
+```sql
+CREATE TRIGGER before_employee_update 
+	BEFORE UPDATE ON employees 
+	FOR EACH ROW
+	INSERT INTO employees_audit 
+	SET action = 'update',
+	employeeNumber = OLD.employeeNumber,
+	lastname = OLD.lastname,
+	changedat = NOW( );
+```
+
+注意：
+
+- sql语句中`old`指代修改前的数据，`new`代表修改后的数据，因此：
+
+  `insert`只有`new`，
+
+  `update`有`new`和`old`
+
+  `delete`有`old`
+
+  
+
+## 数据库安全性（DCL）
+
+### 安全性控制
+
+
+
+# MySQL存储
+
+## 备份与恢复
+
+数据库的主要作用就是对数据进行保存和维护，所以备份数据是数据库管理中最常用的操作。为了防止数据库意外崩溃或硬件损伤而导致的数据丢失，数据库系统提供了备份和恢复策略。
+
+保证数据安全的最重要的一个措施就是定期的对数据库进行备份。这样即使发生了意外，也会把损失降到最低。
+
+数据库备份是指通过导出数据或者复制表文件的方式来制作数据库的副本。当数据库出现故障或遭到破坏时，将备份的数据库加载到系统，从而使数据库从错误状态恢复到备份时的正确状态。
+
+> MySQL 中提供了两种备份方式，即 mysqldump 命令以及 mysqlhotcopy 脚本。由于 mysqlhotcopy 只能用于 MyISAM 表，所以 MySQL 5.7 移除了 mysqlhotcopy 脚本。
+
+### 备份一个数据库
+
+使用 mysqldump 命令备份一个数据库的语法格式如下：
+
+```sh
+mysqldump -u username -p dbname [tbname ...]> filename.sql
+```
+
+对上述语法参数说明如下：
+
+- username：表示用户名称；
+- dbname：表示需要备份的数据库名称；
+- tbname：表示数据库中需要备份的数据表，可以指定多个数据表。省略该参数时，会备份整个数据库；
+- 右箭头“>”：用来告诉 mysqldump 将备份数据表的定义和数据写入备份文件；
+- filename.sql：表示备份文件的名称，文件名前面可以加绝对路径。通常将数据库备份成一个后缀名为`.sql`的文件。
+
+注意：mysqldump 命令备份的文件并非一定要求后缀名为`.sql`，备份成其他格式的文件也是可以的。例如，后缀名为`.txt`的文件。通常情况下，建议备份成后缀名为`.sql` 的文件。因为，后缀名为`.sql`的文件给人第一感觉就是与数据库有关的文件。
+
+### 备份所有的数据库
+
+mysqldump 命令备份所有数据库的语法格式如下：
+
+```sh
+mysqldump -u username -P --all-databases>filename.sql
+```
+
+使用`--all-databases`参数时，不需要指定数据库名称。
+
+### 恢复数据
+
+当数据丢失或意外损坏时，可以通过恢复已经备份的数据来尽量减少数据的丢失和破坏造成的损失。本节主要介绍如何对备份的数据进行恢复操作。
+
+在《[MySQL mysqldump备份数据库](http://c.biancheng.net/view/7373.html)》一节中介绍了如何使用 mysqldump 命令将数据库中的数据备份成一个文本文件，且备份文件中通常包含 CREATE 语句和 INSERT 语句。
+
+在 MySQL 中，可以使用 mysql 命令来恢复备份的数据。mysql 命令可以执行备份文件中的 CREATE 语句和 INSERT 语句，也就是说，mysql 命令可以通过 CREATE 语句来创建数据库和表，通过 INSERT 语句来插入备份的数据。
+
+mysql 命令语法格式如下：
+
+```
+mysql -u username -P [dbname] < filename.sql
+```
+
+其中：
+
+- username 表示用户名称；
+- dbname 表示数据库名称，该参数是可选参数。如果 filename.sql 文件为 mysqldump 命令创建的包含创建数据库语句的文件，则执行时不需要指定数据库名。如果指定的数据库名不存在将会报错；
+- filename.sql 表示备份文件的名称。
+
+注意：mysql 命令和 mysqldump 命令一样，都直接在命令行（cmd）窗口下执行。
 
 # 常用运算符详解
 
