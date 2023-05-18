@@ -2,7 +2,9 @@
 
 ### 不同
 
-1.jquery的ready是在图片加载前运行，js的onload在图片加载后运行
+1. jquery的ready是在图片加载前运行，js的onload在图片加载后运行
+2.   window.onload必须等到页面内包括图片的所有元素加载完毕后才能执行。 
+     \$(function (){})==$(document).ready()是DOM结构绘制完毕后就执行，不必等到加载完毕。 
 
 ```js
   window.onload = function (ev) {

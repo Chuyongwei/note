@@ -42,10 +42,10 @@ insert into Student values('13' , '孙七' , '2018-01-01' , '女');
 ```
 科目表 Course
 ```sql
-create table Course(CId varchar(10),Cname nvarchar(10),TId varchar(10))
-insert into Course values('01' , '语文' , '02')
-insert into Course values('02' , '数学' , '01')
-insert into Course values('03' , '英语' , '03')
+create table Course(CId varchar(10),Cname nvarchar(10),TId varchar(10));
+insert into Course values('01' , '语文' , '02');
+insert into Course values('02' , '数学' , '01');
+insert into Course values('03' , '英语' , '03');
 ```
 教师表 Teacher
 ```sql
@@ -568,5 +568,4 @@ select *
 from student 
 where EXTRACT(YEAR_MONTH FROM student.Sage)=EXTRACT(YEAR_MONTH FROM DATE_ADD(CURDATE(),INTERVAL 1 MONTH))
 ```
-
 

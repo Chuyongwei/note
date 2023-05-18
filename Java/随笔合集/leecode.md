@@ -214,3 +214,75 @@ class Solution {
 }
 ```
 
+
+
+## 【1012】
+
+```java
+class Solution {
+    public int numDupDigitsAtMostN(int n) {
+        if(n<11) return 0;
+        int temp = n;
+        int length = 0;
+        int pracity = 0;//当前的总容量9999
+        // 100
+        int pracity0 = 0; // 上一个容量0101
+        // 1001
+
+        int pracity01 = 0;
+        while (temp>0){
+            length++;
+            temp/=10;
+        }
+//        System.out.println(length);
+        int[] pracitys = new int[length];
+        int sum = 0 ;
+        pracitys[0] = 0;
+        // 0-99
+        // 0--999
+        // 0--9999
+        for (int i = 1; i < length; i++) {
+//            pracity = (pracity+i)*9;//没有考虑到1001现象
+//            temp = pracity;
+            // eg. 9999 = 0-999的值 + 头位在999每个位置出现一次 +99的值（此位置0的情况）
+//            pracity = (pracity+i+pracity0)*9;
+            if (i==1){
+                pracity = (pracitys[i-1]+i);
+            }else {
+                int num = 9;
+                temp = 1;
+                for (int j = 1; j < i; j++) {
+                    temp *=num;
+                    num--;
+                }
+                temp = temp*i;
+                // 4 10000
+                // 9999
+                // 9^3
+                // 999
+                pracity = (pracitys[i-1])*10+temp;
+            }
+            pracitys[i] = pracity;
+            System.out.println(temp +" "+pracitys[i]);
+//            sum+=pracity;
+        }
+//        sum += n/(10^length)*pracitys[length-1];
+        for (int i = length-1; i > 0; i--) {
+            int temp1 = n/(int)Math.pow(10,i)%10;
+            System.out.println(temp1+" "+Math.pow(10,i));
+            if (temp1>1)
+                sum += (temp1-1)*pracitys[i];
+            else if (temp1==1){
+                if (i>0){
+                    sum += 9*pracitys[i-1];
+                }
+            }else {
+//                sum+=pracitys[i];
+            }
+
+        }
+        return sum;
+    }
+}
+```
+

@@ -691,7 +691,7 @@ CHECK(salary>0),
 FOREIGN KEY(deptId) REFERENCES tb_dept1(id)
 );
 
-show create table tb_emp8 \G;
+show create table tb_emp8 ;
 ```
 
 
