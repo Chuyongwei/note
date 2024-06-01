@@ -1,13 +1,3 @@
-[TOC]
-
-# 内容
-
-[参考](https://blog.csdn.net/qq_28838891/article/details/123741623)
-
-语法糖：是指编程语言中可以更容易的表达一个操作的语法，它可以使程序员更加容易去使用这门语言
-
-# javaScript
-
 ## js加载时机
 
 - 普通的js脚本`js\sync`，在html加载的过程中到达该脚本时候进行加载和执行
@@ -20,15 +10,13 @@
 
   `defer`==加载完后等html渲染完成后执行==依赖dom中产生的元素，或者被其他脚本依赖（因为一个页面并不只有这一个脚本）
 
-## dom与CSSOM
-
-[dom,cssom](https://wsq01.github.io/2019/10/16/js/%E6%B7%B1%E5%85%A5/%E6%B5%8F%E8%A7%88%E5%99%A8%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E2%80%94%E2%80%94DOM%E6%A0%91%E3%80%81CSSOM%E3%80%81%E5%88%86%E5%B1%82%E5%92%8C%E5%90%88%E6%88%90%E6%9C%BA%E5%88%B6/)
+### dom与CSSOM
 
 DOM的渲染 是需要等js，css都解析完成后才进行的
 
-## 添加事件
+### 添加事件
 
-flase:具体标签优先
+flase具体标签优先
 
  布尔值参数是true，表示在**捕获阶段**调用事件处理程序；就是**最不具体的节点先接收事件，最具体的节点最后接收事件**
 
@@ -46,7 +34,7 @@ document.body.removeEventListener('touchmove',bodyScroll,false);
 2. 如果多个均为true   则外层触发先于内层
 3. 如果多个均为false  则内层触发先于外层
 
-## BOM
+### BOM
 
 Browser Object Model浏览器对象模型，是JavaScript的组成之一，它提供了独立于内容与浏览器窗口进行交互的对象，使用浏览器对象模型可以实现与HTML的交互。它的作用是将相关的元素组织包装起来，提供给程序设计人员使用，从而降低开发人员的劳动量，提高设计Web页面的能力。
 window : alert() , prompt() , confirm() , setInterval() , clearInterval() , setTimeout() , clearTimeout() ;↳
@@ -67,7 +55,7 @@ DOM，全称Document Object Model 文档对象模型。JS中通过DOM来对HTML�
 
 
 
-## ES6新增
+### ES6新增
 
 数据类型：基本数据类型Symbol，引用数据类型Set ，Map
 运算符：变量的解构赋值，对象和数组新增了扩展运算符
@@ -78,7 +66,7 @@ DOM，全称Document Object Model 文档对象模型。JS中通过DOM来对HTML�
 模块化import/export
 生成器(Generator)和遍历器(Iterator)
 
-## 基本数据类型
+### 基本数据类型
 
 ES5：Null，Undefined，Number，String，Boolean
 ES6新增：Symbol（仅有目的：作为对象属性的标识符，表示唯一的值）
@@ -105,26 +93,26 @@ bunm=BigInt("1684424684321231561")//方式2：调用BigInt
 
 存储在栈（大小固定，先进后出）
 
-## 引用数据类型
+### 引用数据类型
 
 Object，function，Array，Date，RegExp，ES6新增：Set，MAP
 
 地址存储在栈，内容存储在堆（树形结构，队列，先进先出）
 
-## 声明和定义
+### 声明和定义
 
 *变量声明不开辟内存,只是告诉编译器,要声明的部分存在,要预留部分的空间。var i;*
 
 *变量定义开辟**内存***。 var i=123;
 
-## [toString，valueOf](https://blog.csdn.net/qq_35577655/article/details/119685179?ops_request_misc=&request_id=&biz_id=102&utm_term=valueOf和toString&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-2-119685179.142^v74^control_1,201^v4^add_ask,239^v2^insert_chatgpt&spm=1018.2226.3001.4187)
+### [toString，valueOf](https://blog.csdn.net/qq_35577655/article/details/119685179?ops_request_misc=&request_id=&biz_id=102&utm_term=valueOf和toString&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-2-119685179.142^v74^control_1,201^v4^add_ask,239^v2^insert_chatgpt&spm=1018.2226.3001.4187)
 
 valueOf偏向于运算，toString偏向于显示。
 valueOf:除了date其他的都是返回数据本身
 
 
 
-## ==，\=\==，Object.is()
+### ==，\=\==，Object.is()
 
 ==：自动数据类型转换
 强制转换规则
@@ -135,7 +123,7 @@ valueOf:除了date其他的都是返回数据本身
 
 3. 对象和非对象，对象先调用 ToPrimitive 抽象操作（调用valueOf()或toString()）
 
-4.  null==undefined值转为Boolean值false
+4. null==undefined值转为Boolean值false
 
 5. NaN!=NaN
 
@@ -144,7 +132,7 @@ valueOf:除了date其他的都是返回数据本身
 - Object.is(+0,-0) //false
 - Object.is(NaN,NaN) //true
 
-## 判断数据类型：typeof运算符，instance of运算符，`isPrototypeOf()` 方法，constructor，Object prototype
+### 判断数据类型：typeof运算符，instance of运算符，`isPrototypeOf()` 方法，constructor，Object prototype
 
 - typeof：判断 基本数据类型
 
@@ -195,18 +183,15 @@ const _new = function() {
 }
 ```
 
+### 类型转换
 
-
-## 类型转换
-
-### 转换为数字
+#### 转换为数字：
 
 - Number()：可以把任意值转换成数字，如果要转换的字符串中有不是数字的值，则会返回NaN
 - parseInt(string,radix)：解析一个字符串并返回指定基数的十进制整数，radix是2-36之间的整数，表示被解析字符串的基数。
 - parseFloat(string)：解析一个参数并返回一个浮点数
-  
 
-### 隐式转换
+#### 隐式转换：
 
 1. let str = '123'
 2. let res = str - 1 //122
@@ -217,7 +202,7 @@ const _new = function() {
 
   使用toString方法（NAN，undefined不能用）
 
-### 转换布尔值
+#### 转换布尔值
 
 Boolean()：0, ''(空字符串), null, undefined, NaN会转成false，其它都是true
 
@@ -233,11 +218,11 @@ null 的值是机器码 NULL 指针(null 指针的值全是 0)
 
 那也就是说null的类型标签也是000，和Object的类型标签一样，所以会被判定为Object。
 
-## 事件
+### 事件
 
 文档和浏览器窗口中发生的特定交互
 
-### [DOM事件流（event flow ）](https://juejin.cn/post/7192584563799883832)
+#### [DOM事件流（event flow ）](https://juejin.cn/post/7192584563799883832)
 
 先捕获再冒泡。存在三个阶段：事件捕获阶段、处于目标阶段、事件冒泡阶段。
 
@@ -279,6 +264,7 @@ element.addEventListener(event, function[, useCapture]);
 ### 发布订阅模式（[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
 
 完成"EventEmitter"类实现发布订阅模式。
+
 1. 同一名称事件可能有多个不同的执行函数：构造函数中创建”events“对象变量存放所有的事件
 2. 通过"on"函数添加事件：订阅事件。当总事件中不存在此事件时创建新的事件数组，当存在时将”fn“函数添加在该事件对应数组中
 3. 通过"emit"函数触发事件：发布事件，遍历该事件下的函数数组（2中的fn参数）并全部执行
@@ -342,7 +328,7 @@ class Observer {
 }
 ```
 
-## var，let 和 const关键字
+### var，let 和 const关键字
 
 在 ES6 之前，JavaScript 只有两种作用域： 全局变量 与 函数内的局部变量。
 
@@ -352,9 +338,7 @@ var：可以跨块访问, 不能跨函数访问，允许重复声明，变量提
 let、const：只能在块作用域里访问，不允许在相同作用域中重复声明，不存在变量提升
 const ：声明一个只读的常量，使用时必须初始化(即必须赋值)，一旦声明，常量的值就不能改变，（即，栈中的值不能变，引用类型，内存地址不能修改，可以修改里面的值。）。
 
-
-
-## 原型链
+### 原型链
 
 ```javascript
 console.log(Person.prototype);
@@ -415,9 +399,9 @@ Chinese.prototype.getAge = function() {
 
 [【原型和原型链】什么是原型和原型链_TowYingWang的博客-CSDN博客_原型和原型链](https://blog.csdn.net/xiaoermingn/article/details/80745117?ops_request_misc=%7B%22request%5Fid%22%3A%22165001256616780366560731%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=165001256616780366560731&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-1-80745117.142^v9^pc_search_result_cache,157^v4^control&utm_term=原型和原型链&spm=1018.2226.3001.4187)
 
-## Iterator，for in，for of，forEach，map循环遍历
+### Iterator，for in，for of，forEach，map循环遍历
 
-### Iterator
+#### Iterator
 
 一种接口，为各种不同的数据结构提供统一的访问机制
 
@@ -425,7 +409,7 @@ Chinese.prototype.getAge = function() {
 
 Array 对象的 @@iterator 方法实现了迭代协议，并允许数组被大多数期望可迭代的语法所使用，例如展开语法和 for...of 循环。它返回一个迭代器，生成数组中每个索引的值。
 
-###  for of
+####  for of
 
 ["a", "b", "c", "d"];for…of 循环读取键值// a b c d
 
@@ -497,66 +481,9 @@ console.log(array1.some(isBelowThreshold));//空数组,则返回false。
 2. map()方法会得到一个**新的数组**并返回
 3. 同样的一组数组，map()的执行速度优于 forEach()（**map() 底层做了深度优化**）
 
-## [匿名函数、箭头函数、构造函数](https://juejin.cn/post/6936938080095961125)
+### [匿名函数、箭头函数、构造函数](https://juejin.cn/post/6936938080095961125)
 
-### 一般函数
-
-#### 三种声明方式
-
-- 直接声明
-
-```javascript
-// 1.直接声明
-function f() {
-    console.log("这是直接声明的")
-}
-//函数调用
-f();
-
-```
-
-- 函数声明
-
-  ```javascript
-  //2.函数表达式
-  var test = function () {
-      console.log("这是函数表达式声明")
-  }
-  // 函数调用
-  test();
-  ```
-
-- 构造函数声明
-
-  ```javascript
-  //3.构造函数调用
-  var test = new Function('name', 'alert("hello,"+name)');
-  //最末尾的是函数体，其前面的都是参数
-  //函数调用
-  test('world');
-  ```
-
-#### 特点
-
-- **this指向调用者**
-
-  如果在全局中调用就指向window，如果绑定DOM元素事件就指向触发的元素。
-
-  普通函数的this在运行时创建，箭头函数的this是定义时确定。
-
-  this指向可以被call/apply/bind改变。
-
-- **具有prototype**
-
-- **函数内部包含一个默认的arguments参数数组**，它返回函数所接收的所有参数
-
-- 函数域始终高于全局域
-
-- 默认返回undefined
-
-
-
-### 匿名函数
+#### 匿名函数
 
 ```javascript
 //声明匿名函数
@@ -573,175 +500,9 @@ myFun( 10,30 );
 })(10,30);
 ```
 
-#### 特点
+### call、apply、bind改变this
 
-表现为function后面**不带名字的函数**，但是可以用一个变量接收，通过执行这个变量来执行这个函数。
-
-- **this指向window**
-
-- 具有prototype
-
-- this指向可以被call/apply/bind改变
-
-
-### 构造函数
-
-```javascript
-function cat(a){
-    this.a = a
-    this.eat = function(){
-        
-    }
-}
-```
-
-### 特点
-
-- **习惯上首字母大写**
-- **使用new关键字进行调用**
-- **构造函数用来新建实例对象**
-- **内部用this来构造属性和方法**
-- **构造函数在被调用之后会马上创建一个新对象，并将该对象作为返回值返回**
-- **具有prototype**
-
-### 箭头函数
-
-```javascript
-//传递给getVal函数内的this并不是调用者自身，而是外部的this，即window
-this.val = 2;
-var obj = {
-    val: 1,
-    getVal: () => {
-        console.log(this.val);
-    }
-}
- 
-obj.getVal(); // 2
-
-```
-
-#### 特点
-
-- 箭头函数**根本没有自己的this！！！导致内部的this就是外层代码块的this**。
-
-  因为没有this，所以不能用作构造函数（类）。
-
-  也不能使用call()、apply()、bind() 去改变this的指向。
-
-- **没有原型prototype**
-
-  没有super用于访问原型属性。
-
-- **不可以当作构造函数**（也是因为没有this）
-
-  （因为构造函数的this永远指向被他实例化出来的对象，但是箭头函数无法对创建出来的实例进行this绑定）
-
-  不可以使用new命令，否则会抛出一个错误。
-
-  不能使用new.target关键字返回创建实例的构造函数(类)本身。
-
-- **不可以使用arguments对象**，该对象在函数体内不存在
-
-  如果要用，可以用rest参数代替。
-
-- **不可以使用yield**
-
-  因此箭头函数不能用作Generator函数。
-
-- **箭头函数是匿名函数**
-
-### [Generator函数](https://www.ruanyifeng.com/blog/2015/04/generator.html)
-
-ES6提供的一种异步编程的解决方案。可以理解成一个状态机，**封装了多个内部的状态**。执行函数会**返回一个遍历器对象**，可以依次遍历函数内部的每个状态。
-
-- 形式上，Generator是一个普通函数。
-
-  区别一是**function命令和函数名之间有一个星号***
-
-  区别二是**函数体内部使用yield定义不同的状态**。
-
-- 调用上，也和普通函数一样，在函数名后面加上一对圆括号。
-
-  不同的是，调用后函数并不执行，返回的也不是函数的运行结果，而是**一个指向内部状态的指针对象**。
-
-```javascript
-function* gen(x){
-  console.log('x='+x)
-  var y = yield x + 2;
-  return y;
-}
-//调用Generator 函数
-// 返回函数的指针
-var g = gen(1);
- 
-// 第0个yield后面的表达式不变
-// 执行到第一个yield表达式
-g.next();
-// x=1
-// {value: 3, done: false}
-
-
-// 修改上一个yield的表达式结果为2，执行到本次yield
-g.next(2);
-// {value: 2,done: true}
-```
-
-上面代码中，调用 Generator 函数，会返回一个内部指针（即[遍历器](http://es6.ruanyifeng.com/#docs/iterator) ）g 。这是 Generator 函数不同于普通函数的另一个地方，即执行它不会返回结果，返回的是指针对象。调用指针 g 的 next 方法，会移动内部指针（即执行异步任务的第一段），指向第一个遇到的 yield 语句，上例是执行到 x + 2 为止。
-
-换言之，next 方法的作用是分阶段执行 Generator 函数。每次调用 next 方法，会返回一个对象，表示当前阶段的信息（ value 属性和 done 属性）。value 属性是 yield 语句后面表达式的值，表示当前阶段的值；done 属性是一个布尔值，表示 Generator 函数是否执行完毕，即是否还有下一个阶段。
-
-
-
-### async函数
-
-```javascript
-function getSomething() {
-    return "something";
-}
-
-async function testAsync() {
-    return Promise.resolve("hello async");
-}
-
-async function test() {
-    const v1 = await getSomething();
-    const v2 = await testAsync();
-    console.log(v1, v2);
-}
-
-test();
-// something hello async
-```
-
-ES2017标准引入了async函数，使异步操作变得更加方便。它是**Generator函数的语法糖**，将Generator函数的星号 * 替换成async，将yield替换成await。
-
-相对于Generator函数的改进：
-
-- 内置执行器
-
-  **自带执行器**，会自动执行。
-
-- 更好的语义
-
-  **async表示函数里面有异步操作，await表示紧跟在后面的表达式需要等待结果**。
-
-- 更广的适用性
-
-  yield命令后面只能是Thunk函数或Promise对象。
-
-  **async函数的await命令后面既可以是Promise对象也可以是原始类型的值**。
-
-- **返回值是Promise**
-
-  Generator函数返回值是Iterator对象，而async返回值是Promise对象。
-
-  可以用then方法指定下一步的操作。
-
-
-
-## call、apply、bind改变this
-
-### call()和apply()唯一区别：
+call()和apply()唯一区别：
 
 `call()`接受的是**一个参数列表**
 
@@ -789,10 +550,6 @@ bind：语法和call一样，区别在于call**立即执行**，bind**等待执�
                  fn: ƒ fns()
         */
         // 通过 slice 来截取传过来的参数
-        // [...argment]  
-        // 1. 创建数组
-        // 2. 声明我这是一个数组
-        // 引用从1开始以后的浅拷贝元素
         const local = [...arguments].slice(1)
         // 传入参数调用函数
         let result = context._this(...local)
@@ -925,9 +682,9 @@ function createCounter() {
 - 滥用闭包容易**内存泄漏**。
 - 使用场景 : **防抖、节流**、**函数套函数**避免**全局污染**
 
-## 正则表达式Regular Expression(RegExp) 
+### 正则表达式Regular Expression(RegExp) 
 
-**字符串搜索模式**。 
+**字符串搜索模式**。
 
 RegExp 对象是一个预定义了**属性和方法**的正则表达式对象
 
@@ -939,7 +696,7 @@ regexp.exec(str)返回匹配的子串 或者 null
 
 
 
-### 常用字符
+#### 常用字符
 
 \标记下一个字符是特殊字符或文字。例如，"n”和字符"n”匹配。"\n"则和换行字符匹配。
 
@@ -991,19 +748,19 @@ https://www.bilibili.com/video/BV1F54y1N74E/?spm_id_from=333.337.search-card.all
 /^(http(s)?:\/\/)?(([a-zA-Z0-9]+-[a-zA-Z0-9]+|[a-zA-Z0-9]+)\.)+([a-zA-Z]{2,6})(:\d+)?(\/.+)?(\?.+)?(#.+)?$/.test(url)
 ```
 
-## 函数
+### 函数
 
-### 函数的`length`属性
+#### 函数的`length`属性
 
 将返回没有指定默认值的参数个数。也就是说，指定了默认值后，`length`属性将失真。
 
-### 函数声明与函数表达式的区别
+#### 函数声明与函数表达式的区别
 
 函数声明会将那个函数提升到最前面（即使你写代码的时候在代码块最后才写这个函数），成为全局函数。
 
 函数声明要指定函数名，而函数表达式不用，可以用作匿名函数。
 
-### 立即执行函数（iife）
+#### 立即执行函数（iife）
 
 ( function( ){ })( )
 原理：括号内部不能包含语句，当解析器对代码进行解释的时候，先碰到了()， 然后碰到function关键字
@@ -1012,9 +769,9 @@ https://www.bilibili.com/video/BV1F54y1N74E/?spm_id_from=333.337.search-card.all
 
 作用：立即执行函数会形成一个单独的作用域，我们可以封装一些临时变量或者局部变量，避免污染全局变量。
 
-## 常用方法
+### 常用方法
 
-### 异或运算^
+#### 异或运算^
 
 按位异或，相同为0，不同为1
 
@@ -1028,7 +785,7 @@ https://www.bilibili.com/video/BV1F54y1N74E/?spm_id_from=333.337.search-card.all
 
 3.相同的数异或为0: n ^ n === 0
 
-### Math
+#### Math
 
 ```javascript
 //e=2.718281828459045
@@ -1057,7 +814,7 @@ Math.round() 返回一个四舍五入的值
 Math.trunc() 直接去除小数点后面的值
 ```
 
-### Number
+#### Number
 
 0B，0O为ES6新增
 
@@ -1066,7 +823,7 @@ Math.trunc() 直接去除小数点后面的值
 注意：八进制字面量在严格模式下是无效的，会导致支持该模式的JavaScript引擎抛出错误
 十六进制：有前缀0x，后跟任何十六进制数字（0~9及A~F），字母大小写都可以，超出范围会报错
 
-#### 特殊值
+##### 特殊值
 
 - Number.MIN_VALUE：5e-324
 - Number.MAX_VALUE：1.7976931348623157e+308
@@ -1086,7 +843,7 @@ console.log(isFinite(result)); //false
 - NaN =\== NaN // false　　 ---NaN不等于任何值，包括它本身
 - (1 / +0) === (1 / -0) // false　　---除以正零得到+Infinity，除以负零得到-Infinity，这两者是不相等的
 
-#### **科学计数法**
+##### **科学计数法**
 
 对于那些极大极小的数值，可以用e表示法（即科学计数法）表示的浮点数值表示。
 
@@ -1123,6 +880,7 @@ console.log(financial('1.23e+5'));
 取模运算，求商采用 floor 函数，向无穷小方向舍入，取 -2。因此 (-7) Mod 4 商 -2 余数为 1
 
 key：((n % m) + m) % m;
+
 ```javascript
 Number.prototype.mod = function(n) {
 	return ((this % n) + n) % n;
@@ -1133,7 +891,7 @@ function mod(n, m) {
 }
 ```
 
-## Map
+### Map
 
 保存键值对，任何值（对象或者[基本类型](https://developer.mozilla.org/zh-CN/docs/Glossary/Primitive)）都可以作为一个键或一个值。
 
@@ -1160,7 +918,7 @@ new Map([['foo', 3], ['bar', {}], ['baz', undefined]])
 // Expected output: "m[baz] = undefined"
 ```
 
-## Set
+### Set
 
 值的集合，且值唯一
 
@@ -1183,7 +941,7 @@ new Set(['foo', 'bar', undefined]).forEach(logSetElements);
 // Expected output: "s[undefined] = undefined"
 ```
 
-### set判断值相等的机制
+#### set判断值相等的机制
 
 ```javascript
 //Set用===判断是否相等
@@ -1199,7 +957,7 @@ console.log(obj1===obj1);//true
 console.log(set.size);//2
 ```
 
-## 数组去重 （[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
+### 数组去重 （[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
 
 ```javascript
 // Use to remove duplicate elements from the array
@@ -1208,7 +966,7 @@ console.log([...new Set(numbers)])
 // [2, 3, 4, 5, 6, 7, 32]
 ```
 
-## Array
+### Array
 
 ```javascript
 //创建字符串
@@ -1341,7 +1099,7 @@ console.log(sumWithInitial);
 // Expected output: 10
 ```
 
-### Array.filter（[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
+#### Array.filter（[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
 
 ```javascript
 Array.prototype._filter = function(Fn) {
@@ -1356,7 +1114,7 @@ return newArray
  }
 ```
 
-### Array.map（[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
+#### Array.map（[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
 
 ```javascript
 Array.prototype._map = function(Fn) {
@@ -1385,14 +1143,14 @@ Array.prototype._reduce = function(fn,initialValue = 0){
 }
 ```
 
-## String
+### String
 
 ```javascript
 str.charAt(index)//获取第n位字符  
 str.charCodeAt(n)//获取第n位UTF-16字符编码 （Unicode）A是65，a是97
 String.fromCharCode(num1[, ...[, numN]])//根据UTF编码创建字符串
  
-String.fromCharCode('a'.charCodeAt(0)) // 'a'
+String.fromCharCode('a'.charCodeAt(0))='a'
  
 str.trim()//返回去掉首尾的空白字符后的新字符串
  
@@ -1465,9 +1223,9 @@ console.log(p.replaceAll(regex, 'ferret'));
 //"lazy ferret.ferret lazy"
 ```
 
-## Class
+### Class
 
-### [类声明](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes#类声明)
+#### [类声明](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes#类声明)
 
 ```javascript
 class Rectangle {
@@ -1478,7 +1236,7 @@ class Rectangle {
 }
 ```
 
-### [类表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes#类表达式)
+#### [类表达式](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes#类表达式)
 
 ```javascript
 // 未命名/匿名类
@@ -1502,7 +1260,7 @@ console.log(Rectangle.name);
 // 输出："Rectangle2"
 ```
 
-### [使用 super 调用超类](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes#使用_super_调用超类)
+#### [使用 super 调用超类](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes#使用_super_调用超类)
 
 [super](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/super) 关键字用于调用对象的父对象上的函数。
 
@@ -1529,7 +1287,7 @@ class Lion extends Cat {
 }
 ```
 
-### private
+#### private
 
 类属性在默认情况下是[公有](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Classes/Public_class_fields)的，但可以使用增加哈希前缀 `#` 的方法来定义私有类字段
 
@@ -1557,7 +1315,7 @@ class ClassWithPrivateStaticMethod {
 }
 ```
 
-### **static** 关键字
+#### **static** 关键字
 
 定义静态方法和值。不能在类的实例上调用静态方法，而应该通过类本身调用
 
@@ -1599,9 +1357,7 @@ class StaticMethodCall {
 }
 ```
 
-## Object
-
-### [创建对象的方式](https://blog.csdn.net/KANGCHUNHUANG/article/details/123819224)
+#### [创建对象的方式](https://blog.csdn.net/KANGCHUNHUANG/article/details/123819224)
 
 1. `var obj = {}`
 
@@ -1656,880 +1412,6 @@ class StaticMethodCall {
 
    如果对象中没有该属性，则去访问prototype，如果prototype中没有，继续访问父类，直到Object，如果都没有找到，返回undefined
 
-   > 如果原型father中有该属性item1就直接使用该属性，那么如果某个对象修改了该属性的值，这个对象使用新值，其他对象使用父类的
+   > 如果原型father中有该属性item1就直接使用该属性，那么如果某个对象修改了该属性的值，所有的该原型创建的对象访问的值都会改变
 
-### 属性
-
-#### Object.defineProperty
-
-```javascript
-  Object.defineProperty(obj, 'temperature', {
-    get: function() {
-      console.log('get!');
-      return temperature;
-    },
-    set: function(value) {
-      temperature = value;
-      archive.push({ val: temperature });
-    }
-  });
-```
-
-```javascript
-//创建的新对象.prototype=proto（参数对象）
-Object.create(proto[, propertiesObject])
-```
-
-> propertiesObject 可选
-> 如果该参数被指定且不为 undefined，则该传入对象的自有 可枚举属性（即其自身定义的属性，而不是其原型链上的枚举属性）将为新创建的对象添加指定的属性值和对应的属性描述符。这些属性对应于 Object.defineProperties() 的第二个参数。
-
-描述符
-
--  拥有布尔值的键 configurable、enumerable 和 writable 的默认值都是 false。
-- 属性值和函数的键 value、get 和 set 字段的默认值为 undefined。
-  数据描述符：
-
-> configurable
->
-> - true 时，描述符才能够被改变，同时该属性也能从对应的对象上被删除。 
->
->
-> enumerable 属性
->
-> - 定义了对象的属性是否可以在 for...in 循环和 Object.keys() 中被枚举。
->
-> value
->
-> - 该属性对应的值。可以是任何有效的 JavaScript 值（数值，对象，函数等）。
->
->
-> writable
->
-> - 当且仅当该属性的 writable 键值为 true 时，属性的值，也就是上面的 value，才能被赋值运算符 (en-US)改变。
->
->
-> 存取描述符：
->
-> get
->
-> - 属性的 getter 函数，如果没有 getter，则为 undefined。当访问该属性时，会调用此函数。执行时不传入任何参数，但是会传入 this 对象（由于继承关系，这里的this并不一定是定义该属性的对象）。该函数的返回值会被用作属性的值。 
->
->
-> set
->
-> - 属性的 setter 函数，如果没有 setter，则为 undefined。当属性值被修改时，会调用此函数。该方法接受一个参数（也就是被赋予的新值），会传入赋值时的 this 对象。 
->
-
-描述符可拥有的键值
-
-| --         | --           |            |        |          |        |        |
-| ---------- | ------------ | ---------- | ------ | -------- | ------ | ------ |
-|            | configurable | enumerable | value  | writable | get    | set    |
-| 数据描述符 | 可以         | 可以       | 可以   | 可以     | 不可以 | 不可以 |
-| 存取描述符 | 可以         | 可以       | 不可以 | 不可以   | 可以   | 可以   |
-
-
-如果一个描述符不具有 `value`、`writable`、`get` 和 `set` 中的任意一个键，那么它将被认为是一个数据描述符。
-
-如果一个描述符同时拥有 `value` 或 `writable` 和 `get` 或 `set` 键，则会产生一个**异常**。
-
-```javascript
-function Archiver() {
-  var temperature = null;
-  var archive = [];
- 
-  Object.defineProperty(this, 'temperature', {
-    get: function() {
-      console.log('get!');
-      return temperature;
-    },
-    set: function(value) {
-      temperature = value;
-      archive.push({ val: temperature });
-    }
-  });
- 
-  this.getArchive = function() { return archive; };
-}
- 
-var arc = new Archiver();
-arc.temperature; // 'get!'
-arc.temperature = 11;
-arc.temperature = 13;
-arc.getArchive(); // [{ val: 11 }, { val: 13 }]
- 
-//在一个对象上定义一个新的属性或修改现有属性，并返回该对象
-Object.defineProperty(obj, prop, descriptor)
- 
-const object1 = {};
- 
-Object.defineProperty(object1, 'property1', {
-  value: 42,
-  writable: false
-});
-//用 Symbol 类型的值来做对象的 key 与常规的定义或修改不同
- 
-//Object.defineProperty 是定义 key 为 Symbol 的属性的方法之一。
-Object.defineProperty(o, Symbol.for('e'), {
-  value: 5,
-  enumerable: true
-});
- 
-//在一个对象上定义新的属性或修改现有属性，并返回该对象
-Object.defineProperties(obj, props) 
- 
-var obj = {};
-Object.defineProperties(obj, {
-  'property1': {
-    value: true,
-    writable: true
-  },
-  'property2': {
-    value: 'Hello',
-    writable: false
-  }
-  // etc. etc.
-});
- 
-//Object.prototype.hasOwnProperty()指示对象自身属性中是否具有指定的属性
-const object1 = {};
-object1.property1 = 42;
- 
-console.log(object1.hasOwnProperty('property1'));
-// Expected output: true
- 
-console.log(object1.hasOwnProperty('hasOwnProperty'));
-// Expected output: false
- 
-//Object.getPrototypeOf(object)返回对象原型
- 
-const prototype1 = {};
-const object1 = Object.create(prototype1);
- 
-console.log(Object.getPrototypeOf(object1) === prototype1);
-// Expected output: true
- 
-//Object.keys() 方法会返回一个由一个给定对象的自身可枚举属性组成的数组，数组中属性名的排列顺序和正常循环遍历该对象时返回的顺序一致。
- 
-const object1 = {
-  a: 'somestring',
-  b: 42,
-  c: false
-};
- 
-console.log(Object.keys(object1));
-// Expected output: Array ["a", "b", "c"]
- 
-//Object.values() 方法返回一个给定对象自身的所有可枚举属性值的数组，值的顺序与使用 for...in 循环的顺序相同（区别在于 for-in 循环枚举原型链中的属性）。
-var obj = { foo: 'bar', baz: 42 };
-console.log(Object.values(obj)); // ['bar', 42]
- 
-// non-object argument will be coerced to an object
-console.log(Object.values('foo')); // ['f', 'o', 'o']
-```
-
-### Object.create （⭐手写）
-
-该函数创建一个新对象，使用现有的对象来提供新创建的对象的proto，核心步骤有：
-
-1. 创建一个临时函数
-2. 将该临时函数的原型指向对象参数
-3. 返回该临时对象的实例
-
-Object.create法创建一个新对象，使用现有的对象来提供新创建的对象的proto。
-
-```javascript
-const _objectCreate = proto => {
-    if(typeof proto !== 'object' || proto === null) return
- 
-    const fn = function() {}
-    fn.prototype = proto
- 
-    return new fn()
-}
-```
-
-### Object.freeze （⭐手写）
-
-Object.freeze = writable: false + Object.seal = writable: false + Object.preventExtensions + configable: false
-Symbol 类型作为 key 值的情况，也要冻结
-只冻结对象自有的属性（使用 for ... in 会把原型链上的可枚举属性遍历出来）。
-注意不可扩展性（不能添加新属性，使用 Object.preventExtensions() 或 Object.seal() 实现，同时也相当于把原型链冻结）。
-
-key：
-
-1. Object.getOwnPropertyNames/Symbol
-2. forEach
-3. Object.defineProperty：configurable，writable
-4. Object.preventExtensions(object)
-
-```javascript
-const _objectFreeze = object => {
- 
-    if(typeof object !== 'object' || object === null) {
-        throw new TypeError(`the ${object} is not a object`)
-    }
- 
-    const keys = Object.getOwnPropertyNames(object);
-    const symbols = Object.getOwnPropertySymbols(object);
-    
-    [...keys, ...symbols].forEach(key => {
-        Object.defineProperty(object, key, {
-            configurable: false,
-            writable: false,
-        })
-    })
- 
-    Object.preventExtensions(object)
-}
-```
-
-### indexOf （[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
-
-在函数前加上波浪号，其作用是把函数声明转换为表达式，这样就可以直接运行
-
-```javascript
-~function sayHello(){
-    console.log('hello');
-}()
- 
-//Expected output: hello
-```
-
-```javascript
-    ~ function () {
-        function myIndexOf(searchStr) {
-            // 这个也可以正则实现 下面代码
-            // let reg = new RegExp(searchStr)
-            // res = reg.exec(this)
-            // return res === null ? -1 : res.index
- 
-            let len = this.length
-            let searchLen=searchStr.length
-            if (searchLen > len) return -1
-            // 如果输入的字符串大于要检测的字符串直接 -1
-            for (var i = 0; i <= len-searchLen; i++) {
-                if (this.substring(i,searchLen+i) === searchStr) {
-                    return i
-                }
-            }
-            return -1
-        }
-        String.prototype.myIndexOf = myIndexOf
-    }()
-    let str = 'dwanlghMappaw'
-    let searchStr= 'hM'
-    console.log(str.myIndexOf(searchStr));
-```
-
-## 高阶函数和函数的珂里化Currying
-
-高阶函数：参数 或者 返回值为函数
-
-函数柯里化：返回值为函数，实现多次接收参数最后统一处理的函数编码
-
-作用：能进行部分传值，而传统函数调用则需要预先确定所有实参。如果你在代码某一处只获取了部分实参，然后在另一处确定另一部分实参。
-
-用途：延迟计算、参数复用、动态生成函数(都是闭包的用途)。
-
-```javascript
-function sum(a){
-	return(b)=>{
-    	return (c)=>{
-            return a+b+c
-        }
-    }
-}
-```
-
-## Arguments对象
-
-是所有（非箭头）函数中都可用的**局部变量**。类似于`Array`，但除了 length 属性和索引元素之外没有任何`Array`属性。
-
-```javascript
-function add() {
-    var sum =0,
-        len = arguments.length;
-    for(var i=0; i<len; i++){
-        sum += arguments[i];
-    }
-    return sum;
-}
-add()                           // 0
-add(1)                          // 1
-add(1,2,3,4);                   // 10
-```
-
-## 深浅拷贝
-
-基本类型：内存区域存储的是值，不存在深拷贝和浅拷贝
-
-引用类型：内存区域存储的是地址，浅拷贝只拷贝一层（内存地址），而深拷贝是层层拷贝（拷贝内容，新开辟内存）。
-
-### 深拷贝（[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
-
-```javascript
- function cloneDeep(arr = {}) {
-        // 终止递归 判断如果传进来的数据不是 object 或者 传进来的是一个 null 直接返回
-        if (!arr || typeof arr != 'object' || arr == null) return arr
-        // 用 instanceof 判断原型链上是否有该类型的原型 是 Array => [] ! Arrays =>{}
-        let result=arr instanceof Array ?  [] :  {}
-        // forin 循环对象的key值
-        for (const key in arr) {
-            //  对象 key 赋值 result
-            result[key] = cloneDeep(arr[key])
-        }
-        return result
-   }
-```
-
-## 严格模式
-
-严格模式通过抛出错误来消除了一些原有静默错误。
-
-```javascript
-"use strict";
-```
-
-- 严格模式下，不允许给未声明的变量赋值
-
-严格模式修复了一些导致 JavaScript 引擎难以执行优化的缺陷：有时候，相同的代码，严格模式可以比非严格模式下运行得更快。
-
-严格模式禁用了在 ECMAScript 的未来版本中可能会定义的一些语法。
-
-## 防抖 （[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
-
-触发事件后在 n 秒内函数只能执行一次，如果在 **n 秒内又触发了**事件，会**重计算**函数执行时间。
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
-    防抖： <input id="input" type="text">
-</body>
-<script>
-     // 防抖的核心代码
-    function debounce(fun,time) {
-        let flag // 定义状态
-        return function () {
-            clearTimeout(flag)// 在执行之前 清除 定时器的 flag 不让他执行
-            flag = setTimeout(() => {
-                fun.call(this,arguments)//拿到正确的this对象，即事件发生的dom
-            }, time)
-        }
-    }
- 
-    let val = debounce(function (val) {
-        console.log(val)
-    },1000)
-    
-     // 监听拿到input输入的值
-    input.addEventListener('input', function (e) {
-        val(e.target.value)
-    })
-   
-</script>
-</html>
-```
-
-## 节流（[⭐](https://blog.csdn.net/Jet_Lover/article/details/115637795?ops_request_misc=%7B%22request%5Fid%22%3A%22167818286416800227464615%22%2C%22scm%22%3A%2220140713.130102334.pc%5Fall.%22%7D&request_id=167818286416800227464615&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~first_rank_ecpm_v1~hot_rank-2-115637795-null-null.142^v73^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=面试React&spm=1018.2226.3001.4187#1_6)手写）
-
-连续触发事件但是在 **n 秒中只执行一次**函数。两种方式可以实现，分别是时间戳版和定时器版。
-
-```html
-<body>
-    <button id="button">1秒执行一次</button>
-</body>
-<script>
-    /*
-        定时器版本的
-          fns 回调函数
-          time 间隔时间
-        function throttle(fun, time) {
-        let flag // 定义一个空状态
-        return function () { // 内部函数访问外部函数形成闭包
-            if (!flag) { // 状态为空执行
-                flag = setTimeout(() => {
-                    fns.apply(this, arguments) // 改变this指向 把 event 事件对象传出去
-                    flag = null
-                }, time)
-            }
-        }
-       }
-    */
- 
-    function throttle(fun, time) {
-        let last = 0
-        return function () {
-            let now = Date.now()
-            // 当前的值 减去上一次的值 >= 传过来的事件 执行
-            if (now - last >= time) {
-                fun.apply(this, arguments)
-                last = now
-            }
-        }
-    }
- 
- 
- 
-    button.onclick = throttle((e) => {
-        console.log(e)
-    }, 1000)
-</script>
-```
-
-### 防抖和节流
-
-- 防抖：在n秒内事件只执行一次
-  - search搜索联想，用户**在不断输入值**时，用防抖来**节约请求资源**。
-  - window触发resize的时候，不断的调整浏览器窗口大小会不断的触发这个事件，用防抖来让其只触发一次
-
-- 节流：在每隔n秒事件发生一次
-  - **鼠标不断点击触发**，mousedown(单位时间内只触发一次)
-  - 监听滚动事件，比如是否滑到底部自动加载更多，用throttle来判断
-
-## [垃圾回收](https://juejin.cn/post/6981588276356317214#heading-2)(GC)
-
-> GC` 即 `Garbage Collection
-
-浏览器的js具有自动垃圾回收机制，**垃圾回收机制**也就是**自动内存管理**机制，垃圾收集器会**定期**的找出**不可访问的值**，然后释放内存，所以将不需要的对象设为**null**即可。
-
-### 内存分配
-
-- **`First-fit`**，找到**第一个**的大于等于 `size` 的块立即返回
-- **`Best-fit`**，遍历整个空闲列表，返回**大于等于 `size` 的最小分块**
-- **`Worst-fit`**，遍历整个空闲列表，找到**最大的分块**，然后切成两部分，一部分 `size` 大小，并将该部分返回
-
-### 回收策略
-
-#### 标记清除（Mark-Sweep）：最常用
-
-（根对象，在浏览器环境中包括 全局Window对象、文档DOM树 等）
-
-- 垃圾收集器在运行时会给内存中的所有变量都加上一个标记，假设内存中所有对象都是垃圾，全标记为0
-
-- 然后从各个根对象开始遍历，把不是垃圾的节点改成1
-
-- 清理所有标记为0的垃圾，销毁并回收它们所占用的内存空间
-
-- 最后，把所有内存中对象标记修改为0，等待下一轮垃圾回收
-
-- 优点
-
-  简单
-
-- 缺点
-
-  内存碎片化，清除之后，剩余的对象内存位置是不变的，也会导致空闲内存空间是不连续的，出现了 内存碎片，存在内存分配的问题
-  分配速度慢，因为即便是使用 First-fit 策略，其操作仍是一个 O(n) 的操作，最坏情况是每次都要遍历到最后，同时因为碎片化，大对象的分配效率会更慢
-
-#### **标记整理（Mark-Compact）**
-
-**改善**标记清除清除之后**剩余的对象位置不变**而导致的**空闲内存不连续**
-
-标记结束后，标记整理算法会将活着的对象（即不需要清理的对象）向内存的一端**移动**，最后**清理掉边界**的内存
-
-## 内存泄漏
-
-如果 那些不再使用的变量，它们所占用的内存 不去清除的话就会造成内存泄漏
-
-造成系统内存的浪费导致程序运行速度减慢甚至系统崩溃等严重后果。
-
-比如说：
-
-1、闭包：在闭包中引入闭包外部的变量时，当闭包结束时此对象无法被垃圾回收（GC）。
-
-2、DOM：当原有的DOM被移除时，子结点引用没有被移除则无法回收
-
-JS中拥有自动的垃圾回收机制，
-
-## [宏任务、微任务、Event-Loop](https://juejin.cn/post/6844903657264136200)
-
-js引擎会优先执行微任务，例如：网页加载完毕，但是图片没加载出来
-
-微任务microtask(异步)：可以理解为task执行完后立刻执行，Promise async/await。
-宏任务macrotask： setTimeout,setInterval一类的定时事件，Ajax,DOM事件，script 脚本的执行、 I/O 操作、UI 渲染等。
-例如：new Promise实例化是同步，而then中注册的回调才是异步执行的。
-
-例如：等待的客户为宏任务，他的每个业务为微任务
-
-每办理完一个业务，柜员就会问当前的客户，是否还有其他需要办理的业务。（检查还有没有微任务需要处理）
-而客户明确告知说没有事情以后，柜员就去查看后边还有没有等着办理业务的人。（结束本次宏任务、检查还有没有宏任务需要处理）
-这个检查的过程是持续进行的，每完成一个任务都会进行一次，而这样的操作就被称为Event Loop
-
-### setImmediate与setTimeout的区别
-
-setImmediate为一次Event Loop执行完毕后调用。
-setTimeout则是通过计算一个延迟时间后进行执行。
-
-如果在主进程中直接执行这两个操作，很难保证哪个会先触发。
-当注册这两个任务耗时超过delay(s)，定时器处于可执行回调的状态，会先执行定时器，
-
-执行完定时器以后才是结束了一次Event Loop，这时才会执行setImmediate。
-
-
-# css
-
-### 回流
-
-元素改变 尺寸，宽高，边框，内容，位置 都会引起重排，导致需要重新构建页面的时候
-
-- 增删可见的 DOM 元素的时候
-- 元素的位置发生改变
-- 元素的尺寸发生改变
-- 内容改变
-- 页面第一次渲染的时候
-
-### 盒子模型
-
-width = content宽度 + padding + border
-
-- `border`
-- `margin`
-- `content`
-- `padding`
-
-### 选择器
-
-#### 特殊符号选择器
-
-- 群组选择器（’,’）
-
-- 子元素选择器（空格）
-
-  `div li`div下所有的li标签
-
-- 直接子元素选择器（’>’）
-
-  `div>li`div下以div为直接父元素的li标签
-
-- 相邻兄弟选择器（’+’）
-
-  `div+li`div后面首个li标签
-
-- 兄弟选择器（’~’）
-
-  `div~li`与div相同父元素的li元素
-
-#### 属性选择器
-
-- [div]
-
-#### 伪类选择器
-
-- `div:hover`：鼠标经过过的元素
-- `div:active`：点击的元素
-- `div:link`:鼠标未访问的元素
-- `div:visited `：鼠标访问的元素
-
-- `nth-child(n)`：子元素选择器
-
-### 嵌入
-
-#### html内
-
-```html
-<head>
- 
-<title></title>
- 
-<style type="text/css">
- 
-p{
- 
-background-color:yellow;
- 
-}
- 
-</style>
- 
-</head>
-```
-
-#### 导入
-
-```html
- 
-<head>
- 
-<title></title>
- 
-<link href="xxx.css" rel="stylesheet" type="text/css"/>
- 
-</head>
-```
-
-### 布局
-
-#### position
-
-- `relative`
-- `absolution`
-- `fixed`
-- `inherit`
-
-#### flex布局
-
-```html
-display:felx
-```
-
-
-
-### [BFC规范](https://juejin.cn/post/6950082193632788493)
-
-> 用于避免浮动元素的影响的元素使用bfc
-
-`BFC`是一个完全独立的空间（布局环境），让空间里的子元素不会影响到外面的布局。那么怎么使用`BFC`呢，`BFC`可以看做是一个`CSS`元素属性
-
-这里简单列举几个触发`BFC`使用的`CSS`属性
-
-- overflow: hidden
-- display: inline-block
-- position: absolute
-- position: fixed
-- display: table-cell
-- display: flex
-
-#### BFC的规则
-
-- `BFC`就是一个块级元素，块级元素会在垂直方向一个接一个的排列
-- `BFC`就是页面中的一个隔离的独立容器，容器里的标签不会影响到外部标签
-- 垂直方向的距离由margin决定， 属于同一个`BFC`的两个相邻的标签外边距会发生重叠
-- 计算`BFC`的高度时，浮动元素也参与计算
-
-
-
-
-
-### Float
-
-#### 三栏方式
-
-- flex
-
-  ```html
-  <!DOCTYPE html>
-  <html lang="en">
-   
-  <head>
-      <title>flex布局</title>
-      <style>
-          .main{
-              height: 60px;
-              display: flex;
-          }
-   
-          .left,
-          .right{
-              height: 100%;
-              width: 200px;
-              background-color: #ccc;
-          }
-   
-          .content{
-              flex: 1;
-              background-color: #eee;
-          }
-      </style>
-  </head>
-   
-  <body>
-      <div class="main">
-          <div class="left"></div>
-          <div class="content"></div>
-          <div class="right"></div>
-      </div>
-  </body>
-   
-  </html>
-  ```
-
-- 圣杯布局
-
-  ```html
-  <!DOCTYPE html>
-  <html>
-      <head>
-          <meta charset=utf-8>
-          <style type="text/css">
-          * {
-                  margin: 0;
-                  padding: 0;
-          }
-          .container {
-              border: 1px solid black;
-              /* 防止容器盒子高度塌陷和给之后的左、右浮动元素预留位置 */
-              overflow: hidden;
-              padding: 0px 100px;
-              min-width: 100px;
-          }
-   
-          .left {
-              background-color: greenyellow;
-              /* 保证之后的"margin-left"属性可以将自身拉到上一行 */
-              float: left;
-              /* 固定宽度 */
-              width: 100px;
-              /* 将元素向左移动属性值的单位，100%相对于父容器计算 */
-              margin-left: -100%;
-              /* 相对定位，需要将自身再向左移动自身的宽度，进入容器的"padding-left"区域 */
-              position: relative;
-              /* 自身的宽度，刚好进入容器的"padding-left"区域 */
-              left: -100px;
-          }
-   
-          .center {
-              background-color: darkorange;
-              float: left;
-              width: 100%;
-          }
-   
-          .right {
-              background-color: darkgreen;
-              float: left;
-              width: 100px;
-              margin-left: -100px;
-              position: relative;
-              left: 100px;
-          }
-          </style>
-      </head>
-      <body>
-      	<section class="container">
-              <article class="center"><br /><br /><br /></article>
-              <article class="left"><br /><br /><br /></article>
-              <article class="right"><br /><br /><br /></article>
-          </section>
-      </body>
-  </html>
-  ```
-
-  
-
-### 单位
-
-1. 绝对长度单位：**px 像素**
-2. 百分比: **%**
-3. 相对**父**元素字体大小单位: **em**
-4. 相对于**根**元素字体大小的单位: **rem**（默认**16px**）
-5. 相对于视口*宽度的百分比（100vw即视窗宽度的100%）: **vw**
-6. 相对于视口*高度的百分比（100vh即视窗高度的100%）: **vh**
-
-### opacity: 0、visibility: hidden、display: none⭐⭐⭐
-
-| 区别     | opacity: 0 | visibility: hidden | display: none |
-| -------- | ---------- | ------------------ | ------------- |
-| 页面布局 | 不改变     | 不改变             | 改变          |
-| 触发事件 | 能触发     | 不能触发           | 不能触发      |
-
-### 行内素、块级元素和行内块元素⭐⭐⭐
-
-```css
-display:inline;// 转换为行内元素
-display:block;// 转换为块级元素
-display:inline-block// 转换为行内块元素
-```
-
-块标签：div、h1~h6、ul、li、table、p、br、form。
-特征：独占一行，换行显示，可以设置宽高，可以嵌套块和行
-
-
-行标签：span、a、img、textarea、select、option、input。
-特征：只有在行内显示，不会自动进行换行，内容撑开宽、高，不可以设置宽、高（img、input、textarea等除外）。（设置float后可以设置宽、高）
-
- 
-
-### 溢出
-
-单行多行都要添加
-
-```css
-overflow: hinden
-```
-
-单行
-定元素内的空白处理：white-space:nowrap; 文本不进行换行；默认值normal
-
-```css
-overflow: hidden;
-text-overflow:ellipsis;  //ellipsis;省略
-white-space: nowrap;  //nowrap 不换行
-```
-
-
-多行
-
-
-1.-webkit-line-clamp用来限制在一个块元素显示的文本的行数。 为了实现该效果，它需要组合其他的WebKit属性。常见结合属性：
-2.display: -webkit-box; 必须结合的属性 ，将对象作为弹性伸缩盒子模型显示 。
-3.-webkit-box-orient 必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式 。 
-
- IE不兼容
-
-```html
-<!DOCTYPE html>
-<html>
-<head> 
-<meta charset="utf-8"> 
-<title>菜鸟教程(runoob.com)</title> 
-<style> 
-.text2{
-display: -webkit-box;    
--webkit-box-orient: vertical;    
--webkit-line-clamp: 3;    
-overflow: hidden;
-}
-</style> 
-	
-</head>
-<body>
- 
-<div class="text2">
-    这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话
-    这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话
-    这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话这是一句话
-</div>
- 
-</body>
-</html>
-```
-
-### 布局
-
-#### 静态布局
-
-- 传统的设置固定大小，高度宽度
-
-#### 弹性布局
-
-- flex布局
-
-- 百分比
-
-- 媒体查询
-
-  ```css
-  /* 在 screen 类型 大于560px 小于 700px 加载 */
-      @media screen and (min-width: 560px) and (max-width: 700px) {
-        .box1 {
-          background-color: burlywood;
-        }
-      }
-  ```
-
-  
-
-### 导入
-
-```css
-@import url("http://....")
-```
-
-
-
-## 
-
+### Object

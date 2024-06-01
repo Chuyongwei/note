@@ -5,8 +5,8 @@
 配置
 
 ```powershell
-git config [--local|--global] user.name "ss"
-git config [--local|--global] user.email "sdf"
+git config [--local|--global] user.name "chuyongwei"
+git config [--local|--global] user.email "1429303705@qq.com"
 ```
 
 

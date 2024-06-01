@@ -4,7 +4,7 @@
 
 ```sql
 CREATE TRIGGER trigger_name
-BEFORE|AFTER ON oversee_table
+BEFORE|AFTER <触发事件> ON oversee_table
 FOR EACH ROW|STATEMENT
 <处理语句>
 ```
