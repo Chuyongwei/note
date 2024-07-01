@@ -1,3 +1,26 @@
+## 安装
+
+settings.txt
+
+```shell
+	root: C:\dev\nvm       # nvm.exe所在位置的父路径，也是环境变量NVM_HOME的值
+    path: C:\dev\nodejs    # nodejs快捷方式的存放位置，也是环境变量NVM_SYMLINK的值
+    arch: 64               # 如果是32位系统，则这里的64改为32
+    proxy:                 # 没有使用代理，
+	node_mirror: https://npmmirror.com/mirrors/node/
+	npm_mirror: https://npmmirror.com/mirrors/npm/
+```
+
+### 配置环境变量
+
+```sh
+1、NVM_HOME:C:\dev\nvm
+2、NVM_SYMLINK:C:\dev\nodejs
+3、PATH:%NVM_HOME%;%NVM_SYMLINK%;
+```
+
+
+
 ```powershell
 nvm list [available] # 查询可用的包
 ```
@@ -27,3 +50,6 @@ nvm use [version] [arch] ：使用制定版本node。可指定32/64位。
 nvm root [path] ：设置存储不同版本node的目录。如果未设置，默认使用当前目录。
 
 nvm version ：显示nvm版本。version可简化为v。
+
+
+

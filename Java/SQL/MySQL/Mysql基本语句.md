@@ -1722,7 +1722,9 @@ mysqldump [options] --database DB1 [DB2,DB3...]
 mysqldump --user [username] --password=[password] [database name] [table name] >table_name.sql
 ```
 
+恢复sql
 
+> source file
 
 # 写在后面
 
