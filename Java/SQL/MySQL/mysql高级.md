@@ -82,3 +82,82 @@ B+树非叶子节点不存储数据，数据在叶子节点，在叶子节点之
 
 使用B+树作为索引结构，叶节点的data
 
+
+
+# 用户
+
+## 创建用户
+
+```sql
+CREATE USER 'username'@'host' IDENTIFIED BY 'password';
+```
+
+
+
+>说明： username：你将创建的用户名
+>host：指定该用户在哪个主机上可以登陆，如果是本地用户可用localhost，如果想让该用户可以从任意远程主机登陆，可以使用通配符%
+>password：该用户的登陆密码，密码可以为空，如果为空则该用户可以不需要密码登陆服务器
+
+## 创建权限
+
+```sql
+GRANT privileges ON databasename.tablename TO 'username'@'host' 
+```
+
+> 说明: privileges：用户的操作权限，如SELECT，INSERT，UPDATE等，如果要授予所的权限则使用ALL
+> databasename：数据库名 tablename：表名，如果要授予该用户对所有数据库和表的相应操作权限则可用*表示，如*.*
+
+```sql
+例子:
+GRANT SELECT, INSERT ON test.user TO 'pig'@'%';
+GRANT ALL ON *.* TO 'pig'@'%';
+```
+
+该用户可赋予其他用户权限
+
+```sql
+GRANT privileges ON databasename.tablename TO 'username'@'host' WITH GRANT OPTION;
+```
+
+
+
+## 撤销权限
+
+```sql
+命令:
+REVOKE privilege ON databasename.tablename FROM 'username'@'host';
+说明:
+privilege, databasename, tablename：同授权部分
+例子:
+REVOKE SELECT ON *.* FROM 'pig'@'%';
+```
+
+## 删除用户
+
+```sql
+命令:
+DROP USER 'username'@'host';
+```
+
+
+
+## 修改密码
+
+```sql
+SET PASSWORD FOR 'username'@'host' = PASSWORD('newpassword');
+```
+
+当前用户
+
+```sql
+SET PASSWORD = PASSWORD("newpassword");
+例子:
+SET PASSWORD FOR 'pig'@'%' = PASSWORD("123456");
+```
+
+## 更新表
+
+```sql
+flush privileges;
+```
+

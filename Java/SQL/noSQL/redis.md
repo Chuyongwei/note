@@ -28,7 +28,7 @@ echo "source /opt/rh/devtoolset-9/enable" >> /etc/profile
  cd redis-stable # cd到上一部解压的目录
  make # 编译
  cd src # cd到编译后的目录
- make install PREFIX=/software/redis # 安装，PREFIX后面是目标目录
+ make install PREFIX=/usr/local/redis # 安装，PREFIX后面是目标目录
 ```
 
 ### 2. 移动配置文件到安装目录下

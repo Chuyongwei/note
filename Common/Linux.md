@@ -55,47 +55,45 @@ gnome-terminal
 | var       | 存放系统执行过程经常改变的文件           |                                                              |
 | vmlinuz   | 软连接到boot下的vmlinuz-4.4.0-87-generic |                                                              |
 
+### 文件的那些东西
 
+- `pwd`查看当前文件路经
+- `which 命令`查看命令所在位置
+- `ls`查看文件目录 `-a` 查看所有 `-l`查看 详情`-t`按时间排序
 
-`pwd`查看当前文件路经
-
-`which 命令`查看命令所在位置
-
-`ls`查看文件目录 `-a` 查看所有 `-l`查看 详情`-t`按时间排序
-
-`-lath`组合
-
-
-
-`du` 查看文件大小
-
-`-h`适合人显示
-
-`-a`显示文件夹
-
-`-s`只显示文件总大小
+- `-lath`组合
 
 
 
-查看文件
+### 普通
 
-`cat` 即catt 连接文件
+- `du` 查看文件大小
+- `-h`适合人显示
 
-`less`更少的文件，空格向下一屏，回车向下一行，d向下半屏 b向上1页 y向上一行 u半屏 q退出 
+- `-a`显示文件夹
 
-- =显示位置：行数 字符数 整个文件所含字符数
-- h显示帮助文档
-- \ 搜索  n下一个 N上一个 
-
-`head`显示文件头几行 `-n 数字`显示几行
-
-`tail`显示尾几行
-
--  `-f`实时监控文件更新 `-s 数字`更新时间 `CTRL+c`退出
+- `-s`只显示文件总大小
 
 
 
-创建
+### 查看文件
+
+- `cat` 即catt 连接文件
+
+- `less`更少的文件，空格向下一屏，回车向下一行，d向下半屏 b向上1页 y向上一行 u半屏 q退出 
+
+- - =显示位置：行数 字符数 整个文件所含字符数
+  - h显示帮助文档
+  - \ 搜索  n下一个 N上一个 
+
+- `head`显示文件头几行 `-n 数字`显示几行
+- `tail`显示尾几行
+- -  `-f`实时监控文件更新 `-s 数字`更新时间 `CTRL+c`退出
+
+
+
+
+### 创建
 
 使用空格文件用括号`"new file"`
 
@@ -105,7 +103,7 @@ gnome-terminal
 
 
 
-`cp`拷贝文件
+### `cp`拷贝文件
 
 `文件 目录` 拷贝文件
 
@@ -117,7 +115,7 @@ gnome-terminal
 
 
 
-`mv`移动文件
+### `mv`移动文件
 
 `文件 目标目录`移动文件
 
@@ -125,7 +123,7 @@ gnome-terminal
 
 
 
-`rm`删除 remove
+### `rm`删除 remove
 
 ==在终端是没有回收站==
 
@@ -147,19 +145,19 @@ rm: 使用 --no-preserve-root 选项跳过安全模式
 
 
 
-文件的存储
+### 文件的存储
 
 三部分：文件名，权限 文件内容（inode `ls -i`）
 
 
 
-创建硬链接
+### 创建硬链接
 
 - 一旦创建后，会同时修改
 - 只能创建文件链接，不能创建文件夹的应连接
 - `ln file1 file2`文件file1指向file2
 
-创建软连接
+### 创建软连接
 
 - `ln -s file1 file2`
 - link连接,可以连接目录
@@ -176,7 +174,7 @@ rm: 使用 --no-preserve-root 选项跳过安全模式
 
 
 
-用户
+### 用户
 
 `useradd 用户`创建用户
 
@@ -184,7 +182,7 @@ rm: 使用 --no-preserve-root 选项跳过安全模式
 
 `userdel 用户`删除用户 `-r`或`--remove`删除home的用户文件
 
-群组
+### 群组
 
 `groupadd` 创建群组
 
@@ -202,7 +200,7 @@ rm: 使用 --no-preserve-root 选项跳过安全模式
 
 
 
-授权
+### 授权
 
 `chown 用户 文件`change和owner的缩写 改变所有者
 
@@ -214,7 +212,7 @@ rm: 使用 --no-preserve-root 选项跳过安全模式
 
 
 
-权限
+### 权限
 
 d：directory表示“目录”， 
 
@@ -253,7 +251,7 @@ x：在目录上表示这个文件可以被读
 
 ## 文本编辑
 
-nano
+### nano
 
 [官网](https://www.nano-editor.org/)
 
@@ -298,7 +296,7 @@ nano
 
 [镜像站](https://www.centos.org/download/mirrors/) [阿里云](https://developer.aliyun.com/mirror/)
 
-修改镜像
+### 修改镜像
 
 1. 备份到 /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup
 
@@ -319,7 +317,7 @@ nano
    yum makecache 
    ```
 
-包管理工具
+### 包管理工具
 
 `yum`
 
@@ -371,7 +369,7 @@ Read The F**king Manual
 
 
 
-### 查找文件
+## 查找文件
 
 `locate 文件`查找文件
 
@@ -1924,6 +1922,12 @@ bash -x test.sh
 
 ### 环境变量
 
+- 文件
+
+  全局：`/etc/profile`
+
+  局部：`~/.bash_profile`
+
 `echo $PATH`
 
 ### 执行文件
@@ -2390,6 +2394,42 @@ visudo #学习
 tomcat redis zookeeper
 
 java:使用yum
+
+```sh
+arch #查看服务器架构
+```
+
+## git
+
+
+
+## 安装mysql8
+
+https://www.cnblogs.com/secretmrj/p/15600144.html
+
+### 编译
+
+**初始化命令**：注意文件夹名称。
+
+- `--defaults-file`：指定配置文件（要放在--initialize 前面）
+- `--user`： 指定用户
+- `--basedir`：指定安装目录
+- `--datadir`：指定初始化数据目录
+- `--intialize-insecure`：初始化无密码（否则生成随机密码）
+
+```sh
+mysqld --defaults-file=/usr/local/etc/my.cnf --basedir=/usr/local/develop/plug/mysql8 --datadir=/usr/local/develop/plug/mysqldata/mysql --user=mysql --initialize-insecure
+```
+
+## 安装tomcat
+
+https://blog.csdn.net/xietansheng/article/details/84405208
+
+## 安装redis
+
+[Redis的版本选择与Linux下的安装（全网最细保姆级别教学）_redis版本-CSDN博客](https://blog.csdn.net/weixin_50503886/article/details/129649057)
+
+[Linux下安装Redis（超详细教程）_linux安装redis-CSDN博客](https://blog.csdn.net/qq_45784913/article/details/120678054)
 
 
 

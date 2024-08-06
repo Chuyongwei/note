@@ -1,3 +1,5 @@
+# 基本知识点
+
 ## 开始
 
 ### 基本
@@ -45,7 +47,7 @@ git log -n2 --oneline#只看最近的记录
 查看当前文件
 
 ```powershell
-ls -al
+ls -l's't'h
 ```
 
 修改名字
@@ -100,9 +102,41 @@ git push origin --tags # 上传本地未上传的标签
 
 ### 上传到远程仓库
 
+#### 本地篇
+
+本机的ssh
+
+```sh
+ssh-keygen -t rsa -C “your_email@example.com”
 ```
+
+上传到服务器认证
+
+```sh
+cat ~/.ssh/id_rsa.pub | ssh user@server “mkdir -p ~/.ssh && touch ~/.ssh/authorized_keys && chmod -R go= ~/.ssh && cat >> ~/.ssh/authorized_keys”
+```
+
+> 其中，`user`是服务器的用户名，`server`是服务器的IP地址或域名。
+
+##### 配置仓库
+
+```sh
+git remote add origin user@server:/path/to/repo.git
+root@123.57.83.43:/usr/local/doc/testgit
+
+git remote set-url origin [url]
+git remote rm origin
+```
+
+
+
+#### 普通篇
+
+```shell
  git remote add origin https://github.com/Chuyongwei/test.git
+ git remote set-url origin [url]
  git push -u origin tage2 
+ 
 ```
 
 拉取
