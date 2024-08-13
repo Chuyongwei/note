@@ -47,7 +47,7 @@ git log -n2 --oneline#只看最近的记录
 查看当前文件
 
 ```powershell
-ls -l's't'h
+ls -lath
 ```
 
 修改名字
@@ -312,6 +312,14 @@ git remote set-url 远端名 #跟新远端
 git push 名字 #推到目标仓库
 ```
 
+> push需要完整的
+
+```sh
+git fetch --unshallow origin
+```
+
+
+
 ### 分支的和并
 
 ```
@@ -448,13 +456,13 @@ git push -f origin 分支 #强制提交
 
 # 子模块
 
-### 前提
+## 前提
 
 经常碰到这种情况：当你在一个Git 项目上工作时，你需要在其中使用另外一个Git 项目。也许它是一个第三方开发的Git 库或者是你独立开发和并在多个父项目中使用的。这个情况下一个常见的问题产生了：你想将两个项目单独处理但是又需要在其中一个中使用另外一个。
 
 在Git 中你可以用子模块`submodule`来管理这些项目，`submodule`允许你将一个Git 仓库当作另外一个Git 仓库的子目录。这允许你克隆另外一个仓库到你的项目中并且保持你的提交相对独立。
 
-### 添加子模块
+## 添加子模块
 
 此文中统一将远程项目`https://github.com/maonx/vimwiki-assets.git`克隆到本地`assets`文件夹。
 
@@ -477,14 +485,14 @@ Changes to be committed:
     new file:   assets
 ```
 
-### 查看子模块
+## 查看子模块
 
 ```sh
 $ git submodule
  e33f854d3f51f5ebd771a68da05ad0371a3c0570 assets (heads/master)
 ```
 
-### 更新子模块
+## 更新子模块
 
 - 更新项目内子模块到最新版本
 
@@ -498,11 +506,11 @@ $ git submodule
   $ git submodule update --remote
   ```
 
-#### 克隆包含子模块的项目
+### 克隆包含子模块的项目
 
 克隆包含子模块的项目有二种方法：一种是先克隆父项目，再更新子模块；另一种是直接递归克隆整个项目。
 
-#### 克隆父项目，再更新子模块
+### 克隆父项目，再更新子模块
 
 1. 克隆父项目
 
@@ -542,7 +550,7 @@ $ git submodule
    Submodule path 'assets': checked out 'e33f854d3f51f5ebd771a68da05ad0371a3c0570'
    ```
 
-#### 递归克隆整个项目
+### 递归克隆整个项目
 
 ```sh
 git clone https://github.com/maonx/vimwiki-assets.git assets --recursive 
@@ -550,7 +558,7 @@ git clone https://github.com/maonx/vimwiki-assets.git assets --recursive
 
 递归克隆整个项目，子模块已经同时更新了，一步到位。
 
-### 修改子模块
+## 修改子模块
 
 在子模块中修改文件后，直接提交到远程项目分支。
 
@@ -560,7 +568,7 @@ $ git ci -m "commit"
 $ git push origin HEAD:master
 ```
 
-### 删除子模块
+## 删除子模块
 
 **删除子模块比较麻烦，需要手动删除相关的文件，否则在添加子模块时有可能出现错误**
  同样以删除`assets`文件夹为例
