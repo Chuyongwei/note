@@ -1,1 +1,7 @@
 2020-06-19 10:01:18.409 00002ee8 Fatal error: can't bind to 127.0.0.1:10809: There may be another Privoxy or some other proxy running on port 10809
+2023-07-20 12:43:18.609 00002bf4 Fatal error: can't bind to 127.0.0.1:10809: (error number 0)
+2024-05-09 21:33:05.669 00000dc4 Fatal error: can't bind to 127.0.0.1:10809: (error number 0)
+2024-05-09 21:35:23.445 00005298 Fatal error: can't bind to 127.0.0.1:10809: (error number 0)
+2024-05-09 21:35:34.999 000026d0 Fatal error: can't bind to 127.0.0.1:10809: (error number 0)
+2024-07-16 18:55:51.500 00005d18 Fatal error: can't bind to 127.0.0.1:10809: (error number 0)
+2024-07-16 18:56:15.123 00006200 Fatal error: can't bind to 127.0.0.1:10809: (error number 0)
