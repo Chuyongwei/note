@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
 
-#init_utils.py
+#reg_utils.py
 
 import numpy as np
 import matplotlib.pyplot as plt
-import sklearn
-import sklearn.datasets
-
+import scipy.io as sio
 
 def sigmoid(x):
     """
@@ -34,26 +32,40 @@ def relu(x):
     s = np.maximum(0,x)
     
     return s
-    
-def compute_loss(a3, Y):
-    
+
+
+def initialize_parameters(layer_dims):
     """
-    Implement the loss function
-    
     Arguments:
-    a3 -- post-activation, output of forward propagation
-    Y -- "true" labels vector, same shape as a3
+    layer_dims -- python array (list) containing the dimensions of each layer in our network
     
     Returns:
-    loss - value of the loss function
+    parameters -- python dictionary containing your parameters "W1", "b1", ..., "WL", "bL":
+                    W1 -- weight matrix of shape (layer_dims[l], layer_dims[l-1])
+                    b1 -- bias vector of shape (layer_dims[l], 1)
+                    Wl -- weight matrix of shape (layer_dims[l-1], layer_dims[l])
+                    bl -- bias vector of shape (1, layer_dims[l])
+                    
+    Tips:
+    - For example: the layer_dims for the "Planar Data classification model" would have been [2,2,1]. 
+    This means W1's shape was (2,2), b1 was (1,2), W2 was (2,1) and b2 was (1,1). Now you have to generalize it!
+    - In the for loop, use parameters['W' + str(l)] to access Wl, where l is the iterative integer.
     """
     
-    m = Y.shape[1]
-    logprobs = np.multiply(-np.log(a3),Y) + np.multiply(-np.log(1 - a3), 1 - Y)
-    loss = 1./m * np.nansum(logprobs)
-    
-    return loss
-    
+    np.random.seed(3)
+    parameters = {}
+    L = len(layer_dims) # number of layers in the network
+ 
+    for l in range(1, L):
+        parameters['W' + str(l)] = np.random.randn(layer_dims[l], layer_dims[l-1]) / np.sqrt(layer_dims[l-1])
+        parameters['b' + str(l)] = np.zeros((layer_dims[l], 1))
+        
+        assert(parameters['W' + str(l)].shape == layer_dims[l], layer_dims[l-1])
+        assert(parameters['W' + str(l)].shape == layer_dims[l], 1)
+ 
+        
+    return parameters
+
 def forward_propagation(X, parameters):
     """
     Implements the forward propagation (and computes the loss) presented in Figure 2.
@@ -92,7 +104,27 @@ def forward_propagation(X, parameters):
     cache = (z1, a1, W1, b1, z2, a2, W2, b2, z3, a3, W3, b3)
     
     return a3, cache
+
+
  
+def compute_cost(a3, Y):
+    """
+    Implement the cost function
+    
+    Arguments:
+    a3 -- post-activation, output of forward propagation
+    Y -- "true" labels vector, same shape as a3
+    
+    Returns:
+    cost - value of the cost function
+    """
+    m = Y.shape[1]
+    
+    logprobs = np.multiply(-np.log(a3),Y) + np.multiply(-np.log(1 - a3), 1 - Y)
+    cost = 1./m * np.nansum(logprobs)
+    
+    return cost
+
 def backward_propagation(X, Y, cache):
     """
     Implement the backward propagation presented in figure 2.
@@ -127,7 +159,7 @@ def backward_propagation(X, Y, cache):
                  "da1": da1, "dz1": dz1, "dW1": dW1, "db1": db1}
     
     return gradients
- 
+
 def update_parameters(parameters, grads, learning_rate):
     """
     Update parameters using gradient descent
@@ -150,7 +182,22 @@ def update_parameters(parameters, grads, learning_rate):
         parameters["b" + str(k+1)] = parameters["b" + str(k+1)] - learning_rate * grads["db" + str(k+1)]
         
     return parameters
+
+
+
     
+def load_2D_dataset(is_plot=True):
+    data = sio.loadmat('datasets/data.mat')
+    train_X = data['X'].T
+    train_Y = data['y'].T
+    test_X = data['Xval'].T
+    test_Y = data['yval'].T
+    if is_plot:
+        plt.scatter(train_X[0, :], train_X[1, :], c=train_Y, s=40, cmap=plt.cm.Spectral)
+        plt.show()
+    
+    return train_X, train_Y, test_X, test_Y
+
 def predict(X, y, parameters):
     """
     This function is used to predict the results of a  n-layer neural network.
@@ -177,26 +224,10 @@ def predict(X, y, parameters):
             p[0,i] = 0
  
     # print results
-    # mean计算平均值
     print("Accuracy: "  + str(np.mean((p[0,:] == y[0,:]))))
     
     return p
-    
-def load_dataset(is_plot=True):
-    np.random.seed(1)
-    train_X, train_Y = sklearn.datasets.make_circles(n_samples=300, noise=.05)
-    np.random.seed(2)
-    test_X, test_Y = sklearn.datasets.make_circles(n_samples=100, noise=.05)
-    # Visualize the data
-    if is_plot:
-        plt.scatter(train_X[:, 0], train_X[:, 1], c=train_Y, s=40, cmap=plt.cm.Spectral)
-        plt.show()
-    train_X = train_X.T
-    train_Y = train_Y.reshape((1, train_Y.shape[0]))
-    test_X = test_X.T
-    test_Y = test_Y.reshape((1, test_Y.shape[0]))
-    return train_X, train_Y, test_X, test_Y
- 
+
 def plot_decision_boundary(model, X, y):
     # Set min and max values and give it some padding
     x_min, x_max = X[0, :].min() - 1, X[0, :].max() + 1
