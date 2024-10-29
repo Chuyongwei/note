@@ -41,6 +41,9 @@ sudo apt install fcitx
 im-config
 ```
 
+# 后话
 
+### conda
 
-安装
+（https://blog.csdn.net/JineD/article/details/129507719）
+

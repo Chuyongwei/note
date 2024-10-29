@@ -70,6 +70,13 @@ git branch -d 分支名 #删除分支
 git branch -m oldName newName #重命名
 ```
 
+```sh
+git branch -a # 查看所有分支
+git branch -r # 查看远程分支
+```
+
+
+
 查看
 
 ```powershell
@@ -136,7 +143,6 @@ git remote rm origin
  git remote add origin https://github.com/Chuyongwei/test.git
  git remote set-url origin [url]
  git push -u origin tage2 
- 
 ```
 
 拉取
@@ -320,7 +326,7 @@ git fetch --unshallow origin
 
 
 
-### 分支的和并
+### 分支的合并
 
 ```
 master merge dev

@@ -1,9 +1,9 @@
 ## 安装
 
-### diango
+### django
 
 ```powershell
-pip install diango
+pip install django
 ```
 
 ### 创建项目

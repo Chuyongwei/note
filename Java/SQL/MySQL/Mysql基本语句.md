@@ -1846,3 +1846,9 @@ ALTER TABLE `table_name`
 MODIFY COLUMN `UpdateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间' ;
 ```
 
+## 主键自增
+
+```sql
+alter table table_name modify id int auto_increment;
+```
+
