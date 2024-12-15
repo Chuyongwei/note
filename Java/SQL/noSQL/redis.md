@@ -495,3 +495,13 @@ public class JedisPoolUtils {
 		* 数据库的数据一旦发生改变，则需要更新缓存。
 			* 数据库的表执行 增删改的相关操作，需要将redis缓存数据情况，再次存入
 			* 在service对应的增删改方法中，将redis数据删除。
+
+# 写在后面
+
+[使用apt安装](https://cloud.tencent.com/developer/article/1639658)
+
+## bug解决
+
+- ###### Failed opening the RDB file crontab (in server root dir /etc) for saving: Read-only file system
+
+  https://www.cnblogs.com/cjjjj/p/11896870.html

@@ -1835,7 +1835,7 @@ ALTER TABLE dept MODIFY COLUMN create_time datetime NULL DEFAULT CURRENT_TIMESTA
 添加修改时间
 
 ```sql
-TABLE `table_name`
+ALTER TABLE `table_name`
 ADD COLUMN `UpdateTime` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间' ;
 ```
 
