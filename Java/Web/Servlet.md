@@ -490,9 +490,7 @@ protected void doGet(HttpServletRequest request, HttpServletResponse response) t
 
 #### 		1.什么是过滤器
 
-```
-Filter在英文中是过滤器的意思，当然在此处的使用也是完美的切合了它的意思，我们使用filter的主要目的就是完成一个过滤的作用。可以在一个请求到达servlet之前，将其截取进行逻辑判断，然后决定是否放行到请求的servlet。也可以在一个response到达客户端之前，截取结果进行逻辑判断，然后决定是否允许返回给客户端。
-```
+> Filter在英文中是过滤器的意思，当然在此处的使用也是完美的切合了它的意思，我们使用filter的主要目的就是完成一个过滤的作用。可以在一个请求到达servlet之前，将其截取进行逻辑判断，然后决定是否放行到请求的servlet。也可以在一个response到达客户端之前，截取结果进行逻辑判断，然后决定是否允许返回给客户端。
 
 #### 		2.如何编写
 

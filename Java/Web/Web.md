@@ -1,6 +1,6 @@
 # Web之过滤器与监听器
 
-## MVC
+## [MVC](https://zh.wikipedia.org/wiki/MVC)
 
 **MVC模式**（Model–view–controller）是[软件工程](https://zh.wikipedia.org/wiki/软件工程)中的一种[软件架构](https://zh.wikipedia.org/wiki/软件架构)模式，把软件系统分为三个基本部分：模型（Model）、视图（View）和控制器（Controller）。
 
