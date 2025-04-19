@@ -54,9 +54,34 @@ sudo ufw status
 sudo ufw delete
 ```
 
+### windows访问
+
+> 在控制面版-》程序中添加试验功能
+
+```sh
+telnet [ipaddr] [port]
+```
 
 
-### 安装输入法
+
+## 显示模式
+
+桌面环境
+
+```shell
+ ps -A | egrep -i "gnome|kde|mate|cinnamon|lx|xfce|jwm"
+```
+
+显示模式
+
+```shell
+cat /etc/X11/default-display-manager
+x11vnc -display :0 -forever  -shared -rfbauth ~/.vnc/passwd
+```
+
+
+
+## 安装输入法
 
 
 
@@ -100,3 +125,13 @@ im-config
 
 （https://blog.csdn.net/JineD/article/details/129507719）
 
+## 安装VNC
+
+
+
+```shell
+sudo apt install x11vnc
+
+# nohup x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd
+x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd
+```
