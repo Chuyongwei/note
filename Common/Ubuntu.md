@@ -56,10 +56,26 @@ sudo ufw delete
 
 ### windows访问
 
-> 在控制面版-》程序中添加试验功能
+> 在控制面版->程序中添加试验功能`telnet`
 
 ```sh
 telnet [ipaddr] [port]
+```
+
+**查看是否监听**
+
+> 如果没有监听，你检测也检测不到\~_\~
+
+win
+
+```bash
+netstat -aon|findstr "9050"
+```
+
+ubuntu
+
+```bash
+netstat -ap | grep 8080
 ```
 
 
@@ -76,7 +92,38 @@ telnet [ipaddr] [port]
 
 ```shell
 cat /etc/X11/default-display-manager
+```
+
+安装vnc
+
+[常用链接](https://help.aliyun.com/zh/simple-application-server/use-cases/use-vnc-to-build-guis-on-ubuntu-18-04-and-20-04#21e0b772d7fgc)
+
+目前可能存在问题
+
+- Ubuntu18.04版本太旧不再优化
+- 连接显示器导致display：0占用问题
+- 桌面环境问题
+
+x11vnc法
+
+```bash
 x11vnc -display :0 -forever  -shared -rfbauth ~/.vnc/passwd
+```
+
+### 修改内存
+
+临时修改
+
+```bash
+ulimit -n  # 查看当前限制（默认可能是1024）
+ulimit -n 65536 # 临时提高限制（仅当前会话有效）
+```
+
+永久修改（需重启生效）：
+
+```bash
+echo "web603 soft nofile 65536" | sudo tee -a /etc/security/limits.conf
+echo "web603 hard nofile 65536" | sudo tee -a /etc/security/limits.conf
 ```
 
 
@@ -135,3 +182,84 @@ sudo apt install x11vnc
 # nohup x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd
 x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd
 ```
+
+### x11vnc
+
+安装
+
+```bash
+sudo apt-get install x11vnc
+```
+
+创建密码
+
+```bash
+ sudo x11vnc -storepasswd
+
+ Enter VNC password: *********
+
+ Verify password: *********
+
+ Write password to ~/.vnc/passwd? [y]/n y
+
+ Password written to: ~/.vnc/passwd
+```
+
+### 手动测试
+
+```bash
+sudo x11vnc -auth guess -once -loop -noxdamage -repeat -rfbauth /home/USERNAME/.vnc/passwd -rfbport 5901 -shared
+```
+
+==修改路径`/home/USERNAME/.vnc/passwd`==
+
+崩溃运行
+
+```bash
+x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd \
+  -noxfixes -noxrecord -noxdamage -nowf -nowcr
+```
+
+**参数说明**：
+
+- `-noxfixes`：禁用光标形状更新（解决 `initialize_xfixes` 问题）。
+- `-noxrecord`：禁用键盘事件记录（避免输入冲突）。
+- `-noxdamage`：禁用屏幕损坏检测（降低资源占用）。
+- `-nowf`：禁用 `Xinerama` 多显示器支持。
+- `-nowcr`：禁用光标渲染。
+
+### 设置开机自启
+
+```bash
+sudo vim /etc/systemd/system/x11vnc.service
+```
+
+```ini
+[Unit]
+Description=x11vnc (Remote access)
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/x11vnc -auth guess -display :0 -rfbauth /home/USERNAME/.vnc/passwd -rfbport 5901 -forever -loop -noxdamage -repeat -shared -capslock -nomodtweak
+ExecStop=/bin/kill -TERM $MAINPID
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=control-group
+Restart=on-failure
+
+[Install]
+WantedBy=graphical.target
+```
+
+**Note**
+
+- ExecStart处的`/home/USERNAME/.vnc/passwd`修改为自己的路径
+
+运行
+
+```bash
+$ sudo systemctl daemon-reload
+$ sudo systemctl enable x11vnc
+$ sudo systemctl start x11vnc
+```
+
