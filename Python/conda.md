@@ -1,4 +1,16 @@
-# 冻结
+# 总结
+
+## 基本操作
+
+```sh
+conda create -n xxx python=3.9
+conda env list
+conda info --envs
+
+conda remove --name 环境名 --all
+```
+
+
 
 ```sh
 conda install mingw libpython
