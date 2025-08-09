@@ -161,8 +161,6 @@ $ git pull --rebase origin master
 git commit --amend
 ```
 
-
-
 ### 合成commit
 
 到最开始的节点修改文件

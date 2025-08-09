@@ -146,7 +146,28 @@ im-config
 
 1. 英伟达驱动
 
+   删除驱动
+
+   ```sh
+   sudo apt purge nvidia-*  # 清除旧驱动
+   sudo reboot
+   ```
+
+   安装驱动
+
+   > 一般从官网上下载run文件然后`sh xxx.run`安装驱动
+
+   自动检测驱动
+
+   ```sh
+   ubuntu-drivers devices
+   ```
+
+   
+
 2. cuda cudnn
+
+   
 
 3. anconda
 
@@ -216,8 +237,7 @@ sudo x11vnc -auth guess -once -loop -noxdamage -repeat -rfbauth /home/USERNAME/.
 崩溃运行
 
 ```bash
-x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd \
-  -noxfixes -noxrecord -noxdamage -nowf -nowcr
+x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd -noxfixes -noxrecord -noxdamage -nowf -nowcr
 ```
 
 **参数说明**：
@@ -227,6 +247,34 @@ x11vnc -display :0 -forever -shared -rfbauth ~/.vnc/passwd \
 - `-noxdamage`：禁用屏幕损坏检测（降低资源占用）。
 - `-nowf`：禁用 `Xinerama` 多显示器支持。
 - `-nowcr`：禁用光标渲染。
+
+**配置日志的时候**
+
+```sh
+ -logfile /var/log/x11vnc.log
+```
+
+#### 查看访问端口的主机数量
+
+```sh
+ # 查找 x11vnc 的监听端口（通常是 5900）
+sudo netstat -tulpn | grep x11vnc
+
+# 查看连接到该端口的客户端数量（替换 5900 为实际端口）
+ sudo ss -tunp state established sport = :5900 | grep -v "State" | wc -l
+```
+
+其中`wc -l`是指行数
+
+或者
+
+```sh
+sudo ss -tanp | grep "$(pgrep x11vnc)" | grep ESTAB | wc -l
+```
+
+
+
+
 
 ### 设置开机自启
 
@@ -263,3 +311,4 @@ $ sudo systemctl enable x11vnc
 $ sudo systemctl start x11vnc
 ```
 
+x11vnc -display :0 -auth ~/.Xauthority

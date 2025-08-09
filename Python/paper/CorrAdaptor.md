@@ -1,3 +1,5 @@
+## CorrApaptor
+
 ### 1. **研究背景与问题**
 
 - **任务**：图像匹配中的离群点剔除（correspondence pruning），用于提升运动恢复结构（SfM）、SLAM等任务的精度。
